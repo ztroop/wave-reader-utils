@@ -11,6 +11,7 @@ jobs:
         python-version: '3.8'
     - name: Install Dependencies
       run: |
+        sudo apt-get install libglib2.0-dev bluez -y
         python -m pip install --upgrade pip
         pip install tox coveralls
     - name: Run Tests
