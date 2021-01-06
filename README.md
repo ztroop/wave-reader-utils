@@ -1,3 +1,6 @@
+![Build Status](https://github.com/ztroop/wave-reader/workflows/Build%20Status/badge.svg)
+[![codecov](https://codecov.io/gh/ztroop/wave-reader/branch/master/graph/badge.svg?token=NG9H8YO1ID)](https://codecov.io/gh/ztroop/wave-reader)
+
 ## Summary
 
 This is an **unofficial** Airthings Wave library designed to provide software developers
@@ -24,6 +27,14 @@ These are the goals for this project, _in no particular order_:
 - [ ] Implement reconnection logic for BTLE client.
 - [ ] Support other devices like Wave (Version 1) and Mini.
 - [ ] Add other interfaces like MQTT, AMQP and more!
+
+## Requirements
+
+In Ubuntu Linux, make sure you have `libglib2.0-dev` and `bluez` installed:
+```
+sudo apt-get install libglib2.0-dev bluez -y
+```
+In theory, other platforms (Windows, Mac) _are_ supported by using `bleak` as a dependency, but open a ticket if you run into any issues.
 
 ## Installation
 
