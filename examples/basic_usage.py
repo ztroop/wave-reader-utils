@@ -8,4 +8,5 @@ if __name__ == "__main__":
     devices = loop.run_until_complete(discover_wave_devices())
     loop.run_until_complete(fetch_readings_from_devices(devices))
     for d in devices:
-        print(str(d.sensors))
+        for k, v in d.sensors.as_dict().items():
+            print(f"Sensor ({k}) is reporting: {v}")

@@ -1,5 +1,6 @@
 import struct
-from typing import Any, List, Union
+from dataclasses import asdict, dataclass, fields
+from typing import Any, List, Optional, Union
 
 from bleak import BleakClient, discover
 from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
@@ -13,6 +14,7 @@ WAVEPLUS_UUID: str = "b42e2a68-ade7-11e4-89d3-123b93f75cba"
 WAVE_UUID: str = "b42e4dcc-ade7-11e4-89d3-123b93f75cba"
 
 
+@dataclass
 class DeviceSensors:
     """A generic object to encapsulate sensor data.
 
@@ -24,44 +26,36 @@ class DeviceSensors:
     :param co2: Carbon dioxide level (ppm)
     :param voc: Volatile organic compound level (ppb)
     """
-    PROPS = ("humidity", "radon_sta", "radon_lta", "temperature",
-             "pressure", "co2", "voc")
-
-    def __init__(self, humidity, radon_sta, radon_lta, temp, pressure=None,
-                 co2=None, voc=None):
-        self.humidity: float = humidity
-        self.radon_sta: int = radon_sta
-        self.radon_lta: int = radon_lta
-        self.temperature: float = temp
-        self.pressure: Union[float, None] = pressure
-        self.co2: Union[float, None] = co2
-        self.voc: Union[float, None] = voc
-
-    def __eq__(self, other):
-        for prop in self.PROPS:
-            if getattr(self, prop) != getattr(other, prop):
-                return False
-        return True
+    humidity: float
+    radon_sta: int
+    radon_lta: int
+    temperature: float
+    pressure: Optional[float]
+    co2: Optional[float]
+    voc: Optional[float]
 
     def __str__(self):
-        n = ", "
-        r = {i: getattr(self, i) for i in self.PROPS}
-        return f'DeviceSensors ({n.join(f"{k}: {v}" for k, v in r.items())})'
+        r = {i.name: getattr(self, i.name) for i in fields(self)}
+        return f'DeviceSensors ({", ".join(f"{k}: {v}" for k, v in r.items())})'
+
+    def as_dict(self):
+        return asdict(self)
 
     @classmethod
     def from_bytes(cls, data: List, name: str):
         if "Airthings Wave+" in name:
             return cls(
-                data[1] / 2.0,
+                data[1] / 2.0 if data[1] else 0,
                 data[4],
                 data[5],
-                data[6] / 100.0,
-                data[7] / 50.0,
+                data[6] / 100.0 if data[6] else 0,
+                data[7] / 50.0 if data[7] else 0,
                 data[8] * 1.0,
                 data[9] * 1.0,
             )
         else:
-            return cls(data[1] / 2.0, data[4], data[5], data[6] / 100.0)
+            return cls(data[1] / 2.0 if data[1] else 0, data[4],
+                       data[5], data[6] / 100.0 if data[6] else 0)
 
 
 class WaveDevice:
@@ -85,10 +79,10 @@ class WaveDevice:
         self.rssi: int = device.rssi  # Received Signal Strength Indicator
         self.metadata: Metadata = device.metadata
         self.serial_number: int = serial_number
-        self.sensor_version: Union[int, None] = None
-        self.sensors: Union[DeviceSensors, None] = None
-        self.client: Union[BleakClientBlueZDBus, None] = None
-        self.raw_values: Union[bytearray, None] = None
+        self.sensor_version: Optional[int] = None
+        self.sensors: Optional[DeviceSensors] = None
+        self.client: Optional[BleakClientBlueZDBus] = None
+        self.raw_values: Optional[bytearray] = None
 
     def __eq__(self, other):
         for prop in ("name", "address", "metadata", "serial_number"):
@@ -97,7 +91,7 @@ class WaveDevice:
         return True
 
     def __str__(self):
-        return "WaveDevice ({0})".format(self.serial_number)
+        return f"WaveDevice ({self.serial_number})"
 
     def map_sensor_values(self):
         try:
@@ -107,12 +101,7 @@ class WaveDevice:
                 data = struct.unpack("<4B8H", self.raw_values)
         except struct.error as message:
             raise UnsupportedVersion(message)
-        try:
-            self.sensors = DeviceSensors.from_bytes(data, self.name)
-        except ZeroDivisionError:
-            raise ValueError(
-                "A sensor is reporting zero. Device may not be functioning correctly."
-            )
+        self.sensors = DeviceSensors.from_bytes(data, self.name)
         self.sensor_version = data[0]
         if self.sensor_version != 1:
             raise UnsupportedVersion(f"Got: {self.sensor_version}")

@@ -36,7 +36,7 @@ sudo apt-get install libglib2.0-dev bluez -y
 ```
 In theory, other platforms (Windows, Mac) _are_ supported by using `bleak` as a dependency, but open a ticket if you run into any issues.
 
-## Installation
+## Installation (Soon™)
 
 You can install the library by running:
 
