@@ -60,10 +60,10 @@ class DeviceSensors:
                 data[6] / 100.0 if data[6] else 0,
             )
         elif product is WaveProduct.WAVEMINI:
-            return (
-                round(data[1] / 100.0 - 273.15 if data[1] else 0, 2),
-                data[3] / 100.0 if data[3] else 0,
-                data[4],
+            return cls(
+                temperature=round(data[1] / 100.0 - 273.15 if data[1] else 0, 2),
+                humidity=data[3] / 100.0 if data[3] else 0,
+                voc=data[4],
             )
         else:
             return
