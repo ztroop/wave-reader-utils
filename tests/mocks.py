@@ -1,4 +1,7 @@
-class MockedBLEDevice():
+from wave_reader.util import WaveProduct
+
+
+class MockedBLEDevice:
     def __init__(self):
         self.name = "Airthings Wave+"
         self.rssi = -69
@@ -13,6 +16,7 @@ class MockedBLEDevice():
             "manufacturer_data": {820: [13, 25, 160, 170, 9, 0]},
         }
         self.address = "80:XO:XO:XO:EE:48"
+        self.product: WaveProduct = WaveProduct(self.name)
 
 
 class MockedBleakClient(object):
@@ -24,7 +28,9 @@ class MockedBleakClient(object):
         return self._is_connected
 
     async def read_gatt_char(self, _uuid):
-        return bytearray(b'\x01A\x00\x00\x88\x00\x8f\x00\x0f\x08X\xbf\xb4\x02r\x00\x00\x00\x1c\x06')
+        return bytearray(
+            b"\x01A\x00\x00\x88\x00\x8f\x00\x0f\x08X\xbf\xb4\x02r\x00\x00\x00\x1c\x06"
+        )
 
     async def connect(self):
         self._is_connected = True

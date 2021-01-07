@@ -13,7 +13,8 @@ class TestWave(IsolatedAsyncioTestCase):
         self.BLEDevice = MockedBLEDevice()
         self.WaveDevice = wave.WaveDevice(self.BLEDevice, 2862618893)
         self.DeviceSensors = wave.DeviceSensors.from_bytes(
-            (1, 65, 0, 0, 136, 143, 2063, 48984, 692, 114, 0, 1564), self.WaveDevice.name
+            (1, 65, 0, 0, 136, 143, 2063, 48984, 692, 114, 0, 1564),
+            self.WaveDevice.product,
         )
 
     @patch("wave_reader.wave.discover")
@@ -25,24 +26,28 @@ class TestWave(IsolatedAsyncioTestCase):
         BLEIgnoredDevice = deepcopy(self.BLEDevice)
         BLEIgnoredDevice.metadata["manufacturer_data"] = {}
 
-        mocked_discover.return_value = [self.BLEDevice, BLEUnknownDevice, BLEIgnoredDevice]
+        mocked_discover.return_value = [
+            self.BLEDevice,
+            BLEUnknownDevice,
+            BLEIgnoredDevice,
+        ]
         expected_result = [self.WaveDevice]
-        devices = await wave.discover_wave_devices()
+        devices = await wave.discover_devices()
         self.assertTrue((devices == expected_result))
 
     def test_wave_device__str__(self):
-        self.assertEqual(str(self.WaveDevice), 'WaveDevice (2862618893)')
+        self.assertEqual(str(self.WaveDevice), "WaveDevice (2862618893)")
 
     @patch("wave_reader.wave.BleakClient", autospec=True)
-    async def test_fetch_readings_from_devices(self, mocked_client):
+    async def test_get_sensor_values(self, mocked_client):
         device = [self.WaveDevice]
         mocked_client.return_value = MockedBleakClient(device[0])
-        await wave.fetch_readings_from_devices([self.WaveDevice])
+        await device[0].get_sensor_values()
         self.assertEqual(device[0].sensors, self.DeviceSensors)
 
     def test_sensors__str__(self):
         self.assertEqual(
             str(self.DeviceSensors),
-            'DeviceSensors (humidity: 32.5, radon_sta: 136, radon_lta: 143, '
-            'temperature: 20.63, pressure: 979.68, co2: 692.0, voc: 114.0)'
+            "DeviceSensors (humidity: 32.5, radon_sta: 136, radon_lta: 143, "
+            "temperature: 20.63, pressure: 979.68, co2: 692.0, voc: 114.0)",
         )

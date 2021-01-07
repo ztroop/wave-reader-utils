@@ -7,11 +7,9 @@ from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
 
 from wave_reader.util import (
-    Metadata, UnknownDevice, UnsupportedVersion, parse_serial_number,
+    DEVICE, Metadata, UnknownDevice, UnsupportedVersion, WaveProduct,
+    parse_serial_number,
 )
-
-WAVEPLUS_UUID: str = "b42e2a68-ade7-11e4-89d3-123b93f75cba"
-WAVE_UUID: str = "b42e4dcc-ade7-11e4-89d3-123b93f75cba"
 
 
 @dataclass
@@ -26,6 +24,7 @@ class DeviceSensors:
     :param co2: Carbon dioxide level (ppm)
     :param voc: Volatile organic compound level (ppb)
     """
+
     humidity: float
     radon_sta: int
     radon_lta: int
@@ -42,8 +41,8 @@ class DeviceSensors:
         return asdict(self)
 
     @classmethod
-    def from_bytes(cls, data: List, name: str):
-        if "Airthings Wave+" in name:
+    def from_bytes(cls, data: List, product: WaveProduct):
+        if product is WaveProduct.WAVEPLUS:
             return cls(
                 data[1] / 2.0 if data[1] else 0,
                 data[4],
@@ -53,14 +52,26 @@ class DeviceSensors:
                 data[8] * 1.0,
                 data[9] * 1.0,
             )
+        elif product is WaveProduct.WAVE:
+            return cls(
+                data[1] / 2.0 if data[1] else 0,
+                data[4],
+                data[5],
+                data[6] / 100.0 if data[6] else 0,
+            )
+        elif product is WaveProduct.WAVEMINI:
+            return (
+                round(data[1] / 100.0 - 273.15 if data[1] else 0, 2),
+                data[3] / 100.0 if data[3] else 0,
+                data[4],
+            )
         else:
-            return cls(data[1] / 2.0 if data[1] else 0, data[4],
-                       data[5], data[6] / 100.0 if data[6] else 0)
+            return
 
 
 class WaveDevice:
     """An object that represents a Airthings Wave device. The
-    ``discover_wave_devices`` returns a list of ``BLEDevice`` objects
+    ``discover_devices`` returns a list of ``BLEDevice`` objects
     that are used in the first parameter.
 
     If you want to instantiate a WaveDevice manually without using
@@ -83,6 +94,7 @@ class WaveDevice:
         self.sensors: Optional[DeviceSensors] = None
         self.client: Optional[BleakClientBlueZDBus] = None
         self.raw_values: Optional[bytearray] = None
+        self.product: WaveProduct = WaveProduct(self.name)
 
     def __eq__(self, other):
         for prop in ("name", "address", "metadata", "serial_number"):
@@ -93,44 +105,29 @@ class WaveDevice:
     def __str__(self):
         return f"WaveDevice ({self.serial_number})"
 
-    def map_sensor_values(self):
+    def _map_sensor_values(self):
         try:
-            if "Airthings Wave+" in self.name:
-                data = struct.unpack("<BBBBHHHHHHHH", self.raw_values)
-            else:
-                data = struct.unpack("<4B8H", self.raw_values)
+            data = struct.unpack(DEVICE[self.product]["BUFFER"], self.raw_values)
         except struct.error as message:
             raise UnsupportedVersion(message)
-        self.sensors = DeviceSensors.from_bytes(data, self.name)
+
         self.sensor_version = data[0]
         if self.sensor_version != 1:
             raise UnsupportedVersion(f"Got: {self.sensor_version}")
+        self.sensors = DeviceSensors.from_bytes(data, self.product)
+        return self.sensors
 
-    async def get_raw_sensor_values(self):
-        if self.client and await self.client.is_connected():
-            self.raw_values = await self.client.read_gatt_char(
-                WAVEPLUS_UUID if "Airthings Wave+" in self.name else WAVE_UUID
-            )
-            self.map_sensor_values()
-
-
-async def fetch_readings_from_devices(devices: List[WaveDevice]) -> List[WaveDevice]:
-    """Fetches sensor readings from devices. Sensors data is accessible
-    through ``WaveDevice.sensors`` where the values are mapped to.
-
-    :param devices: A list of ``WaveDevice`` objects, you can use your own
-        ``WaveDevice``, or use the discovered devices from ``discover_wave_devices()``
-    :rtype: List[WaveDevice]
-    """
-    device: WaveDevice  # Typing annotation
-    for device in devices:
-        async with BleakClient(device.address) as client:
-            device.client: BleakClientBlueZDBus = client
-            await device.get_raw_sensor_values()
-    return devices
+    async def get_sensor_values(self):
+        async with BleakClient(self.address) as client:
+            self.client: BleakClientBlueZDBus = client
+            if self.client and await self.client.is_connected():
+                self.raw_values = await client.read_gatt_char(
+                    DEVICE[self.product]["UUID"]
+                )
+                return self._map_sensor_values()
 
 
-async def discover_wave_devices() -> List[WaveDevice]:
+async def discover_devices() -> List[WaveDevice]:
     """Discovers all valid, accessible Airthings Wave devices.
 
     :rtype: List[WaveDevice]

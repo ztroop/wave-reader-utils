@@ -16,7 +16,7 @@ class TestReaderUtils(TestCase):
             {120: []},
             {120: None},
             {820: [10, 20]},
-            {120: [13, 25, 160, 170, 9, 0]}
+            {120: [13, 25, 160, 170, 9, 0]},
         ]
         for i in invalid_data:
             self.assertRaises(UnknownDevice, parse_serial_number, i)

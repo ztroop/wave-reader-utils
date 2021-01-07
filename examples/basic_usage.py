@@ -1,12 +1,15 @@
 import asyncio
 
-from wave_reader import discover_wave_devices, fetch_readings_from_devices
-
+from wave_reader import discover_devices
 
 if __name__ == "__main__":
+    # Event loop to run asynchronous tasks.
     loop = asyncio.get_event_loop()
-    devices = loop.run_until_complete(discover_wave_devices())
-    loop.run_until_complete(fetch_readings_from_devices(devices))
-    for d in devices:
-        for k, v in d.sensors.as_dict().items():
-            print(f"Sensor ({k}) is reporting: {v}")
+    # Scan for BTLE Wave devices.
+    devices = loop.run_until_complete(discover_devices())
+    # Get sensor readings to the available wave devices.
+    for device in devices:
+        sensor_readings = loop.run_until_complete(device.get_sensor_values())
+        print(sensor_readings)
+
+# >>> DeviceSensors (humidity: 32.5, radon_sta: 116, radon_lta: 113 ...
