@@ -68,13 +68,13 @@ class WaveDevice:
     def __init__(self, device: Union[BLEDevice, Any], serial_number: int):
         self.name: str = device.name
         self.address: str = device.address  # UUID in Mac, or MAC in Linux and Win
-        self.serial_number: int = serial_number
+        self.rssi: int = device.rssi
+        self.metadata: Metadata = device.metadata
         self.product: WaveProduct = WaveProduct(self.name)
-        self.rssi: Optional[int] = getattr(device, "rssi", None)
-        self.metadata: Metadata = getattr(device, "metadata", None)
+        self.serial_number: int = serial_number
 
     def __eq__(self, other):
-        for prop in ("name", "address", "metadata", "serial_number"):
+        for prop in ("name", "address", "serial_number"):
             if getattr(self, prop) != getattr(other, prop):
                 return False
         return True
