@@ -52,7 +52,7 @@ class WaveDevice:
 
     If you want to instantiate a WaveDevice manually without using
     discovery, you can create a generic object with the following
-    properties: ``name``, ``address``, ``rssi``, ``metadata``.
+    properties: ``name``, ``address`` and optionally ``rssi``, ``metadata``.
 
     :param device: Device information from Bleak's discover function
     :param serial_number: Parsed serial number from manufacturer data
@@ -60,17 +60,18 @@ class WaveDevice:
     :type serial_number: int
     """
 
+    sensor_version: Optional[int] = None
+    sensors: Optional[DeviceSensors] = None
+    client: Optional[BleakClientBlueZDBus] = None
+    raw_values: Optional[bytearray] = None
+
     def __init__(self, device: Union[BLEDevice, Any], serial_number: int):
         self.name: str = device.name
         self.address: str = device.address  # UUID in Mac, or MAC in Linux and Win
-        self.rssi: int = device.rssi  # Received Signal Strength Indicator
-        self.metadata: Metadata = device.metadata
         self.serial_number: int = serial_number
-        self.sensor_version: Optional[int] = None
-        self.sensors: Optional[DeviceSensors] = None
-        self.client: Optional[BleakClientBlueZDBus] = None
-        self.raw_values: Optional[bytearray] = None
         self.product: WaveProduct = WaveProduct(self.name)
+        self.rssi: Optional[int] = getattr(device, "rssi", None)
+        self.metadata: Metadata = getattr(device, "metadata", None)
 
     def __eq__(self, other):
         for prop in ("name", "address", "metadata", "serial_number"):
