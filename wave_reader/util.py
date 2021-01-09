@@ -1,28 +1,5 @@
 import struct
-from enum import Enum
 from typing import Dict, List, TypedDict, Union
-
-
-class WaveProduct(Enum):
-    WAVEPLUS = "Airthings Wave+"
-    WAVE = "Airthings Wave"
-    WAVEMINI = "Airthings Wave Mini"
-
-
-DEVICE = {
-    WaveProduct.WAVEPLUS: {
-        "UUID": "b42e2a68-ade7-11e4-89d3-123b93f75cba",
-        "BUFFER": "<BBBBHHHHHHHH",
-    },
-    WaveProduct.WAVE: {
-        "UUID": "b42e4dcc-ade7-11e4-89d3-123b93f75cba",
-        "BUFFER": "<4B8H",
-    },
-    WaveProduct.WAVEMINI: {
-        "UUID": "b42e3b98-ade7-11e4-89d3-123b93f75cba",
-        "BUFFER": "<HHHHHHLL",
-    },
-}
 
 
 class Metadata(TypedDict):

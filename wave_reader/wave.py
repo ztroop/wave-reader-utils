@@ -6,9 +6,9 @@ from bleak import BleakClient, discover
 from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
 
+from wave_reader.data import DEVICE, WaveProduct
 from wave_reader.util import (
-    DEVICE, Metadata, UnknownDevice, UnsupportedVersion, WaveProduct,
-    parse_serial_number,
+    Metadata, UnknownDevice, UnsupportedVersion, parse_serial_number,
 )
 
 
@@ -25,10 +25,10 @@ class DeviceSensors:
     :param voc: Volatile organic compound level (ppb)
     """
 
-    humidity: float
-    radon_sta: int
-    radon_lta: int
-    temperature: float
+    humidity: Optional[float]
+    radon_sta: Optional[int]
+    radon_lta: Optional[int]
+    temperature: Optional[float]
     pressure: Optional[float]
     co2: Optional[float]
     voc: Optional[float]
@@ -42,31 +42,7 @@ class DeviceSensors:
 
     @classmethod
     def from_bytes(cls, data: List, product: WaveProduct):
-        if product is WaveProduct.WAVEPLUS:
-            return cls(
-                data[1] / 2.0 if data[1] else 0,
-                data[4],
-                data[5],
-                data[6] / 100.0 if data[6] else 0,
-                data[7] / 50.0 if data[7] else 0,
-                data[8] * 1.0,
-                data[9] * 1.0,
-            )
-        elif product is WaveProduct.WAVE:
-            return cls(
-                data[1] / 2.0 if data[1] else 0,
-                data[4],
-                data[5],
-                data[6] / 100.0 if data[6] else 0,
-            )
-        elif product is WaveProduct.WAVEMINI:
-            return cls(
-                temperature=round(data[1] / 100.0 - 273.15 if data[1] else 0, 2),
-                humidity=data[3] / 100.0 if data[3] else 0,
-                voc=data[4],
-            )
-        else:
-            return
+        return cls(**DEVICE[product]["SENSOR_FORMAT"](data))
 
 
 class WaveDevice:

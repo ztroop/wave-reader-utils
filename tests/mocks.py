@@ -1,4 +1,4 @@
-from wave_reader.util import WaveProduct
+from wave_reader.data import WaveProduct
 
 
 class MockedBLEDevice:
