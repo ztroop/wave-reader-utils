@@ -18,11 +18,11 @@ This project is currently in **alpha** state.
 
 These are the goals for this project, _in no particular order_:
 
-- [x] Support platform cross-compatibility. Windows, Mac an Linux.
+- [x] Support platform cross-compatibility. Windows, Mac and Linux.
 - [x] Support WavePlus, Wave (Version 2) and Wave Mini devices.
+- [x] Support operation across multiple devices asynchronously.
 - [x] Code testing, linting, type hinting, formatting and coverage reporting.
-- [x] Discover all Wave devices or manually construct a WaveDevice for pulling readings.
-- [x] Support interaction/operation across multiple Wave devices.
+- [x] Discover all Wave devices or inherit WaveDevice class for sensor readings.
 - [ ] Add battery life support.
 - [ ] Implement reconnection logic for BTLE client.
 - [ ] Support other devices like Wave (Version 1) and more.
