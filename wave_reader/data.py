@@ -7,6 +7,8 @@ class WaveProduct(Enum):
     WAVEMINI = "Airthings Wave Mini"
 
 
+IDENTITY = 820
+SERIAL_NUMBER_BUFFER = "<LH"
 DEVICE = {
     WaveProduct.WAVEPLUS: {
         "UUID": "b42e2a68-ade7-11e4-89d3-123b93f75cba",

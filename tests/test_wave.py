@@ -1,10 +1,31 @@
 from copy import deepcopy
-from unittest import IsolatedAsyncioTestCase
+from unittest import IsolatedAsyncioTestCase, TestCase
 from unittest.mock import patch
 
 from wave_reader import wave
 
 from .mocks import MockedBleakClient, MockedBLEDevice
+
+
+class TestReaderUtils(TestCase):
+    def test_parse_serial_number(self):
+        """Validate Wave Plus manufacturer data parsing."""
+        valid_data = {820: [13, 25, 160, 170, 9, 0]}
+        valid_serial = wave.WaveDevice.parse_serial_number(valid_data)
+        self.assertEqual(valid_serial, 2862618893)
+
+        invalid_data = [
+            {},
+            None,
+            {120: []},
+            {120: None},
+            {820: [10, 20]},
+            {120: [13, 25, 160, 170, 9, 0]},
+        ]
+        for i in invalid_data:
+            self.assertRaises(
+                wave.UnknownDevice, wave.WaveDevice.parse_serial_number, i
+            )
 
 
 class TestWave(IsolatedAsyncioTestCase):

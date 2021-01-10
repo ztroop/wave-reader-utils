@@ -1,20 +1,35 @@
 import struct
 from dataclasses import asdict, dataclass, fields
-from typing import Any, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from bleak import BleakClient, discover
 from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
 
-from wave_reader.data import DEVICE, WaveProduct
-from wave_reader.util import (
-    Metadata, UnknownDevice, UnsupportedVersion, parse_serial_number,
+from wave_reader.data import (
+    DEVICE, IDENTITY, SERIAL_NUMBER_BUFFER, WaveProduct,
 )
+
+
+class UnknownDevice(Exception):
+    """Exception class to indicate invalid Wave device detected."""
+
+    def __init__(self, message: str = "Invalid Wave device."):
+        self.message = message
+        super().__init__(self.message)
+
+
+class UnsupportedVersion(Exception):
+    """Exception class to indicate unsupported version detected."""
+
+    def __init__(self, message: str):
+        self.message = f"Unsupported version detected. {message}"
+        super().__init__(self.message)
 
 
 @dataclass
 class DeviceSensors:
-    """A generic object to encapsulate sensor data.
+    """A dataclass to encapsulate sensor data.
 
     :param humidity: Relative humidity level (%rH)
     :param radon_sta: Short-term average for radon level (Bq/m3)
@@ -42,7 +57,7 @@ class DeviceSensors:
 
     @classmethod
     def from_bytes(cls, data: List, product: WaveProduct):
-        return cls(**DEVICE[product]["SENSOR_FORMAT"](data))
+        return cls(**DEVICE[product]["SENSOR_FORMAT"](data))  # type: ignore
 
 
 class WaveDevice:
@@ -69,7 +84,7 @@ class WaveDevice:
         self.name: str = device.name
         self.address: str = device.address  # UUID in Mac, or MAC in Linux and Win
         self.rssi: int = device.rssi
-        self.metadata: Metadata = device.metadata
+        self.metadata: Dict[str, Union[List, Dict]] = device.metadata
         self.product: WaveProduct = WaveProduct(self.name)
         self.serial_number: int = serial_number
 
@@ -90,7 +105,9 @@ class WaveDevice:
 
         self.sensor_version = data[0]
         if self.sensor_version != 1:
-            raise UnsupportedVersion(f"Got: {self.sensor_version}")
+            raise UnsupportedVersion(
+                f"Sensor version: Got ({self.sensor_version}) Expected (1)"
+            )
         self.sensors = DeviceSensors.from_bytes(data, self.product)
         return self.sensors
 
@@ -103,6 +120,29 @@ class WaveDevice:
                 )
                 return self._map_sensor_values()
 
+    @staticmethod
+    def parse_serial_number(manufacturer_data: Dict[int, int]) -> int:
+        """Converts manufacturer data and returns a serial number for the
+        Airthings Wave devices.
+
+        :param manufacturer_data: Manufacturer data
+        :type manufacturer_data: dict
+        :rtype: int
+        """
+        if not (isinstance(manufacturer_data, dict) and manufacturer_data):
+            raise UnknownDevice("Invalid manufacturer data.")
+
+        identity, data = list(manufacturer_data.items())[0]
+        try:
+            (serial_number, _) = struct.unpack(SERIAL_NUMBER_BUFFER, bytes(data))
+        except (struct.error, TypeError):
+            raise UnknownDevice("Buffer size is not valid for a Wave device.")
+        else:
+            if identity == IDENTITY:
+                return serial_number
+            else:
+                raise UnknownDevice(f"Invalid identity: {identity}")
+
 
 async def discover_devices() -> List[WaveDevice]:
     """Discovers all valid, accessible Airthings Wave devices.
@@ -112,11 +152,10 @@ async def discover_devices() -> List[WaveDevice]:
     wave_devices = []
     device: BLEDevice  # Typing annotation
     for device in await discover():
-        manufacturer_data = device.metadata.get("manufacturer_data")
         try:
-            if not manufacturer_data:
-                continue
-            serial_number = parse_serial_number(manufacturer_data)
+            serial_number = WaveDevice.parse_serial_number(
+                device.metadata.get("manufacturer_data")
+            )
         except UnknownDevice:
             continue
         wave_devices.append(WaveDevice(device, serial_number))
