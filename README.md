@@ -7,7 +7,7 @@
 This is an **unofficial** Airthings Wave library designed to provide software developers
 a more developer-friendly library for BTLE handling for Airthings Wave devices.
 This library wouldn't be possible without the documentation and scripts available
-by Airthings. I hope to continue making updates through Airthing's continued
+by Airthings. I hope to continue making updates through Airthings continued
 open-source contributions.
 
 This library uses `bleak` as a dependency instead of `bluepy` for platform
@@ -27,7 +27,6 @@ These are the goals for this project, _in no particular order_:
 - [ ] Add battery life support.
 - [ ] Implement reconnection logic for BTLE client.
 - [ ] Support other devices like Wave (Version 1) and more.
-- [ ] Add other interfaces like MQTT, AMQP and more!
 
 ## Requirements
 
