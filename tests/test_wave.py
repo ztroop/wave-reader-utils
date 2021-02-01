@@ -72,3 +72,9 @@ class TestWave(IsolatedAsyncioTestCase):
             "DeviceSensors (humidity: 32.5, radon_sta: 136, radon_lta: 143, "
             "temperature: 20.63, pressure: 979.68, co2: 692.0, voc: 114.0)",
         )
+
+    def test_create(self):
+        device = wave.WaveDevice.create("Airthings Wave", "foo_address", 123)
+        self.assertEqual(device.name, "Airthings Wave")
+        self.assertEqual(device.address, "foo_address")
+        self.assertEqual(device.serial_number, 123)

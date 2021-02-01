@@ -1,4 +1,5 @@
 import struct
+from collections import namedtuple
 from dataclasses import asdict, dataclass, fields
 from typing import Any, Dict, List, Optional, Union
 
@@ -82,9 +83,11 @@ class WaveDevice:
 
     def __init__(self, device: Union[BLEDevice, Any], serial_number: int):
         self.name: str = device.name
-        self.address: str = device.address  # UUID in Mac, or MAC in Linux and Win
-        self.rssi: int = device.rssi
-        self.metadata: Dict[str, Union[List, Dict]] = device.metadata
+        self.address: str = device.address  # UUID in Mac, or MAC in Linux and Windows
+        self.rssi: Optional[int] = getattr(device, "rssi", None)
+        self.metadata: Optional[Dict[str, Union[List, Dict]]] = getattr(
+            device, "metadata", None
+        )
         self.product: WaveProduct = WaveProduct(self.name)
         self.serial_number: int = serial_number
 
@@ -142,6 +145,11 @@ class WaveDevice:
                 return serial_number
             else:
                 raise UnknownDevice(f"Invalid identity: {identity}")
+
+    @classmethod
+    def create(cls, name: str, address: str, serial_number: int):
+        device = namedtuple("device", ["name", "address"])
+        return cls(device(name, address), serial_number)
 
 
 async def discover_devices() -> List[WaveDevice]:

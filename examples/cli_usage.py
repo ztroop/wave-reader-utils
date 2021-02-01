@@ -5,15 +5,6 @@ from rich.console import Console
 from rich.table import Table
 
 from wave_reader import WaveDevice
-from wave_reader.data import WaveProduct
-
-
-class MyWaveDevice(WaveDevice):
-    def __init__(self):
-        self.name: str = "Airthings Wave+"
-        self.address: str = "80:6F:B0:A0:E0:00"
-        self.serial_number: int = 2930000000
-        self.product: WaveProduct = WaveProduct(self.name)
 
 
 def data_table(data: dict, serial: int) -> Table:
@@ -28,7 +19,7 @@ def data_table(data: dict, serial: int) -> Table:
 
 
 if __name__ == "__main__":
-    device = MyWaveDevice()
+    device = WaveDevice.create("Airthings Wave+", "80:6F:B0:A0:E0:00", 2930000000)
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(device.get_sensor_values())
