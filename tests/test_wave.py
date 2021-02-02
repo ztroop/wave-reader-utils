@@ -38,8 +38,9 @@ class TestWave(IsolatedAsyncioTestCase):
             self.WaveDevice.product,
         )
 
+    @patch("wave_reader.wave._logger.debug")
     @patch("wave_reader.wave.discover")
-    async def test_discover_wave_devices(self, mocked_discover):
+    async def test_discover_wave_devices(self, mocked_discover, mocked_logger):
         # A device that should raise an UnknownDevice exception.
         BLEUnknownDevice = deepcopy(self.BLEDevice)
         BLEUnknownDevice.metadata["manufacturer_data"] = {420: [69]}
@@ -55,6 +56,7 @@ class TestWave(IsolatedAsyncioTestCase):
         expected_result = [self.WaveDevice]
         devices = await wave.discover_devices()
         self.assertTrue((devices == expected_result))
+        self.assertTrue(mocked_logger.called)
 
     def test_wave_device__str__(self):
         self.assertEqual(str(self.WaveDevice), "WaveDevice (2862618893)")
@@ -73,8 +75,20 @@ class TestWave(IsolatedAsyncioTestCase):
             "temperature: 20.63, pressure: 979.68, co2: 692.0, voc: 114.0)",
         )
 
-    def test_create(self):
+    def test_create_valid_product(self):
         device = wave.WaveDevice.create("Airthings Wave", "foo_address", 123)
         self.assertEqual(device.name, "Airthings Wave")
         self.assertEqual(device.address, "foo_address")
         self.assertEqual(device.serial_number, 123)
+
+    def test_create_invalid_product(self):
+        with self.assertRaises(ValueError):
+            wave.WaveDevice.create("Unsupported", "foo_address", 123)
+
+    @patch("wave_reader.wave._logger.error")
+    def test_invalid_version(self, mocked_logger):
+        device = wave.WaveDevice.create('Airthings Wave', 'foo', 123)
+        device._raw_gatt_values = b"\x01A\x00\x00"
+        with self.assertRaises(wave.UnsupportedVersionError):
+            device._map_sensor_values()
+        self.assertTrue(mocked_logger.called)

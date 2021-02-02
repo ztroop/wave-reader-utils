@@ -1,3 +1,4 @@
+import logging
 import struct
 from collections import namedtuple
 from dataclasses import asdict, dataclass, fields
@@ -11,6 +12,9 @@ from wave_reader.data import (
     DEVICE, IDENTITY, SERIAL_NUMBER_BUFFER, WaveProduct,
 )
 
+_logger = logging.getLogger(__name__)
+_logger.addHandler(logging.NullHandler())
+
 
 class UnknownDevice(Exception):
     """Exception class to indicate invalid Wave device detected."""
@@ -20,11 +24,12 @@ class UnknownDevice(Exception):
         super().__init__(self.message)
 
 
-class UnsupportedVersion(Exception):
+class UnsupportedVersionError(Exception):
     """Exception class to indicate unsupported version detected."""
 
     def __init__(self, message: str):
         self.message = f"Unsupported version detected. {message}"
+        _logger.error(self.message)
         super().__init__(self.message)
 
 
@@ -79,11 +84,11 @@ class WaveDevice:
     sensor_version: Optional[int] = None
     sensors: Optional[DeviceSensors] = None
     client: Optional[BleakClientBlueZDBus] = None
-    raw_values: Optional[bytearray] = None
+    _raw_gatt_values: Optional[bytearray] = None
 
     def __init__(self, device: Union[BLEDevice, Any], serial_number: int):
         self.name: str = device.name
-        self.address: str = device.address  # UUID in Mac, or MAC in Linux and Windows
+        self.address: str = device.address  # UUID in MacOS, or MAC in Linux and Windows
         self.rssi: Optional[int] = getattr(device, "rssi", None)
         self.metadata: Optional[Dict[str, Union[List, Dict]]] = getattr(
             device, "metadata", None
@@ -102,13 +107,13 @@ class WaveDevice:
 
     def _map_sensor_values(self):
         try:
-            data = struct.unpack(DEVICE[self.product]["BUFFER"], self.raw_values)
-        except struct.error as message:
-            raise UnsupportedVersion(message)
+            data = struct.unpack(DEVICE[self.product]["BUFFER"], self._raw_gatt_values)
+        except struct.error as e:
+            raise UnsupportedVersionError(e)
 
         self.sensor_version = data[0]
         if self.sensor_version != 1:
-            raise UnsupportedVersion(
+            raise UnsupportedVersionError(
                 f"Sensor version: Got ({self.sensor_version}) Expected (1)"
             )
         self.sensors = DeviceSensors.from_bytes(data, self.product)
@@ -118,7 +123,7 @@ class WaveDevice:
         async with BleakClient(self.address) as client:
             self.client: BleakClientBlueZDBus = client
             if self.client and await self.client.is_connected():
-                self.raw_values = await client.read_gatt_char(
+                self._raw_gatt_values = await client.read_gatt_char(
                     DEVICE[self.product]["UUID"]
                 )
                 return self._map_sensor_values()
@@ -129,7 +134,7 @@ class WaveDevice:
         Airthings Wave devices.
 
         :param manufacturer_data: Manufacturer data
-        :type manufacturer_data: dict
+        :type manufacturer_data: Dict[int, int]
         :rtype: int
         """
         if not (isinstance(manufacturer_data, dict) and manufacturer_data):
@@ -148,6 +153,16 @@ class WaveDevice:
 
     @classmethod
     def create(cls, name: str, address: str, serial_number: int):
+        """Create a WaveDevice instance with three distinct arguments.
+
+        :param name: The device product name. ``See wave_reader.data.WaveProduct``
+            for a full list of supported devices.
+        :param address: The device UUID in MacOS, or MAC in Linux and Windows.
+        :param serial_number: The serial number for the device.
+        :type name: str
+        :type address: str
+        :type serial_number: int
+        """
         device = namedtuple("device", ["name", "address"])
         return cls(device(name, address), serial_number)
 
@@ -164,7 +179,12 @@ async def discover_devices() -> List[WaveDevice]:
             serial_number = WaveDevice.parse_serial_number(
                 device.metadata.get("manufacturer_data")
             )
-        except UnknownDevice:
+            i = WaveDevice(device, serial_number)
+        except (UnknownDevice, ValueError):
+            _logger.debug(
+                f"Device: {device.name} ({device.address}) was not identified as a Wave device."
+            )
             continue
-        wave_devices.append(WaveDevice(device, serial_number))
+        else:
+            wave_devices.append(i)
     return wave_devices
