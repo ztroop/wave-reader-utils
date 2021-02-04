@@ -23,9 +23,7 @@ class TestReaderUtils(TestCase):
             {120: [13, 25, 160, 170, 9, 0]},
         ]
         for i in invalid_data:
-            self.assertRaises(
-                wave.UnknownDevice, wave.WaveDevice.parse_serial_number, i
-            )
+            self.assertFalse(wave.WaveDevice.parse_serial_number(i))
 
 
 class TestWave(IsolatedAsyncioTestCase):
@@ -58,6 +56,19 @@ class TestWave(IsolatedAsyncioTestCase):
         self.assertTrue((devices == expected_result))
         self.assertTrue(mocked_logger.called)
 
+    @patch("wave_reader.wave._logger.warning")
+    @patch("wave_reader.wave.discover")
+    async def test_discover_unsupported_wave_devices(
+        self, mocked_discover, mocked_logger
+    ):
+        BLEUnsupportedDevice = deepcopy(self.BLEDevice)
+        BLEUnsupportedDevice.name = "Airthings Fake"
+
+        mocked_discover.return_value = [BLEUnsupportedDevice]
+        devices = await wave.discover_devices()
+        self.assertFalse(devices)
+        self.assertTrue(mocked_logger.called)
+
     def test_wave_device__str__(self):
         self.assertEqual(str(self.WaveDevice), "WaveDevice (2862618893)")
 
@@ -75,8 +86,29 @@ class TestWave(IsolatedAsyncioTestCase):
             "temperature: 20.63, pressure: 979.68, co2: 692.0, voc: 114.0)",
         )
 
+    def test_sensors_asdict(self):
+        expected_result = {
+            "humidity": 32.5,
+            "radon_sta": 136,
+            "radon_lta": 143,
+            "temperature": 20.63,
+            "pressure": 979.68,
+            "co2": 692.0,
+            "voc": 114.0,
+        }
+        self.assertEqual(self.DeviceSensors.as_dict(), expected_result)
+
+    def test_wavedevice__eq__(self):
+        wave_device_copy = deepcopy(self.WaveDevice)
+        wave_device_modified = deepcopy(self.WaveDevice)
+        wave_device_modified.name = "Other Device"
+
+        self.assertTrue(self.WaveDevice == wave_device_copy)
+        self.assertFalse(self.WaveDevice == wave_device_modified)
+
     def test_create_valid_product(self):
         device = wave.WaveDevice.create("Airthings Wave", "foo_address", 123)
+
         self.assertEqual(device.name, "Airthings Wave")
         self.assertEqual(device.address, "foo_address")
         self.assertEqual(device.serial_number, 123)
@@ -87,8 +119,16 @@ class TestWave(IsolatedAsyncioTestCase):
 
     @patch("wave_reader.wave._logger.error")
     def test_invalid_version(self, mocked_logger):
-        device = wave.WaveDevice.create('Airthings Wave', 'foo', 123)
+        device = wave.WaveDevice.create("Airthings Wave", "foo", 123)
         device._raw_gatt_values = b"\x01A\x00\x00"
-        with self.assertRaises(wave.UnsupportedVersionError):
+        with self.assertRaises(wave.UnsupportedError):
+            device._map_sensor_values()
+        self.assertTrue(mocked_logger.called)
+
+        device = wave.WaveDevice.create("Airthings Wave+", "foo", 123)
+        device._raw_gatt_values = (
+            b"\x02A\x00\x00\x88\x00\x8f\x00\x0f\x08X\xbf\xb4\x02r\x00\x00\x00\x1c\x06"
+        )
+        with self.assertRaises(wave.UnsupportedError):
             device._map_sensor_values()
         self.assertTrue(mocked_logger.called)

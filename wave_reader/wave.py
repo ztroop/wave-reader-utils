@@ -16,19 +16,16 @@ _logger = logging.getLogger(__name__)
 _logger.addHandler(logging.NullHandler())
 
 
-class UnknownDevice(Exception):
-    """Exception class to indicate invalid Wave device detected."""
+class UnsupportedError(Exception):
+    """Custom exception class for unsupported device errors.
 
-    def __init__(self, message: str = "Invalid Wave device."):
-        self.message = message
-        super().__init__(self.message)
+    :param message: The error message
+    :param name: The device name
+    :param addr: The device address (UUID in MacOS, MAC in Linux/Windows)
+    """
 
-
-class UnsupportedVersionError(Exception):
-    """Exception class to indicate unsupported version detected."""
-
-    def __init__(self, message: str):
-        self.message = f"Unsupported version detected. {message}"
+    def __init__(self, message: str, name: str, addr: str):
+        self.message = f"Device: {name} ({addr}) -> {message}"
         _logger.error(self.message)
         super().__init__(self.message)
 
@@ -77,8 +74,6 @@ class WaveDevice:
 
     :param device: Device information from Bleak's discover function
     :param serial_number: Parsed serial number from manufacturer data
-    :type device: Union[BLEDevice, Any]
-    :type serial_number: int
     """
 
     sensor_version: Optional[int] = None
@@ -108,13 +103,15 @@ class WaveDevice:
     def _map_sensor_values(self):
         try:
             data = struct.unpack(DEVICE[self.product]["BUFFER"], self._raw_gatt_values)
-        except struct.error as e:
-            raise UnsupportedVersionError(e)
+        except struct.error as err:
+            raise UnsupportedError(err, self.name, self.address)
 
         self.sensor_version = data[0]
         if self.sensor_version != 1:
-            raise UnsupportedVersionError(
-                f"Sensor version: Got ({self.sensor_version}) Expected (1)"
+            raise UnsupportedError(
+                f"Sensor version ({self.sensor_version}) != (1)",
+                self.name,
+                self.address,
             )
         self.sensors = DeviceSensors.from_bytes(data, self.product)
         return self.sensors
@@ -129,62 +126,54 @@ class WaveDevice:
                 return self._map_sensor_values()
 
     @staticmethod
-    def parse_serial_number(manufacturer_data: Dict[int, int]) -> int:
+    def parse_serial_number(manufacturer_data: Dict[int, int]) -> Optional[int]:
         """Converts manufacturer data and returns a serial number for the
         Airthings Wave devices.
 
-        :param manufacturer_data: Manufacturer data
-        :type manufacturer_data: Dict[int, int]
-        :rtype: int
+        :param manufacturer_data: The device manufacturer data
         """
         if not (isinstance(manufacturer_data, dict) and manufacturer_data):
-            raise UnknownDevice("Invalid manufacturer data.")
+            return None
 
         identity, data = list(manufacturer_data.items())[0]
         try:
             (serial_number, _) = struct.unpack(SERIAL_NUMBER_BUFFER, bytes(data))
         except (struct.error, TypeError):
-            raise UnknownDevice("Buffer size is not valid for a Wave device.")
+            return None
         else:
-            if identity == IDENTITY:
-                return serial_number
-            else:
-                raise UnknownDevice(f"Invalid identity: {identity}")
+            return serial_number if identity == IDENTITY else None
 
     @classmethod
     def create(cls, name: str, address: str, serial_number: int):
         """Create a WaveDevice instance with three distinct arguments.
 
-        :param name: The device product name. ``See wave_reader.data.WaveProduct``
+        :param name: The device product name. See ``wave_reader.data.WaveProduct``
             for a full list of supported devices.
         :param address: The device UUID in MacOS, or MAC in Linux and Windows.
         :param serial_number: The serial number for the device.
-        :type name: str
-        :type address: str
-        :type serial_number: int
         """
         device = namedtuple("device", ["name", "address"])
         return cls(device(name, address), serial_number)
 
 
 async def discover_devices() -> List[WaveDevice]:
-    """Discovers all valid, accessible Airthings Wave devices.
-
-    :rtype: List[WaveDevice]
-    """
+    """Discovers all valid, accessible Airthings Wave devices."""
     wave_devices = []
     device: BLEDevice  # Typing annotation
     for device in await discover():
-        try:
-            serial_number = WaveDevice.parse_serial_number(
-                device.metadata.get("manufacturer_data")
-            )
-            i = WaveDevice(device, serial_number)
-        except (UnknownDevice, ValueError):
+        serial_number = WaveDevice.parse_serial_number(
+            device.metadata.get("manufacturer_data")
+        )
+        if not serial_number:
             _logger.debug(
                 f"Device: {device.name} ({device.address}) was not identified as a Wave device."
             )
             continue
-        else:
-            wave_devices.append(i)
+        try:
+            wave_devices.append(WaveDevice(device, serial_number))
+        except ValueError:
+            _logger.warning(
+                f"Device: {device.name} ({device.address}) was identified, but unsupported."
+            )
+            continue
     return wave_devices
