@@ -1,7 +1,8 @@
 import logging
 import struct
 from collections import namedtuple
-from dataclasses import asdict, dataclass, fields
+from dataclasses import dataclass, field, fields
+from math import log
 from typing import Any, Dict, List, Optional, Union
 
 from bleak import BleakClient, discover
@@ -41,25 +42,47 @@ class DeviceSensors:
     :param pressure: Atmospheric pressure (hPa)
     :param co2: Carbon dioxide level (ppm)
     :param voc: Volatile organic compound level (ppb)
+    :param dew_pont: Dew point approximation using the Magnus formula (degC)
     """
 
-    humidity: Optional[float]
-    radon_sta: Optional[int]
-    radon_lta: Optional[int]
-    temperature: Optional[float]
-    pressure: Optional[float]
-    co2: Optional[float]
-    voc: Optional[float]
+    humidity: Optional[float] = None
+    radon_sta: Optional[int] = None
+    radon_lta: Optional[int] = None
+    temperature: Optional[float] = None
+    pressure: Optional[float] = None
+    co2: Optional[float] = None
+    voc: Optional[float] = None
+    dew_point: Optional[float] = field(init=False)
+
+    def __post_init__(self):
+        T = self.temperature
+        RH = self.humidity
+        # fmt: off
+        self.dew_point = round(
+            (243.12 * (log(RH / 100) + ((17.62 * T) / (243.12 + T))))
+            / (17.62 - (log(RH / 100) + ((17.62 * T) / (243.12 + T)))),  # noqa: W503
+            2,
+        )
+        # fmt: on
 
     def __str__(self):
-        r = {i.name: getattr(self, i.name) for i in fields(self)}
-        return f'DeviceSensors ({", ".join(f"{k}: {v}" for k, v in r.items())})'
+        return f'DeviceSensors ({", ".join(f"{k}: {v}" for k, v in self.as_dict().items())})'
 
-    def as_dict(self):
-        return asdict(self)
+    def as_dict(self) -> dict:
+        """Returns a dictionary of relevant dataclass fields."""
+        data = {}
+        for i in fields(self):
+            v = getattr(self, i.name)
+            if v:
+                data[i.name] = v
+        return data
 
     @classmethod
-    def from_bytes(cls, data: List, product: WaveProduct):
+    def from_bytes(cls, data: List[int], product: WaveProduct):
+        """Instantiate the class with raw sensor values and the ``WaveProduct``
+        selection. Each product can have different sensors or may require the
+        raw data to be handled differently.
+        """
         return cls(**DEVICE[product]["SENSOR_FORMAT"](data))  # type: ignore
 
 
@@ -78,7 +101,7 @@ class WaveDevice:
 
     sensor_version: Optional[int] = None
     sensors: Optional[DeviceSensors] = None
-    client: Optional[BleakClientBlueZDBus] = None
+    _client: Optional[BleakClientBlueZDBus] = None
     _raw_gatt_values: Optional[bytearray] = None
 
     def __init__(self, device: Union[BLEDevice, Any], serial_number: int):
@@ -118,8 +141,8 @@ class WaveDevice:
 
     async def get_sensor_values(self):
         async with BleakClient(self.address) as client:
-            self.client: BleakClientBlueZDBus = client
-            if self.client and await self.client.is_connected():
+            self._client: BleakClientBlueZDBus = client
+            if self._client and await self._client.is_connected():
                 self._raw_gatt_values = await client.read_gatt_char(
                     DEVICE[self.product]["UUID"]
                 )

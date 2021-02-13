@@ -40,12 +40,12 @@ DEVICE = {
     WaveProduct.WAVEMINI: {
         "UUID": "b42e3b98-ade7-11e4-89d3-123b93f75cba",
         "BUFFER": "<HHHHHHLL",
-        "SENSOR_FORMAT": {
+        "SENSOR_FORMAT": (
             lambda d: {
                 "temperature": round(d[1] / 100.0 - 273.15 if d[1] else 0, 2),
                 "humidity": d[3] / 100.0 if d[3] else 0,
                 "voc": d[4],
             }
-        },
+        ),
     },
 }
