@@ -68,6 +68,16 @@ class TestWave(IsolatedAsyncioTestCase):
         self.assertFalse(devices)
         self.assertTrue(mocked_logger.called)
 
+    @patch("wave_reader.wave.discover")
+    async def test_discover_valid_unnamed_device(self, mocked_discover):
+        """Test device discovery when the BLE advertisement does not include the model name."""
+        BLEUnnamedDevice = deepcopy(self.BLEDevice)
+        BLEUnnamedDevice.name = BLEUnnamedDevice.address.replace(':', '-')
+
+        mocked_discover.return_value = [BLEUnnamedDevice]
+        devices = await wave.discover_devices()
+        self.assertNotEqual(devices, [])
+
     def test_wave_device__str__(self):
         """Test the __str__ method is matching our expected value."""
 
