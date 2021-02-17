@@ -19,13 +19,13 @@ def data_table(data: dict, serial: int) -> Table:
 
 
 if __name__ == "__main__":
-    device = WaveDevice.create("Airthings Wave+", "80:6F:B0:A0:E0:00", 2930000000)
+    device = WaveDevice.create("Airthings Wave+", "80:6F:B0:A0:E0:00", '2930000000')
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(device.get_sensor_values())
 
     console = Console()
-    console.print(data_table(device.sensors.as_dict(), device.serial_number))
+    console.print(data_table(device.sensors.as_dict(), device.serial))
 
 # Prints the following output:
 #

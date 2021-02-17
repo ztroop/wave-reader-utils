@@ -10,7 +10,7 @@ from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
 
 from wave_reader.data import (
-    DEVICE, IDENTITY, SERIAL_NUMBER_BUFFER, WaveProduct,
+    AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, WaveProduct,
 )
 
 _logger = logging.getLogger(__name__)
@@ -96,7 +96,7 @@ class WaveDevice:
     properties: ``name``, ``address`` and optionally ``rssi``, ``metadata``.
 
     :param device: Device information from Bleak's discover function
-    :param serial_number: Parsed serial number from manufacturer data
+    :param serial: Parsed serial number from manufacturer data
     """
 
     sensor_version: Optional[int] = None
@@ -104,24 +104,25 @@ class WaveDevice:
     _client: Optional[BleakClientBlueZDBus] = None
     _raw_gatt_values: Optional[bytearray] = None
 
-    def __init__(self, device: Union[BLEDevice, Any], serial_number: int):
+    def __init__(self, device: Union[BLEDevice, Any], serial: str):
         self.name: str = device.name
         self.address: str = device.address  # UUID in MacOS, or MAC in Linux and Windows
         self.rssi: Optional[int] = getattr(device, "rssi", None)
         self.metadata: Optional[Dict[str, Union[List, Dict]]] = getattr(
             device, "metadata", None
         )
-        self.product: WaveProduct = WaveProduct(self.name)
-        self.serial_number: int = serial_number
+        self.serial: str = serial
+        self.model = self.serial[:4]
+        self.product: WaveProduct = WaveProduct(self.model)
 
     def __eq__(self, other):
-        for prop in ("name", "address", "serial_number"):
+        for prop in ("name", "address", "serial"):
             if getattr(self, prop) != getattr(other, prop):
                 return False
         return True
 
     def __str__(self):
-        return f"WaveDevice ({self.serial_number})"
+        return f"WaveDevice ({self.serial})"
 
     def _map_sensor_values(self):
         try:
@@ -149,7 +150,7 @@ class WaveDevice:
                 return self._map_sensor_values()
 
     @staticmethod
-    def parse_serial_number(manufacturer_data: Dict[int, int]) -> Optional[int]:
+    def parse_manufacturer_data(manufacturer_data: Dict[int, int]) -> Optional[str]:
         """Converts manufacturer data and returns a serial number for the
         Airthings Wave devices.
 
@@ -160,23 +161,23 @@ class WaveDevice:
 
         identity, data = list(manufacturer_data.items())[0]
         try:
-            (serial_number, _) = struct.unpack(SERIAL_NUMBER_BUFFER, bytes(data))
+            (serial, _) = struct.unpack(MANUFACTURER_DATA_FORMAT, bytes(data))
         except (struct.error, TypeError):
             return None
         else:
-            return serial_number if identity == IDENTITY else None
+            return str(serial) if identity == AIRTHINGS_ID else None
 
     @classmethod
-    def create(cls, name: str, address: str, serial_number: int):
+    def create(cls, name: str, address: str, serial: str):
         """Create a WaveDevice instance with three distinct arguments.
 
         :param name: The device product name. See ``wave_reader.data.WaveProduct``
             for a full list of supported devices.
         :param address: The device UUID in MacOS, or MAC in Linux and Windows.
-        :param serial_number: The serial number for the device.
+        :param serial: The serial number for the device.
         """
         device = namedtuple("device", ["name", "address"])
-        return cls(device(name, address), serial_number)
+        return cls(device(name, address), serial)
 
 
 async def discover_devices() -> List[WaveDevice]:
@@ -184,16 +185,20 @@ async def discover_devices() -> List[WaveDevice]:
     wave_devices = []
     device: BLEDevice  # Typing annotation
     for device in await discover():
-        serial_number = WaveDevice.parse_serial_number(
+        serial = WaveDevice.parse_manufacturer_data(
             device.metadata.get("manufacturer_data")
         )
-        if not serial_number:
+        if not serial:
             _logger.debug(
                 f"Device: {device.name} ({device.address}) was not identified as a Wave device."
             )
             continue
         try:
-            wave_devices.append(WaveDevice(device, serial_number))
+            wave_device = WaveDevice(device, serial)
+            wave_devices.append(wave_device)
+            _logger.debug(
+                f"Device: {device.name} ({device.address}) identified as a Wave device model {wave_device.model}."
+            )
         except ValueError:
             _logger.warning(
                 f"Device: {device.name} ({device.address}) was identified, but unsupported."

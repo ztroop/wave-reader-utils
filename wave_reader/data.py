@@ -2,15 +2,22 @@ from enum import Enum
 
 
 class WaveProduct(Enum):
-    WAVEPLUS = "Airthings Wave+"
-    WAVE = "Airthings Wave"
-    WAVEMINI = "Airthings Wave Mini"
+    WAVE = '2900'
+    WAVEMINI = '2920'
+    WAVEPLUS = '2930'
+    WAVE2 = '2950'
 
 
-IDENTITY = 820
-SERIAL_NUMBER_BUFFER = "<LH"
+# Company Identifier registered with the Bluetooth SIG
+# Officially registered as "Corentium AS"
+AIRTHINGS_ID = 820
+
+# Model and serial number
+MANUFACTURER_DATA_FORMAT = "<LH"
+
 DEVICE = {
     WaveProduct.WAVEPLUS: {
+        "NAME": "Wave+",
         "UUID": "b42e2a68-ade7-11e4-89d3-123b93f75cba",
         "BUFFER": "<BBBBHHHHHHHH",
         "SENSOR_FORMAT": (
@@ -26,6 +33,15 @@ DEVICE = {
         ),
     },
     WaveProduct.WAVE: {
+        "NAME": "Wave",
+        "UUID": "b42e4dcc-ade7-11e4-89d3-123b93f75cba",
+        "BUFFER": "<H5B4H",
+        "SENSOR_FORMAT": (
+            lambda d: {}
+        ),
+    },
+    WaveProduct.WAVE2: {
+        "NAME": "Wave (2nd Gen)",
         "UUID": "b42e4dcc-ade7-11e4-89d3-123b93f75cba",
         "BUFFER": "<4B8H",
         "SENSOR_FORMAT": (
@@ -38,6 +54,7 @@ DEVICE = {
         ),
     },
     WaveProduct.WAVEMINI: {
+        "NAME": "Wave Mini",
         "UUID": "b42e3b98-ade7-11e4-89d3-123b93f75cba",
         "BUFFER": "<HHHHHHLL",
         "SENSOR_FORMAT": (
