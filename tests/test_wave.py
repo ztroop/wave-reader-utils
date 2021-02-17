@@ -112,10 +112,8 @@ class TestWave(IsolatedAsyncioTestCase):
     def test_create_valid_product(self):
         """Test WaveDevice is successfully created using the ``create()`` method."""
 
-        device = wave.WaveDevice.create(
-            "Airthings Wave", "12:34:56:78:90:AB", "2900123456"
-        )
-        self.assertEqual(device.name, "Airthings Wave")
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2900123456")
+        self.assertEqual(device.product, data.WaveProduct.WAVE)
         self.assertEqual(device.address, "12:34:56:78:90:AB")
         self.assertEqual(device.serial, "2900123456")
 
@@ -123,22 +121,18 @@ class TestWave(IsolatedAsyncioTestCase):
         """Test ValueError exception is raised when a unsupported product is specified."""
 
         with self.assertRaises(ValueError):
-            wave.WaveDevice.create("Unsupported", "12:34:56:78:90:AB", "123")
+            wave.WaveDevice.create("12:34:56:78:90:AB", "123")
 
     @patch("wave_reader.wave._logger.error")
     def test_invalid_version(self, mocked_logger):
         """Test errors around binary data handling."""
 
-        device = wave.WaveDevice.create(
-            "Airthings Wave", "12:34:56:78:90:AB", "2900123456"
-        )
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2900123456")
         with self.assertRaises(wave.UnsupportedError):
             device._map_sensor_values(b"\x01A\x00\x00")
         self.assertTrue(mocked_logger.called)
 
-        device = wave.WaveDevice.create(
-            "Airthings Wave+", "12:34:56:78:90:AB", "2930123456"
-        )
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2930123456")
         with self.assertRaises(wave.UnsupportedError):
             device._map_sensor_values(
                 b"\x02A\x00\x00\x88\x00\x8f\x00\x0f\x08X\xbf\xb4\x02r\x00\x00\x00\x1c\x06"

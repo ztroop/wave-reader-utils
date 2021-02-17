@@ -108,12 +108,13 @@ class WaveDevice:
     sensor_readings: Optional[DeviceSensors] = None
 
     def __init__(self, device: Union[BLEDevice, Any], serial: str):
-        self.name: str = device.name
-        self.address: str = device.address  # UUID in MacOS, or MAC in Linux and Windows
+        self.name: Optional[str] = getattr(device, "name", None)
         self.rssi: Optional[int] = getattr(device, "rssi", None)
         self.metadata: Optional[Dict[str, Union[List, Dict]]] = getattr(
             device, "metadata", None
         )
+
+        self.address: str = device.address  # UUID in MacOS, or MAC in Linux and Windows
         self.serial: str = serial
         self.model = self.serial[:4]
         self.product: WaveProduct = WaveProduct(self.model)
@@ -181,17 +182,15 @@ class WaveDevice:
             return str(serial) if identity == AIRTHINGS_ID else None
 
     @classmethod
-    def create(cls, name: str, address: str, serial: str):
+    def create(cls, address: str, serial: str):
         """Create a WaveDevice instance with three distinct arguments.
 
-        :param name: The device product name. See ``wave_reader.data.WaveProduct``
-            for a full list of supported devices.
         :param address: The device UUID in MacOS, or MAC in Linux and Windows.
         :param serial: The serial number for the device.
         """
 
-        device = namedtuple("device", ["name", "address"])
-        return cls(device(name, address), serial)
+        device = namedtuple("device", ["address"])
+        return cls(device(address), serial)
 
 
 async def discover_devices() -> List[WaveDevice]:
