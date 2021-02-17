@@ -17,7 +17,7 @@ MANUFACTURER_DATA_FORMAT = "<LH"
 
 DEVICE = {
     WaveProduct.WAVEPLUS: {
-        "name": "Wave+",
+        "NAME": "Wave+",
         "UUID": "b42e2a68-ade7-11e4-89d3-123b93f75cba",
         "BUFFER": "<BBBBHHHHHHHH",
         "SENSOR_FORMAT": (
@@ -33,20 +33,15 @@ DEVICE = {
         ),
     },
     WaveProduct.WAVE: {
-        "name": "Wave",
+        "NAME": "Wave",
         "UUID": "b42e4dcc-ade7-11e4-89d3-123b93f75cba",
-        "BUFFER": "<4B8H",
+        "BUFFER": "<H5B4H",
         "SENSOR_FORMAT": (
-            lambda d: {
-                "humidity": d[1] / 2.0 if d[1] else 0,
-                "radon_sta": d[4],
-                "radon_lta": d[5],
-                "temperature": d[6] / 100.0 if d[6] else 0,
-            }
+            lambda d: {}
         ),
     },
     WaveProduct.WAVE2: {
-        "name": "Wave (2nd Gen)",
+        "NAME": "Wave (2nd Gen)",
         "UUID": "b42e4dcc-ade7-11e4-89d3-123b93f75cba",
         "BUFFER": "<4B8H",
         "SENSOR_FORMAT": (
@@ -59,7 +54,7 @@ DEVICE = {
         ),
     },
     WaveProduct.WAVEMINI: {
-        "name": "Wave Mini",
+        "NAME": "Wave Mini",
         "UUID": "b42e3b98-ade7-11e4-89d3-123b93f75cba",
         "BUFFER": "<HHHHHHLL",
         "SENSOR_FORMAT": (

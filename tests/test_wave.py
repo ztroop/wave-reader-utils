@@ -158,12 +158,12 @@ class TestDeviceSensors(TestCase):
             "dew_point: 3.56)",
         )
 
-    def test_wave(self):
-        """Test WAVE device is returning the correct sensor values."""
+    def test_wave2(self):
+        """Test WAVE2 device is returning the correct sensor values."""
 
         device_sensors = wave.DeviceSensors.from_bytes(
             (1, 125, 0, 0, 140, 145, 2000),
-            data.WaveProduct.WAVE,
+            data.WaveProduct.WAVE2,
         )
         expected_dict = {
             "humidity": 62.5,

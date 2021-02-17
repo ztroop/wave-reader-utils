@@ -113,10 +113,7 @@ class WaveDevice:
         )
         self.serial: str = serial
         self.model = self.serial[:4]
-        try:
-            self.product: WaveProduct = WaveProduct(self.model)
-        except KeyError:
-            raise ValueError
+        self.product: WaveProduct = WaveProduct(self.model)
 
     def __eq__(self, other):
         for prop in ("name", "address", "serial"):
