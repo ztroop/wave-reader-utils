@@ -1,6 +1,7 @@
 __pycache__/
 .coverage
 .idea/
+.mypy_cache
 .pytest_cache
 .tox/
 .vscode/
@@ -10,4 +11,4 @@ build/
 coverage.xml
 dist/
 env/
-.mypy_cache
+site/
