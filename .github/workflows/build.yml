@@ -4,14 +4,15 @@ on:
     branches:
       - master
     paths-ignore:
-    - 'examples/**'
-    - 'README.md'
+      - 'examples/**'
+      - 'README.md'
+      - 'docs/**'
   pull_request:
     branches:
       - master
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
