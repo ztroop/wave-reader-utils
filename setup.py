@@ -3,10 +3,10 @@ from setuptools import find_packages, setup
 setup(
     author='Zackary Troop',
     name='wave-reader',
-    version='0.0.3',
+    version='0.0.4',
     url='https://github.com/ztroop/wave-reader-utils',
     license='MIT',
-    description='A unofficial package for Airthings Wave communication.',
+    description='Unofficial package for Airthings Wave communication.',
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     packages=find_packages(exclude=['examples', 'tests']),
