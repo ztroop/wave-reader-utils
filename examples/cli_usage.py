@@ -1,6 +1,6 @@
+import argparse
 import asyncio
 
-# pip install rich
 from rich.console import Console
 from rich.table import Table
 
@@ -19,7 +19,17 @@ def data_table(data: dict, serial: int) -> Table:
 
 
 if __name__ == "__main__":
-    device = WaveDevice.create("Airthings Wave+", "80:6F:B0:A0:E0:00", '2930000000')
+    parser = argparse.ArgumentParser(description="Wave sensor readings")
+    parser.add_argument(
+        "-p", "--product", action="store_true", help="Airthings product name"
+    )
+    parser.add_argument("-a", "--address", action="store_true", help="Device address")
+    parser.add_argument(
+        "-s", "--serial", action="store_true", help="Device serial number"
+    )
+    args = parser.parse_args()
+
+    device = WaveDevice.create(args.product, args.address, args.serial)
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(device.get_sensor_values())
@@ -27,7 +37,7 @@ if __name__ == "__main__":
     console = Console()
     console.print(data_table(device.sensors.as_dict(), device.serial))
 
-# Prints the following output:
+# Example output:
 #
 # ┏━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━┓
 # ┃ SERIAL       ┃ HUMIDITY ┃ RADON_STA ┃ RADON_LTA ┃ TEMPERATURE ┃ PRESSURE ┃ CO2   ┃ VOC  ┃

@@ -10,7 +10,8 @@ from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
 
 from wave_reader.data import (
-    AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, WaveProduct,
+    AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
+    WaveProduct,
 )
 
 _logger = logging.getLogger(__name__)
@@ -55,21 +56,19 @@ class DeviceSensors:
     dew_point: Optional[float] = field(init=False)
 
     def __post_init__(self):
-        T = self.temperature
-        RH = self.humidity
-        # fmt: off
+        T, RH = self.temperature, self.humidity
         self.dew_point = round(
             (243.12 * (log(RH / 100) + ((17.62 * T) / (243.12 + T))))
             / (17.62 - (log(RH / 100) + ((17.62 * T) / (243.12 + T)))),  # noqa: W503
             2,
         )
-        # fmt: on
 
     def __str__(self):
         return f'DeviceSensors ({", ".join(f"{k}: {v}" for k, v in self.as_dict().items())})'
 
-    def as_dict(self) -> dict:
-        """Returns a dictionary of relevant dataclass fields."""
+    def as_dict(self) -> Dict[str, Union[int, float]]:
+        """Returns a dictionary of populated dataclass fields."""
+
         data = {}
         for i in fields(self):
             v = getattr(self, i.name)
@@ -77,12 +76,18 @@ class DeviceSensors:
                 data[i.name] = v
         return data
 
+    def as_tuple(self) -> tuple:
+        """Return a tuple of all dataclass fields."""
+
+        return fields(self)
+
     @classmethod
     def from_bytes(cls, data: List[int], product: WaveProduct):
         """Instantiate the class with raw sensor values and the ``WaveProduct``
         selection. Each product can have different sensors or may require the
         raw data to be handled differently.
         """
+
         return cls(**DEVICE[product]["SENSOR_FORMAT"](data))  # type: ignore
 
 
@@ -99,10 +104,8 @@ class WaveDevice:
     :param serial: Parsed serial number from manufacturer data
     """
 
-    sensor_version: Optional[int] = None
-    sensors: Optional[DeviceSensors] = None
     _client: Optional[BleakClientBlueZDBus] = None
-    _raw_gatt_values: Optional[bytearray] = None
+    sensor_readings: Optional[DeviceSensors] = None
 
     def __init__(self, device: Union[BLEDevice, Any], serial: str):
         self.name: str = device.name
@@ -124,30 +127,39 @@ class WaveDevice:
     def __str__(self):
         return f"WaveDevice ({self.serial})"
 
-    def _map_sensor_values(self):
+    def _map_sensor_values(self, raw_gatt_data):
+        """Extract binary data and load sensor values from bytes."""
+
         try:
-            data = struct.unpack(DEVICE[self.product]["BUFFER"], self._raw_gatt_values)
+            data = struct.unpack(DEVICE[self.product]["BUFFER"], raw_gatt_data)
         except struct.error as err:
             raise UnsupportedError(err, self.name, self.address)
 
-        self.sensor_version = data[0]
-        if self.sensor_version != 1:
+        sensor_version = data[0]
+        if sensor_version != SENSOR_VER_SUPPORTED:
             raise UnsupportedError(
-                f"Sensor version ({self.sensor_version}) != (1)",
+                f"Sensor version ({sensor_version}) != ({SENSOR_VER_SUPPORTED})",
                 self.name,
                 self.address,
             )
-        self.sensors = DeviceSensors.from_bytes(data, self.product)
-        return self.sensors
+        self.sensor_readings = DeviceSensors.from_bytes(data, self.product)
+        return True
 
-    async def get_sensor_values(self):
+    async def get_sensor_values(self) -> Optional[DeviceSensors]:
+        """Connect to Wave device and retrieve Generic Attribute Profile
+        (GATT) data. The binary data is handled and mapped to a dataclass.
+        """
+
         async with BleakClient(self.address) as client:
             self._client: BleakClientBlueZDBus = client
             if self._client and await self._client.is_connected():
-                self._raw_gatt_values = await client.read_gatt_char(
+                raw_gatt_data = await client.read_gatt_char(
                     DEVICE[self.product]["UUID"]
                 )
-                return self._map_sensor_values()
+                self._map_sensor_values(raw_gatt_data)
+                return self.sensor_readings
+            else:
+                return None
 
     @staticmethod
     def parse_manufacturer_data(manufacturer_data: Dict[int, int]) -> Optional[str]:
@@ -156,6 +168,7 @@ class WaveDevice:
 
         :param manufacturer_data: The device manufacturer data
         """
+
         if not (isinstance(manufacturer_data, dict) and manufacturer_data):
             return None
 
@@ -176,12 +189,14 @@ class WaveDevice:
         :param address: The device UUID in MacOS, or MAC in Linux and Windows.
         :param serial: The serial number for the device.
         """
+
         device = namedtuple("device", ["name", "address"])
         return cls(device(name, address), serial)
 
 
 async def discover_devices() -> List[WaveDevice]:
     """Discovers all valid, accessible Airthings Wave devices."""
+
     wave_devices = []
     device: BLEDevice  # Typing annotation
     for device in await discover():
@@ -190,7 +205,7 @@ async def discover_devices() -> List[WaveDevice]:
         )
         if not serial:
             _logger.debug(
-                f"Device: {device.name} ({device.address}) was not identified as a Wave device."
+                f"Device: {device.name} ({device.address}) is not a valid Wave device."
             )
             continue
         try:
@@ -201,7 +216,7 @@ async def discover_devices() -> List[WaveDevice]:
             )
         except ValueError:
             _logger.warning(
-                f"Device: {device.name} ({device.address}) was identified, but unsupported."
+                f"Device: {device.name} ({device.address}) is a valid Wave device, but unsupported."
             )
             continue
     return wave_devices

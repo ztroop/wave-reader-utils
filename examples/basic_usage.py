@@ -12,4 +12,6 @@ if __name__ == "__main__":
         sensor_readings = loop.run_until_complete(device.get_sensor_values())
         print(sensor_readings)
 
-# >>> DeviceSensors (humidity: 32.5, radon_sta: 116, radon_lta: 113 ...
+# Example output:
+#
+# DeviceSensors (humidity: 32.5, radon_sta: 116, radon_lta: 113 ...
