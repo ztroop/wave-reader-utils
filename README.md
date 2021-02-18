@@ -24,9 +24,8 @@ These are the goals for this project, _in no particular order_:
 - [x] Support operation across multiple devices asynchronously.
 - [x] Code testing, linting, type hinting, formatting and coverage reporting.
 - [x] Discover all Wave devices or inherit WaveDevice class for sensor readings.
+- [x] Support other devices like Wave (Version 1).
 - [ ] Add battery life support.
-- [ ] Implement reconnection logic for BTLE client.
-- [ ] Support other devices like Wave (Version 1) and more.
 
 ## Requirements
 
