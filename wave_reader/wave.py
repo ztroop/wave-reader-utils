@@ -51,9 +51,10 @@ def retry(exceptions: Exception, retries: int = 3, delay: int = 1):
                 attempts += 1
                 try:
                     return f(*args, **kwargs)
-                except exceptions:
+                except exceptions as err:
                     if attempts >= retries:
                         raise
+                    _logger.warning(err)
                     sleep(delay)
                     continue
 
