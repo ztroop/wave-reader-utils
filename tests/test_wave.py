@@ -1,6 +1,6 @@
 from copy import deepcopy
 from unittest import IsolatedAsyncioTestCase, TestCase
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from wave_reader import data, wave
 
@@ -27,7 +27,7 @@ class TestReaderUtils(TestCase):
             self.assertFalse(wave.WaveDevice.parse_manufacturer_data(i))
 
 
-class TestWave(IsolatedAsyncioTestCase):
+class TestWaveDevice(IsolatedAsyncioTestCase):
     def setUp(self):
         self.BLEDevice = MockedBLEDevice()
         self.WaveDevice = wave.WaveDevice(self.BLEDevice, "2930618893")
@@ -124,7 +124,7 @@ class TestWave(IsolatedAsyncioTestCase):
             wave.WaveDevice.create("12:34:56:78:90:AB", "123")
 
     @patch("wave_reader.wave._logger.error")
-    def test_invalid_version(self, mocked_logger):
+    def test_invalid_map_sensor_values(self, mocked_logger):
         """Test errors around binary data handling."""
 
         device = wave.WaveDevice.create("12:34:56:78:90:AB", "2900123456")
@@ -138,6 +138,79 @@ class TestWave(IsolatedAsyncioTestCase):
                 b"\x02A\x00\x00\x88\x00\x8f\x00\x0f\x08X\xbf\xb4\x02r\x00\x00\x00\x1c\x06"
             )
         self.assertTrue(mocked_logger.called)
+
+    def test_valid_map_sensor_values(self):
+        """Test binary data examples for each Wave device."""
+
+        # Wave (First Gen)
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2900123456")
+        mapped = device._map_sensor_values(
+            b"\x00\x00\x00\x00\x00\x00\x00\x88\x13\xb8\x0b}\x00s\x00"
+        )  # (0, 0, 0, 0, 0, 0, 5000, 3000, 125, 115)
+        self.assertTrue(mapped)
+        self.assertEqual(
+            device.sensor_readings.as_dict(),
+            {
+                "humidity": 50.0,
+                "temperature": 30.0,
+                "dew_point": 18.44,
+                "radon_lta": 115,
+                "radon_sta": 125,
+            },
+        )
+
+        # Wave (Second Gen)
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2950618893")
+        mapped = device._map_sensor_values(
+            b"\x01d\x00\x00\x87\x00\x91\x00\xe8\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+        )  # (1, 100, 0, 0, 135, 145, 1000, 0, 0, 0, 0, 0)
+        self.assertTrue(mapped)
+        self.assertEqual(
+            device.sensor_readings.as_dict(),
+            {
+                "dew_point": 0.04,
+                "humidity": 50.0,
+                "radon_lta": 145,
+                "radon_sta": 135,
+                "temperature": 10.0,
+            },
+        )
+
+        # Wave Plus
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2930618893")
+        mapped = device._map_sensor_values(
+            b"\x01A\x00\x00\x88\x00\x8f\x00\x0f\x08X\xbf\xb4\x02r\x00\x00\x00\x1c\x06"
+        )  # (1, 65, 0, 0, 136, 143, 2063, 48984, 692, 114, 0, 1564)
+        self.assertTrue(mapped)
+        self.assertEqual(
+            device.sensor_readings.as_dict(),
+            {
+                "co2": 692.0,
+                "humidity": 32.5,
+                "pressure": 979.68,
+                "radon_lta": 143,
+                "radon_sta": 136,
+                "temperature": 20.63,
+                "voc": 114.0,
+                "dew_point": 3.56,
+            },
+        )
+
+        # Wave Mini
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2920618893")
+        mapped = device._map_sensor_values(
+            b"\x01\x00\x94s\x00\x00\xb8\x0b\xc8\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+        )  # (1, 29588, 0, 3000, 200, 0, 0, 0)
+        self.assertTrue(mapped)
+        self.assertEqual(
+            device.sensor_readings.as_dict(),
+            {
+                "voc": 200,
+                "humidity": 30.0,
+                "temperature": 22.73,
+                "dew_point": 4.25,
+            },
+        )
 
 
 class TestDeviceSensors(TestCase):
@@ -215,3 +288,27 @@ class TestDeviceSensors(TestCase):
             "dew_point": 10.96,
         }
         self.assertEqual(device_sensors.as_dict(), expected_dict)
+
+
+class TestRetry(TestCase):
+    def test_retry_eventually_successful(self):
+        mock = MagicMock(side_effect=(ValueError, ValueError, 100))
+
+        @wave.retry(ValueError, delay=0)
+        def fake_function():
+            v = mock()
+            return v
+
+        r = fake_function()
+        self.assertEqual(r, 100)
+
+    def test_retry_failed(self):
+        mock = MagicMock(side_effect=(ValueError))
+
+        @wave.retry(ValueError, retries=1, delay=0)
+        def fake_function():
+            v = mock()
+            return v
+
+        with self.assertRaises(ValueError):
+            fake_function()
