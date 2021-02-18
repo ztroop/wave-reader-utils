@@ -1,0 +1,992 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
+    
+    
+      
+        <title>Wave Device Specifications - Wave Reader Utils</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.cb6bc1d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.39b8e14a.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wave-device-specifications" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="Wave Reader Utils" class="md-header-nav__button md-logo" aria-label="Wave Reader Utils">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            Wave Reader Utils
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Wave Device Specifications
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Wave Reader Utils" class="md-nav__button md-logo" aria-label="Wave Reader Utils">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Wave Reader Utils
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Wave Reader Utils
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Wave Device Specifications
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Wave Device Specifications
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    Models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bluetooth-low-energy-ble" class="md-nav__link">
+    Bluetooth Low Energy (BLE)
+  </a>
+  
+    <nav class="md-nav" aria-label="Bluetooth Low Energy (BLE)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ble-advertisement" class="md-nav__link">
+    BLE Advertisement
+  </a>
+  
+    <nav class="md-nav" aria-label="BLE Advertisement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ble-advertisement-name" class="md-nav__link">
+    BLE Advertisement - Name
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ble-advertisement-metadata" class="md-nav__link">
+    BLE Advertisement - Metadata
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ble-services" class="md-nav__link">
+    BLE Services
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ble-characteristics" class="md-nav__link">
+    BLE Characteristics
+  </a>
+  
+    <nav class="md-nav" aria-label="BLE Characteristics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-ble-device-information" class="md-nav__link">
+    Standard BLE device information
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#airthings-wave-devices" class="md-nav__link">
+    Airthings Wave devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ti-ota" class="md-nav__link">
+    TI OTA
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-formats" class="md-nav__link">
+    Data formats
+  </a>
+  
+    <nav class="md-nav" aria-label="Data formats">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ble-manufacturer-data" class="md-nav__link">
+    BLE Manufacturer Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-2900-sensor-format" class="md-nav__link">
+    Wave (2900) Sensor Format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-mini-2920-sensor-format" class="md-nav__link">
+    Wave Mini (2920) Sensor Format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-2930-sensor-format" class="md-nav__link">
+    Wave+ (2930) Sensor Format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave2-2950-sensor-format" class="md-nav__link">
+    Wave2 (2950) Sensor Format
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firmware-revisions" class="md-nav__link">
+    Firmware Revisions
+  </a>
+  
+    <nav class="md-nav" aria-label="Firmware Revisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wave2" class="md-nav__link">
+    Wave2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    Models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bluetooth-low-energy-ble" class="md-nav__link">
+    Bluetooth Low Energy (BLE)
+  </a>
+  
+    <nav class="md-nav" aria-label="Bluetooth Low Energy (BLE)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ble-advertisement" class="md-nav__link">
+    BLE Advertisement
+  </a>
+  
+    <nav class="md-nav" aria-label="BLE Advertisement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ble-advertisement-name" class="md-nav__link">
+    BLE Advertisement - Name
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ble-advertisement-metadata" class="md-nav__link">
+    BLE Advertisement - Metadata
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ble-services" class="md-nav__link">
+    BLE Services
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ble-characteristics" class="md-nav__link">
+    BLE Characteristics
+  </a>
+  
+    <nav class="md-nav" aria-label="BLE Characteristics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-ble-device-information" class="md-nav__link">
+    Standard BLE device information
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#airthings-wave-devices" class="md-nav__link">
+    Airthings Wave devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ti-ota" class="md-nav__link">
+    TI OTA
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-formats" class="md-nav__link">
+    Data formats
+  </a>
+  
+    <nav class="md-nav" aria-label="Data formats">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ble-manufacturer-data" class="md-nav__link">
+    BLE Manufacturer Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-2900-sensor-format" class="md-nav__link">
+    Wave (2900) Sensor Format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-mini-2920-sensor-format" class="md-nav__link">
+    Wave Mini (2920) Sensor Format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-2930-sensor-format" class="md-nav__link">
+    Wave+ (2930) Sensor Format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave2-2950-sensor-format" class="md-nav__link">
+    Wave2 (2950) Sensor Format
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firmware-revisions" class="md-nav__link">
+    Firmware Revisions
+  </a>
+  
+    <nav class="md-nav" aria-label="Firmware Revisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wave2" class="md-nav__link">
+    Wave2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="wave-device-specifications">Wave Device Specifications</h1>
+<p>While Airthings has been kind enough to provide sample code for interfacing with
+their Wave family of devices, most of the technical details have to be inferred
+from the code or discovered via experimentation. This is an unofficial attempt to
+document those specifications, in hopes that they may be useful to other
+projects.</p>
+<h2 id="models">Models</h2>
+<table>
+<thead>
+<tr>
+<th align="left">Model</th>
+<th align="left">Product Name</th>
+<th align="left">Serial</th>
+<th align="left">Sensors</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">2900</td>
+<td align="left">Wave</td>
+<td align="left">2900xxxxxx</td>
+<td align="left">radon, temperature, humidity</td>
+</tr>
+<tr>
+<td align="left">2920</td>
+<td align="left">Wave Mini</td>
+<td align="left">2920xxxxxx</td>
+<td align="left">temperature, humidity, TVOCs, CO<sub>2</sub></td>
+</tr>
+<tr>
+<td align="left">2930</td>
+<td align="left">Wave Plus</td>
+<td align="left">2930xxxxxx</td>
+<td align="left">radon, temperature, humidity, TVOCs, CO<sub>2</sub></td>
+</tr>
+<tr>
+<td align="left">2950</td>
+<td align="left">Wave (2nd gen)</td>
+<td align="left">2950xxxxxx</td>
+<td align="left">radon, temperature, humidity</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bluetooth-low-energy-ble">Bluetooth Low Energy (BLE)</h2>
+<h3 id="ble-advertisement">BLE Advertisement</h3>
+<p>A standard BLE advertisement contains 4 attributes: <code>name</code>, <code>address</code>, <code>rssi</code>, and <code>metadata</code>.</p>
+<h4 id="ble-advertisement-name">BLE Advertisement - Name</h4>
+<p>The <code>name</code> attribute <em>may</em> be populated with an Airthings name based on the model.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Model</th>
+<th align="left">BLE Advertised Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">2900</td>
+<td align="left">Airthings Wave (not verified)</td>
+</tr>
+<tr>
+<td align="left">2920</td>
+<td align="left">Airthings Wave Mini (not verified)</td>
+</tr>
+<tr>
+<td align="left">2930</td>
+<td align="left">Airthings Wave+</td>
+</tr>
+<tr>
+<td align="left">2950</td>
+<td align="left">Airthings Wave2</td>
+</tr>
+</tbody>
+</table>
+<p>Advertisements are <strong>not guaranteed</strong> to be populated with this descriptive
+name, possibly appearing as a variant of the MAC address (e.g.
+<code>12-34-56-78-90-AD</code>).</p>
+<h4 id="ble-advertisement-metadata">BLE Advertisement - Metadata</h4>
+<p>The standard BLE <code>metadata</code> attribute consists of two sub-attributes:</p>
+<p>A <code>uuids</code> attribute contains the BLE service UUIDs avaialble on the device.
+For the Airthings Wave family, this UUID has been seen to be:</p>
+<ul>
+<li><code>b42e4a8e-ade7-11e4-89d3-123b93f75cba</code> (read from a Wave2)</li>
+</ul>
+<p>Whether or not this servce UUID varies by device has not been verified.</p>
+<p>The <code>manufacturer_data</code> attribute contains vendor-specific device data, indexed
+by <a href="https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/company">company ID</a>. 
+For Airthings devices, this ID is always:</p>
+<ul>
+<li><code>820</code> / <code>0x0334</code> </li>
+</ul>
+<p>This ID is registered to <code>Corentium AS</code>.</p>
+<p>The manufacturer data under this ID contains the device serial number. See <a href="#ble-manufacturer-data">Data Formats</a></p>
+<h3 id="ble-services">BLE Services</h3>
+<p>Wave devices expose four BLE services.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Service UUID</th>
+<th align="left">Description</th>
+<th align="left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">00001801-0000-1000-8000-00805f9b34fb</td>
+<td align="left">Generic Attribute Profile</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">0000180a-0000-1000-8000-00805f9b34fb</td>
+<td align="left">Device Information</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">b42e4a8e-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">Airthings</td>
+<td align="left">Wave2 or common to all?</td>
+</tr>
+<tr>
+<td align="left">f000ffc0-0451-4000-b000-000000000000</td>
+<td align="left">TI over-the-air download service</td>
+<td align="left">likely for firmware upgrade</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ble-characteristics">BLE Characteristics</h3>
+<h4 id="standard-ble-device-information">Standard BLE device information</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Characteristic UUID</th>
+<th align="left">actions</th>
+<th align="left">name</th>
+<th align="left">value/example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">00002a29-0000-1000-8000-00805f9b34fb</td>
+<td align="left">read</td>
+<td align="left">Manufactuer Name String</td>
+<td align="left">"Airthings AS"</td>
+</tr>
+<tr>
+<td align="left">00002a27-0000-1000-8000-00805f9b34fb</td>
+<td align="left">read</td>
+<td align="left">Harwdare Revision String</td>
+<td align="left">(e.g. "REV A")</td>
+</tr>
+<tr>
+<td align="left">00002a26-0000-1000-8000-00805f9b34fb</td>
+<td align="left">read</td>
+<td align="left">Firmware Revision String</td>
+<td align="left">(e.g. "G-BLE-1.4.5-beta+0")</td>
+</tr>
+<tr>
+<td align="left">00002a25-0000-1000-8000-00805f9b34fb</td>
+<td align="left">read</td>
+<td align="left">Serial Number String</td>
+<td align="left">(e.g. "029677")</td>
+</tr>
+<tr>
+<td align="left">00002a24-0000-1000-8000-00805f9b34fb</td>
+<td align="left">read</td>
+<td align="left">Model Number String</td>
+<td align="left">(e.g. "2950")</td>
+</tr>
+<tr>
+<td align="left">00002a23-0000-1000-8000-00805f9b34fb</td>
+<td align="left">read</td>
+<td align="left">System ID</td>
+<td align="left">(e.g. <code>E4 61 00 00 Ed 04 18</code></td>
+</tr>
+</tbody>
+</table>
+<p>When combined, the <code>Model Number String</code> and <code>Serial Number String</code> appear to match the information provided in the BLE metadata <code>manufacturer_data</code>, as well as the serial printed on the physical device.</p>
+<h4 id="airthings-wave-devices">Airthings Wave devices</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Characteristic UUID</th>
+<th align="left">actions</th>
+<th align="left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">b42e2a68-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">read</td>
+<td align="left">Wave+ current readings</td>
+</tr>
+<tr>
+<td align="left">b42e3b98-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">read</td>
+<td align="left">WaveMini current readings</td>
+</tr>
+<tr>
+<td align="left">b42e4dcc-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">read</td>
+<td align="left">Wave2 current readings</td>
+</tr>
+<tr>
+<td align="left">b42e50d8-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">write, notify</td>
+<td align="left">Wave2 ?</td>
+</tr>
+<tr>
+<td align="left">b42e538a-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">notify</td>
+<td align="left">Wave2 ?</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ti-ota">TI OTA</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Characteristic UUID</th>
+<th align="left">actions</th>
+<th align="left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">f000ffc5-0451-4000-b000-000000000000</td>
+<td align="left">write, notify</td>
+<td align="left">?</td>
+</tr>
+<tr>
+<td align="left">f000ffc2-0451-4000-b000-000000000000</td>
+<td align="left">write, notify</td>
+<td align="left">?</td>
+</tr>
+<tr>
+<td align="left">f000ffc1-0451-4000-b000-000000000000</td>
+<td align="left">write, notify</td>
+<td align="left">?</td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-formats">Data formats</h2>
+<p>All binary data appears to be little-endian.</p>
+<h3 id="ble-manufacturer-data">BLE Manufacturer Data</h3>
+<p>The BLE advertisement's manufacturer data for Airthings devices (id: 820) encodes the device serial number, which itself embeds the device model.</p>
+<p><code>manufacturer_data(820)</code> (6 bytes, e.g. <code>0x6DE1D5AF0900</code>)</p>
+<table>
+<thead>
+<tr>
+<th align="left">Byte</th>
+<th align="left">Name</th>
+<th align="left">type</th>
+<th align="left">value / example</th>
+<th align="left">notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">0-3</td>
+<td align="left">serial</td>
+<td align="left">uint32</td>
+<td align="left">e.g. <code>0x6DE1D5AF</code></td>
+<td align="left">decimal: <code>2950029677</code> --&gt; model 2950 (Wave2)</td>
+</tr>
+<tr>
+<td align="left">4-5</td>
+<td align="left">--</td>
+<td align="left">--</td>
+<td align="left"><code>0x0900</code></td>
+<td align="left">unknown, may vary</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wave-2900-sensor-format">Wave (2900) Sensor Format</h3>
+<h3 id="wave-mini-2920-sensor-format">Wave Mini (2920) Sensor Format</h3>
+<h3 id="wave-2930-sensor-format">Wave+ (2930) Sensor Format</h3>
+<h3 id="wave2-2950-sensor-format">Wave2 (2950) Sensor Format</h3>
+<p>Reading BLE characteristic <code>b42e4dcc-ade7-11e4-89d3-123b93f75cba</code> returns a 20 byte value representing the current sensor values.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Byte</th>
+<th align="left">Name</th>
+<th align="left">type</th>
+<th align="left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">0</td>
+<td align="left">version</td>
+<td align="left">uint8</td>
+<td align="left">sensor version, always <code>0x01</code></td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">humidity</td>
+<td align="left">uint8</td>
+<td align="left">relative humidty = value/2 (percent)</td>
+</tr>
+<tr>
+<td align="left">2-3</td>
+<td align="left">--</td>
+<td align="left">--</td>
+<td align="left">unknown, varies</td>
+</tr>
+<tr>
+<td align="left">4-5</td>
+<td align="left">radon_sta</td>
+<td align="left">uint16</td>
+<td align="left">radon short-term average (Bq/m<sup>3</sup>)</td>
+</tr>
+<tr>
+<td align="left">6-7</td>
+<td align="left">radon_lta</td>
+<td align="left">uint16</td>
+<td align="left">radon long-term average (Bq/m<sup>3</sup>)</td>
+</tr>
+<tr>
+<td align="left">8-9</td>
+<td align="left">temperature</td>
+<td align="left">uint16</td>
+<td align="left">temp = val/100 (celsius)</td>
+</tr>
+<tr>
+<td align="left">10-19</td>
+<td align="left">--</td>
+<td align="left">--</td>
+<td align="left">unknown, always <code>0xFFFFFFFFFFFF0000FFFF</code></td>
+</tr>
+</tbody>
+</table>
+<p>Sample values:</p>
+<pre><code>      0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+#1 : 01 35 1d 00 28 00 3A 00 a2 07 ff ff ff ff ff ff 00 00 ff ff
+#2 : 01 35 21 00 28 00 3A 00 9f 07 ff ff ff ff ff ff 00 00 ff ff
+#3 : 01 35 3F 00 27 00 3A 00 96 07 ff ff ff ff ff ff 00 00 ff ff
+</code></pre>
+<p>For Sample #3:</p>
+<pre><code>version = 1
+relative humidity = 26.5%
+short-term radon = 39 Bq^3
+long-term radon = 58 Bq^3
+temperature = 19.42°C
+</code></pre>
+<h2 id="firmware-revisions">Firmware Revisions</h2>
+<h3 id="wave2">Wave2</h3>
+<pre><code>G-BLE-1.4.5-beta+0
+G-BLE-1.5.3-master+0
+</code></pre>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href=".." class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Wave Reader Utils
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
