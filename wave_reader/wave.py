@@ -1,11 +1,14 @@
 import logging
 import struct
 from collections import namedtuple
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, fields
+from datetime import datetime
+from functools import wraps
 from math import log
+from time import sleep
 from typing import Any, Dict, List, Optional, Union
 
-from bleak import BleakClient, discover
+from bleak import BleakClient, BleakError, discover
 from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
 
@@ -32,6 +35,34 @@ class UnsupportedError(Exception):
         super().__init__(self.message)
 
 
+def retry(exceptions: Exception, retries: int = 3, delay: int = 1):
+    """Decorator to gracefully handle raised exceptions.
+
+    :param exceptions: The exceptions to catch
+    :param retries: The amount of times we will retry before raising
+    :param delay: The amount of time in seconds before retrying
+    """
+
+    def decorator(f):
+        @wraps(f)
+        def _retry(*args, **kwargs):
+            attempts = 0
+            while attempts <= retries:
+                attempts += 1
+                try:
+                    return f(*args, **kwargs)
+                except exceptions as err:
+                    if attempts >= retries:
+                        raise
+                    _logger.warning(err)
+                    sleep(delay)
+                    continue
+
+        return _retry
+
+    return decorator
+
+
 @dataclass
 class DeviceSensors:
     """A dataclass to encapsulate sensor data.
@@ -53,15 +84,18 @@ class DeviceSensors:
     pressure: Optional[float] = None
     co2: Optional[float] = None
     voc: Optional[float] = None
-    dew_point: Optional[float] = field(init=False)
+    dew_point: Optional[float] = None
 
     def __post_init__(self):
-        T, RH = self.temperature, self.humidity
-        self.dew_point = round(
-            (243.12 * (log(RH / 100) + ((17.62 * T) / (243.12 + T))))
-            / (17.62 - (log(RH / 100) + ((17.62 * T) / (243.12 + T)))),  # noqa: W503
-            2,
-        )
+        if self.temperature and self.humidity:
+            T, RH = self.temperature, self.humidity
+            self.dew_point = round(
+                (243.12 * (log(RH / 100) + ((17.62 * T) / (243.12 + T))))
+                / (  # noqa: W503
+                    17.62 - (log(RH / 100) + ((17.62 * T) / (243.12 + T)))
+                ),
+                2,
+            )
 
     def __str__(self):
         return f'DeviceSensors ({", ".join(f"{k}: {v}" for k, v in self.as_dict().items())})'
@@ -106,6 +140,7 @@ class WaveDevice:
 
     _client: Optional[BleakClientBlueZDBus] = None
     sensor_readings: Optional[DeviceSensors] = None
+    readings_updated: Optional[datetime] = None
 
     def __init__(self, device: Union[BLEDevice, Any], serial: str):
         self.name: Optional[str] = getattr(device, "name", None)
@@ -116,8 +151,7 @@ class WaveDevice:
 
         self.address: str = device.address  # UUID in MacOS, or MAC in Linux and Windows
         self.serial: str = serial
-        self.model = self.serial[:4]
-        self.product: WaveProduct = WaveProduct(self.model)
+        self.product: WaveProduct = WaveProduct(self.serial[:4])
 
     def __eq__(self, other):
         for prop in ("name", "address", "serial"):
@@ -136,16 +170,17 @@ class WaveDevice:
         except struct.error as err:
             raise UnsupportedError(err, self.name, self.address)
 
-        sensor_version = data[0]
-        if sensor_version != SENSOR_VER_SUPPORTED:
+        if self.product != WaveProduct.WAVE and data[0] != SENSOR_VER_SUPPORTED:  # 💩
             raise UnsupportedError(
-                f"Sensor version ({sensor_version}) != ({SENSOR_VER_SUPPORTED})",
+                f"Sensor version ({data[0]}) != ({SENSOR_VER_SUPPORTED})",
                 self.name,
                 self.address,
             )
         self.sensor_readings = DeviceSensors.from_bytes(data, self.product)
+        self.readings_updated = datetime.utcnow()
         return True
 
+    @retry(BleakError, retries=3, delay=1)
     async def get_sensor_values(self) -> Optional[DeviceSensors]:
         """Connect to Wave device and retrieve Generic Attribute Profile
         (GATT) data. The binary data is handled and mapped to a dataclass.
@@ -154,9 +189,9 @@ class WaveDevice:
         async with BleakClient(self.address) as client:
             self._client: BleakClientBlueZDBus = client
             if self._client and await self._client.is_connected():
-                raw_gatt_data = await client.read_gatt_char(
-                    DEVICE[self.product]["UUID"]
-                )
+                raw_gatt_data = bytearray()
+                for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
+                    raw_gatt_data += await client.read_gatt_char(uuid)
                 self._map_sensor_values(raw_gatt_data)
                 return self.sensor_readings
             else:
@@ -211,11 +246,11 @@ async def discover_devices() -> List[WaveDevice]:
             wave_device = WaveDevice(device, serial)
             wave_devices.append(wave_device)
             _logger.debug(
-                f"Device: {device.name} ({device.address}) identified as a Wave device model {wave_device.model}."
+                f"Device: {device.name} ({device.address}) identified as a Wave device ({wave_device.product})."
             )
         except ValueError:
             _logger.warning(
-                f"Device: {device.name} ({device.address}) is a valid Wave device, but unsupported."
+                f"Device: {device.name} ({device.address}) identified as a Wave device, but unsupported."
             )
             continue
     return wave_devices
