@@ -1,4 +1,4 @@
-# Wave Reader Utils
+# Introduction
 
 This is a community-driven project to provide development tools and resources for the Airthings Wave devices. This wouldn't be possible without the contribution of others.
 

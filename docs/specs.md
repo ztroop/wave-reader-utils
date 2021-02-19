@@ -1,4 +1,4 @@
-# Wave Device Specifications
+# Device Specifications
 
 While Airthings has been kind enough to provide sample code for interfacing with
 their Wave family of devices, most of the technical details have to be inferred
@@ -43,15 +43,15 @@ The standard BLE `metadata` attribute consists of two sub-attributes:
 A `uuids` attribute contains the BLE service UUIDs avaialble on the device.
 For the Airthings Wave family, this UUID has been seen to be:
 
- - `b42e4a8e-ade7-11e4-89d3-123b93f75cba` (read from a Wave2)
- 
+- `b42e4a8e-ade7-11e4-89d3-123b93f75cba` (read from a Wave2)
+
 Whether or not this servce UUID varies by device has not been verified.
 
 The `manufacturer_data` attribute contains vendor-specific device data, indexed
-by [company ID](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/company). 
+by [company ID](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/company).
 For Airthings devices, this ID is always:
 
- - `820` / `0x0334` 
+- `820` / `0x0334`
 
 This ID is registered to `Corentium AS`.
 
@@ -59,49 +59,52 @@ The manufacturer data under this ID contains the device serial number. See [Data
 
 ### BLE Services
 
-Wave devices expose four BLE services.
+Wave devices expose multiple BLE services.
 
 | Service UUID                         | Description                      | Notes                       |
-| :-----                               | :---                             | :---                        |
+| :---                                 | :---                             | :---                        |
 | 00001801-0000-1000-8000-00805f9b34fb | Generic Attribute Profile        |                             |
 | 0000180a-0000-1000-8000-00805f9b34fb | Device Information               |                             |
-| b42e4a8e-ade7-11e4-89d3-123b93f75cba | Airthings                        | Wave2 or common to all?     |
-| f000ffc0-0451-4000-b000-000000000000 | TI over-the-air download service | likely for firmware upgrade |
+| f000ffc0-0451-4000-b000-000000000000 | TI Over-the-Air Download Service | Likely Firmware Related     |
+| b42e4a8e-ade7-11e4-89d3-123b93f75cba | Airthings                        | Wave2 only                  |
+| b42e1c08-ade7-11e4-89d3-123b93f75cba | Airthings                        | Wave+ only                  |
 
 ### BLE Characteristics
 
-#### Standard BLE device information
+#### Standard BLE Device Information
 
-| Characteristic UUID                  | actions | name                     | value/example                |
-| :---                                 | :---    | :---                     | :---                         |
-| 00002a29-0000-1000-8000-00805f9b34fb | read    | Manufactuer Name String  | "Airthings AS"               |
-| 00002a27-0000-1000-8000-00805f9b34fb | read    | Harwdare Revision String | (e.g. "REV A")               |
-| 00002a26-0000-1000-8000-00805f9b34fb | read    | Firmware Revision String | (e.g. "G-BLE-1.4.5-beta+0")  |
-| 00002a25-0000-1000-8000-00805f9b34fb | read    | Serial Number String     | (e.g. "029677")              |
-| 00002a24-0000-1000-8000-00805f9b34fb | read    | Model Number String      | (e.g. "2950")                |
-| 00002a23-0000-1000-8000-00805f9b34fb | read    | System ID                | (e.g. `E4 61 00 00 Ed 04 18` |
+| Characteristic UUID                  | Actions | Name                     | Value / Example               |
+| :---                                 | :---    | :---                     | :---                          |
+| 00002a29-0000-1000-8000-00805f9b34fb | read    | Manufactuer Name String  | "Airthings AS"                |
+| 00002a27-0000-1000-8000-00805f9b34fb | read    | Harwdare Revision String | (e.g. "REV A")                |
+| 00002a26-0000-1000-8000-00805f9b34fb | read    | Firmware Revision String | (e.g. "G-BLE-1.4.5-beta+0")   |
+| 00002a25-0000-1000-8000-00805f9b34fb | read    | Serial Number String     | (e.g. "029677")               |
+| 00002a24-0000-1000-8000-00805f9b34fb | read    | Model Number String      | (e.g. "2950")                 |
+| 00002a23-0000-1000-8000-00805f9b34fb | read    | System ID                | (e.g. `E4 61 00 00 Ed 04 18`) |
 
 When combined, the `Model Number String` and `Serial Number String` appear to match the information provided in the BLE metadata `manufacturer_data`, as well as the serial printed on the physical device.
 
-#### Airthings Wave devices
+#### Airthings Wave Devices
 
-| Characteristic UUID                  | actions       | description               |
-| :---                                 | :---          | :---                      |
-| b42e2a68-ade7-11e4-89d3-123b93f75cba | read          | Wave+ current readings    |
-| b42e3b98-ade7-11e4-89d3-123b93f75cba | read          | WaveMini current readings |
-| b42e4dcc-ade7-11e4-89d3-123b93f75cba | read          | Wave2 current readings    |
-| b42e50d8-ade7-11e4-89d3-123b93f75cba | write, notify | Wave2 ?                   |
-| b42e538a-ade7-11e4-89d3-123b93f75cba | notify        | Wave2 ?                   |
+| Characteristic UUID                  | Actions                                 | Description               |
+| :---                                 | :---                                    | :---                      |
+| b42e2a68-ade7-11e4-89d3-123b93f75cba | read                                    | Wave+ current readings    |
+| b42e2fc2-ade7-11e4-89d3-123b93f75cba | notify                                  | Wave+                     |
+| b42e2d06-ade7-11e4-89d3-123b93f75cba | write-without-response, write, indicate | Wave+                     |
+| b42e4dcc-ade7-11e4-89d3-123b93f75cba | read                                    | Wave2 current readings    |
+| b42e50d8-ade7-11e4-89d3-123b93f75cba | write, notify                           | Wave2                     |
+| b42e538a-ade7-11e4-89d3-123b93f75cba | notify                                  | Wave2                     |
+| b42e3b98-ade7-11e4-89d3-123b93f75cba | read                                    | WaveMini current readings |
 
 #### TI OTA
 
-| Characteristic UUID                  | actions       | description |
+| Characteristic UUID                  | Actions       | Description |
 | :---                                 | :---          | :---        |
 | f000ffc5-0451-4000-b000-000000000000 | write, notify | ?           |
 | f000ffc2-0451-4000-b000-000000000000 | write, notify | ?           |
 | f000ffc1-0451-4000-b000-000000000000 | write, notify | ?           |
 
-## Data formats
+## Data Formats
 
 All binary data appears to be little-endian.
 
@@ -111,7 +114,7 @@ The BLE advertisement's manufacturer data for Airthings devices (id: 820) encode
 
 `manufacturer_data(820)` (6 bytes, e.g. `0x6DE1D5AF0900`)
 
-| Byte | Name   | type   | value / example   | notes                                        |
+| Byte | Name   | Type   | Value / Example   | Notes                                        |
 | :--- | :---   | :---   | :---              | :---                                         |
 | 0-3  | serial | uint32 | e.g. `0x6DE1D5AF` | decimal: `2950029677` --> model 2950 (Wave2) |
 | 4-5  | --     | --     | `0x0900`          | unknown, may vary                            |
@@ -123,7 +126,7 @@ The BLE advertisement's manufacturer data for Airthings devices (id: 820) encode
 
 Reading BLE characteristic `b42e4dcc-ade7-11e4-89d3-123b93f75cba` returns a 20 byte value representing the current sensor values.
 
-| Byte  | Name        | type   | Notes                                       |
+| Byte  | Name        | Type   | Notes                                       |
 | :---  | :---        | :---   | :---                                        |
 | 0     | version     | uint8  | sensor version, always `0x01`               |
 | 1     | humidity    | uint8  | relative humidty = value/2 (percent)        |
@@ -133,7 +136,7 @@ Reading BLE characteristic `b42e4dcc-ade7-11e4-89d3-123b93f75cba` returns a 20 b
 | 8-9   | temperature | uint16 | temp = val/100 (celsius)                    |
 | 10-19 | --          | --     | unknown, always `0xFFFFFFFFFFFF0000FFFF`    |
 
-Sample values:
+#### Sample Values
 
 ```
       0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
@@ -142,7 +145,7 @@ Sample values:
 #3 : 01 35 3F 00 27 00 3A 00 96 07 ff ff ff ff ff ff 00 00 ff ff
 ```
 
-For Sample #3:
+Above sample for `#3`:
 
 ```
 version = 1
