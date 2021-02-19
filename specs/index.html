@@ -14,7 +14,7 @@
     
     
       
-        <title>Wave Device Specifications - Wave Reader Utils</title>
+        <title>Device Specifications - Wave Reader Utils</title>
       
     
     
@@ -58,7 +58,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#wave-device-specifications" class="md-skip">
+        <a href="#device-specifications" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +90,7 @@
         <div class="md-header-nav__topic">
           <span class="md-ellipsis">
             
-              Wave Device Specifications
+              Device Specifications
             
           </span>
         </div>
@@ -171,7 +171,7 @@
   
     <li class="md-nav__item">
       <a href=".." class="md-nav__link">
-        Wave Reader Utils
+        Introduction
       </a>
     </li>
   
@@ -194,12 +194,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Wave Device Specifications
+          Device Specifications
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Wave Device Specifications
+        Device Specifications
       </a>
       
         
@@ -274,14 +274,14 @@
         
           <li class="md-nav__item">
   <a href="#standard-ble-device-information" class="md-nav__link">
-    Standard BLE device information
+    Standard BLE Device Information
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#airthings-wave-devices" class="md-nav__link">
-    Airthings Wave devices
+    Airthings Wave Devices
   </a>
   
 </li>
@@ -305,10 +305,10 @@
       
         <li class="md-nav__item">
   <a href="#data-formats" class="md-nav__link">
-    Data formats
+    Data Formats
   </a>
   
-    <nav class="md-nav" aria-label="Data formats">
+    <nav class="md-nav" aria-label="Data Formats">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -343,6 +343,19 @@
   <a href="#wave2-2950-sensor-format" class="md-nav__link">
     Wave2 (2950) Sensor Format
   </a>
+  
+    <nav class="md-nav" aria-label="Wave2 (2950) Sensor Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-values" class="md-nav__link">
+    Sample Values
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -462,14 +475,14 @@
         
           <li class="md-nav__item">
   <a href="#standard-ble-device-information" class="md-nav__link">
-    Standard BLE device information
+    Standard BLE Device Information
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#airthings-wave-devices" class="md-nav__link">
-    Airthings Wave devices
+    Airthings Wave Devices
   </a>
   
 </li>
@@ -493,10 +506,10 @@
       
         <li class="md-nav__item">
   <a href="#data-formats" class="md-nav__link">
-    Data formats
+    Data Formats
   </a>
   
-    <nav class="md-nav" aria-label="Data formats">
+    <nav class="md-nav" aria-label="Data Formats">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -531,6 +544,19 @@
   <a href="#wave2-2950-sensor-format" class="md-nav__link">
     Wave2 (2950) Sensor Format
   </a>
+  
+    <nav class="md-nav" aria-label="Wave2 (2950) Sensor Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-values" class="md-nav__link">
+    Sample Values
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -572,7 +598,7 @@
               
                 
                 
-                <h1 id="wave-device-specifications">Wave Device Specifications</h1>
+                <h1 id="device-specifications">Device Specifications</h1>
 <p>While Airthings has been kind enough to provide sample code for interfacing with
 their Wave family of devices, most of the technical details have to be inferred
 from the code or discovered via experimentation. This is an unofficial attempt to
@@ -658,15 +684,15 @@ For the Airthings Wave family, this UUID has been seen to be:</p>
 </ul>
 <p>Whether or not this servce UUID varies by device has not been verified.</p>
 <p>The <code>manufacturer_data</code> attribute contains vendor-specific device data, indexed
-by <a href="https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/company">company ID</a>. 
+by <a href="https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/company">company ID</a>.
 For Airthings devices, this ID is always:</p>
 <ul>
-<li><code>820</code> / <code>0x0334</code> </li>
+<li><code>820</code> / <code>0x0334</code></li>
 </ul>
 <p>This ID is registered to <code>Corentium AS</code>.</p>
 <p>The manufacturer data under this ID contains the device serial number. See <a href="#ble-manufacturer-data">Data Formats</a></p>
 <h3 id="ble-services">BLE Services</h3>
-<p>Wave devices expose four BLE services.</p>
+<p>Wave devices expose multiple BLE services.</p>
 <table>
 <thead>
 <tr>
@@ -687,26 +713,31 @@ For Airthings devices, this ID is always:</p>
 <td align="left"></td>
 </tr>
 <tr>
-<td align="left">b42e4a8e-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">Airthings</td>
-<td align="left">Wave2 or common to all?</td>
+<td align="left">f000ffc0-0451-4000-b000-000000000000</td>
+<td align="left">TI Over-the-Air Download Service</td>
+<td align="left">Likely Firmware Related</td>
 </tr>
 <tr>
-<td align="left">f000ffc0-0451-4000-b000-000000000000</td>
-<td align="left">TI over-the-air download service</td>
-<td align="left">likely for firmware upgrade</td>
+<td align="left">b42e4a8e-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">Airthings</td>
+<td align="left">Wave2 only</td>
+</tr>
+<tr>
+<td align="left">b42e1c08-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">Airthings</td>
+<td align="left">Wave+ only</td>
 </tr>
 </tbody>
 </table>
 <h3 id="ble-characteristics">BLE Characteristics</h3>
-<h4 id="standard-ble-device-information">Standard BLE device information</h4>
+<h4 id="standard-ble-device-information">Standard BLE Device Information</h4>
 <table>
 <thead>
 <tr>
 <th align="left">Characteristic UUID</th>
-<th align="left">actions</th>
-<th align="left">name</th>
-<th align="left">value/example</th>
+<th align="left">Actions</th>
+<th align="left">Name</th>
+<th align="left">Value / Example</th>
 </tr>
 </thead>
 <tbody>
@@ -744,18 +775,18 @@ For Airthings devices, this ID is always:</p>
 <td align="left">00002a23-0000-1000-8000-00805f9b34fb</td>
 <td align="left">read</td>
 <td align="left">System ID</td>
-<td align="left">(e.g. <code>E4 61 00 00 Ed 04 18</code></td>
+<td align="left">(e.g. <code>E4 61 00 00 Ed 04 18</code>)</td>
 </tr>
 </tbody>
 </table>
 <p>When combined, the <code>Model Number String</code> and <code>Serial Number String</code> appear to match the information provided in the BLE metadata <code>manufacturer_data</code>, as well as the serial printed on the physical device.</p>
-<h4 id="airthings-wave-devices">Airthings Wave devices</h4>
+<h4 id="airthings-wave-devices">Airthings Wave Devices</h4>
 <table>
 <thead>
 <tr>
 <th align="left">Characteristic UUID</th>
-<th align="left">actions</th>
-<th align="left">description</th>
+<th align="left">Actions</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
@@ -765,9 +796,14 @@ For Airthings devices, this ID is always:</p>
 <td align="left">Wave+ current readings</td>
 </tr>
 <tr>
-<td align="left">b42e3b98-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">read</td>
-<td align="left">WaveMini current readings</td>
+<td align="left">b42e2fc2-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">notify</td>
+<td align="left">Wave+</td>
+</tr>
+<tr>
+<td align="left">b42e2d06-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">write-without-response, write, indicate</td>
+<td align="left">Wave+</td>
 </tr>
 <tr>
 <td align="left">b42e4dcc-ade7-11e4-89d3-123b93f75cba</td>
@@ -777,12 +813,17 @@ For Airthings devices, this ID is always:</p>
 <tr>
 <td align="left">b42e50d8-ade7-11e4-89d3-123b93f75cba</td>
 <td align="left">write, notify</td>
-<td align="left">Wave2 ?</td>
+<td align="left">Wave2</td>
 </tr>
 <tr>
 <td align="left">b42e538a-ade7-11e4-89d3-123b93f75cba</td>
 <td align="left">notify</td>
-<td align="left">Wave2 ?</td>
+<td align="left">Wave2</td>
+</tr>
+<tr>
+<td align="left">b42e3b98-ade7-11e4-89d3-123b93f75cba</td>
+<td align="left">read</td>
+<td align="left">WaveMini current readings</td>
 </tr>
 </tbody>
 </table>
@@ -791,8 +832,8 @@ For Airthings devices, this ID is always:</p>
 <thead>
 <tr>
 <th align="left">Characteristic UUID</th>
-<th align="left">actions</th>
-<th align="left">description</th>
+<th align="left">Actions</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
@@ -813,7 +854,7 @@ For Airthings devices, this ID is always:</p>
 </tr>
 </tbody>
 </table>
-<h2 id="data-formats">Data formats</h2>
+<h2 id="data-formats">Data Formats</h2>
 <p>All binary data appears to be little-endian.</p>
 <h3 id="ble-manufacturer-data">BLE Manufacturer Data</h3>
 <p>The BLE advertisement's manufacturer data for Airthings devices (id: 820) encodes the device serial number, which itself embeds the device model.</p>
@@ -823,9 +864,9 @@ For Airthings devices, this ID is always:</p>
 <tr>
 <th align="left">Byte</th>
 <th align="left">Name</th>
-<th align="left">type</th>
-<th align="left">value / example</th>
-<th align="left">notes</th>
+<th align="left">Type</th>
+<th align="left">Value / Example</th>
+<th align="left">Notes</th>
 </tr>
 </thead>
 <tbody>
@@ -855,7 +896,7 @@ For Airthings devices, this ID is always:</p>
 <tr>
 <th align="left">Byte</th>
 <th align="left">Name</th>
-<th align="left">type</th>
+<th align="left">Type</th>
 <th align="left">Notes</th>
 </tr>
 </thead>
@@ -904,13 +945,13 @@ For Airthings devices, this ID is always:</p>
 </tr>
 </tbody>
 </table>
-<p>Sample values:</p>
+<h4 id="sample-values">Sample Values</h4>
 <pre><code>      0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
 #1 : 01 35 1d 00 28 00 3A 00 a2 07 ff ff ff ff ff ff 00 00 ff ff
 #2 : 01 35 21 00 28 00 3A 00 9f 07 ff ff ff ff ff ff 00 00 ff ff
 #3 : 01 35 3F 00 27 00 3A 00 96 07 ff ff ff ff ff ff 00 00 ff ff
 </code></pre>
-<p>For Sample #3:</p>
+<p>Above sample for <code>#3</code>:</p>
 <pre><code>version = 1
 relative humidity = 26.5%
 short-term radon = 39 Bq^3
@@ -949,7 +990,7 @@ G-BLE-1.5.3-master+0
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Wave Reader Utils
+                Introduction
               </div>
             </div>
           </a>
