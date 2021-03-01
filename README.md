@@ -1,6 +1,6 @@
 ![Build Status](https://github.com/ztroop/wave-reader/workflows/Build%20Status/badge.svg)
 [![codecov](https://codecov.io/gh/ztroop/wave-reader/branch/master/graph/badge.svg?token=NG9H8YO1ID)](https://codecov.io/gh/ztroop/wave-reader)
-[![PyPI version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader)
+[![PyPI version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader) [![Join the chat at https://gitter.im/wave-reader-utils/community](https://badges.gitter.im/wave-reader-utils/community.svg)](https://gitter.im/wave-reader-utils/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Summary
 
