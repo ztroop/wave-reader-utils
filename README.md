@@ -1,17 +1,17 @@
 ![Build Status](https://github.com/ztroop/wave-reader/workflows/Build%20Status/badge.svg)
-[![codecov](https://codecov.io/gh/ztroop/wave-reader/branch/master/graph/badge.svg?token=NG9H8YO1ID)](https://codecov.io/gh/ztroop/wave-reader)
-[![PyPI version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader) [![Join the chat at https://gitter.im/wave-reader-utils/community](https://badges.gitter.im/wave-reader-utils/community.svg)](https://gitter.im/wave-reader-utils/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![codecov](https://codecov.io/gh/ztroop/wave-reader-utils/branch/master/graph/badge.svg?token=NG9H8YO1ID)](https://codecov.io/gh/ztroop/wave-reader-utils)
+[![PyPI version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader)
+[![Join the chat at https://gitter.im/wave-reader-utils/community](https://badges.gitter.im/wave-reader-utils/community.svg)](https://gitter.im/wave-reader-utils/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Summary
 
-This is an **unofficial** Airthings Wave library designed to provide software developers
-a more developer-friendly library for BTLE handling for Airthings Wave devices.
-This library wouldn't be possible without the documentation and scripts available
-by Airthings. I hope to continue making updates through Airthings continued
-open-source contributions.
+This is an **unofficial** Airthings Wave library designed to provide tools and information
+around device communication. The library wouldn't be possible without the existing scripts
+available by Airthings and contribution of other. We hope to continue making updates through
+Airthings continued open-source contributions. See [documentation](https://ztroop.github.io/wave-reader-utils/) for more details.
 
-This library uses `bleak` as a dependency instead of `bluepy` for platform
-cross-compatibility and support for asynchronous operation.
+This library uses `bleak` as a dependency instead of `bluepy` for platform cross-compatibility
+and support for asynchronous operation.
 
 This project is currently in **alpha** state.
 
@@ -30,9 +30,11 @@ These are the goals for this project, _in no particular order_:
 ## Requirements
 
 In Ubuntu Linux, make sure you have `libglib2.0-dev` and `bluez` installed:
+
 ```
 sudo apt-get install libglib2.0-dev bluez -y
 ```
+
 In theory, other platforms (Windows, Mac) _are_ supported by using `bleak` as a dependency, but open a ticket if you run into any issues.
 
 ## Installation
