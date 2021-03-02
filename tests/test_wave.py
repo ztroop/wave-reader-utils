@@ -61,14 +61,14 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         Wave device."""
 
         BLEUnsupportedDevice = deepcopy(self.BLEDevice)
-        # manufacturer data represents serial '2862618893', indicating invalid model '2862'
+        # Manufacturer data represents serial '2862618893', indicating invalid model '286'
         BLEUnsupportedDevice.metadata["manufacturer_data"] = {
             820: [13, 25, 160, 170, 9, 0]
         }
 
         mocked_discover.return_value = [BLEUnsupportedDevice]
         devices = await wave.discover_devices()
-        self.assertFalse(devices)
+        self.assertEqual(devices[0].product, data.WaveProduct.UNKNOWN)
         self.assertTrue(mocked_logger.called)
 
     @patch("wave_reader.wave.discover")
@@ -117,11 +117,12 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         self.assertEqual(device.address, "12:34:56:78:90:AB")
         self.assertEqual(device.serial, "2900123456")
 
-    def test_create_invalid_product(self):
-        """Test ValueError exception is raised when a unsupported product is specified."""
+    @patch("wave_reader.wave._logger.warning")
+    def test_create_invalid_product(self, mocked_logger):
+        """Test warning is sent when a unsupported product is specified."""
 
-        with self.assertRaises(ValueError):
-            wave.WaveDevice.create("12:34:56:78:90:AB", "123")
+        wave.WaveDevice.create("12:34:56:78:90:AB", "123")
+        self.assertTrue(mocked_logger.called)
 
     @patch("wave_reader.wave._logger.error")
     def test_invalid_map_sensor_values(self, mocked_logger):

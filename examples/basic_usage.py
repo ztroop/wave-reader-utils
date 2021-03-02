@@ -1,6 +1,9 @@
 import asyncio
+import logging
 
 from wave_reader import discover_devices
+
+logging.basicConfig(level=logging.DEBUG)
 
 if __name__ == "__main__":
     # Event loop to run asynchronous tasks.

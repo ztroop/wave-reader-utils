@@ -1,4 +1,5 @@
 import logging
+import os
 import struct
 from collections import namedtuple
 from dataclasses import dataclass, fields
@@ -8,9 +9,10 @@ from math import log
 from time import sleep
 from typing import Any, Dict, List, Optional, Union
 
-from bleak import BleakClient, BleakError, discover
+from bleak import BleakClient, discover
 from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
+from bleak.exc import BleakError
 
 from wave_reader.data import (
     AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
@@ -19,6 +21,9 @@ from wave_reader.data import (
 
 _logger = logging.getLogger(__name__)
 _logger.addHandler(logging.NullHandler())
+
+READER_RETRY = int(os.getenv("WAVE_READER_RETRY", 3))
+READER_RETRY_DELAY = int(os.getenv("WAVE_READER_RETRY_DELAY", 1))
 
 
 class UnsupportedError(Exception):
@@ -122,7 +127,7 @@ class DeviceSensors:
         raw data to be handled differently.
         """
 
-        return cls(**DEVICE[product]["SENSOR_FORMAT"](data))  # type: ignore
+        return cls(**DEVICE[product]["DATA_FORMAT"](data))  # type: ignore
 
 
 class WaveDevice:
@@ -151,7 +156,12 @@ class WaveDevice:
 
         self.address: str = device.address  # UUID in MacOS, or MAC in Linux and Windows
         self.serial: str = serial
-        self.product: WaveProduct = WaveProduct(self.serial[:4])
+        try:
+            self.product: WaveProduct = WaveProduct(self.serial[:3])
+            _logger.debug(f"Device: ({self.address}) is a ({self.product}) device.")
+        except (KeyError, ValueError):
+            _logger.warning(f"Device: ({self.address}) is an unsupported Wave device.")
+            self.product = WaveProduct.UNKNOWN
 
     def __eq__(self, other):
         for prop in ("name", "address", "serial"):
@@ -162,11 +172,11 @@ class WaveDevice:
     def __str__(self):
         return f"WaveDevice ({self.serial})"
 
-    def _map_sensor_values(self, raw_gatt_data):
+    def _map_sensor_values(self, gatt_data):
         """Extract binary data and load sensor values from bytes."""
 
         try:
-            data = struct.unpack(DEVICE[self.product]["BUFFER"], raw_gatt_data)
+            data = struct.unpack(DEVICE[self.product]["BUFFER"], gatt_data)
         except struct.error as err:
             raise UnsupportedError(err, self.name, self.address)
 
@@ -178,24 +188,57 @@ class WaveDevice:
             )
         self.sensor_readings = DeviceSensors.from_bytes(data, self.product)
         self.readings_updated = datetime.utcnow()
-        return True
+        return self.sensor_readings
 
-    @retry(BleakError, retries=3, delay=1)
-    async def get_sensor_values(self) -> Optional[DeviceSensors]:
+    async def connect(self):
+        """Method for starting BLE communication."""
+
+        self._client: BleakClientBlueZDBus = BleakClient(self.address)
+        await self._client.connect()
+        if self._client and await self._client.is_connected():
+            return True
+
+    async def disconnect(self):
+        """Method for closing BLE communication."""
+        if self._client and await self._client.is_connected():
+            await self._client.disconnect()
+            return True
+
+    @retry(BleakError, retries=READER_RETRY, delay=READER_RETRY_DELAY)
+    async def get_services(self):
+        """Get available services, descriptors and characteristics for
+        the device."""
+
+        if not self._client:
+            await self.connect()
+        if self._client:
+            return await self._client.get_services()
+
+    @retry(BleakError, retries=READER_RETRY, delay=READER_RETRY_DELAY)
+    async def get_gatt_char(self, gatt_char: Optional[str] = None):
         """Connect to Wave device and retrieve Generic Attribute Profile
         (GATT) data. The binary data is handled and mapped to a dataclass.
+
+        :param gatt_char: Manually specify a characteristic.
         """
 
-        async with BleakClient(self.address) as client:
-            self._client: BleakClientBlueZDBus = client
-            if self._client and await self._client.is_connected():
-                raw_gatt_data = bytearray()
-                for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
-                    raw_gatt_data += await client.read_gatt_char(uuid)
-                self._map_sensor_values(raw_gatt_data)
-                return self.sensor_readings
+        if not self._client:
+            await self.connect()
+        if self._client:
+            if gatt_char:
+                return await self._client.read_gatt_char(gatt_char)
             else:
-                return None
+                gatt_data = bytearray()
+                for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
+                    gatt_data += await self._client.read_gatt_char(uuid)
+                return gatt_data
+
+    async def get_sensor_values(self) -> Optional[DeviceSensors]:
+        """Retrieve sensor values from the specified Wave device."""
+
+        sensor_readings = self._map_sensor_values(await self.get_gatt_char())
+        await self.disconnect()
+        return sensor_readings
 
     @staticmethod
     def parse_manufacturer_data(manufacturer_data: Dict[int, int]) -> Optional[str]:
@@ -237,20 +280,10 @@ async def discover_devices() -> List[WaveDevice]:
         serial = WaveDevice.parse_manufacturer_data(
             device.metadata.get("manufacturer_data")
         )
-        if not serial:
-            _logger.debug(
-                f"Device: {device.name} ({device.address}) is not a valid Wave device."
-            )
+        if serial:
+            wave_devices.append(WaveDevice(device, serial))
+        else:
+            _logger.debug(f"Device: ({device.address}) is not a valid Wave device.")
             continue
-        try:
-            wave_device = WaveDevice(device, serial)
-            wave_devices.append(wave_device)
-            _logger.debug(
-                f"Device: {device.name} ({device.address}) identified as a Wave device ({wave_device.product})."
-            )
-        except ValueError:
-            _logger.warning(
-                f"Device: {device.name} ({device.address}) identified as a Wave device, but unsupported."
-            )
-            continue
+
     return wave_devices
