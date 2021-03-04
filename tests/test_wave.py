@@ -96,7 +96,16 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         self.assertFalse(self.WaveDevice == wave_device_modified)
 
     @patch("wave_reader.wave.BleakClient", autospec=True)
-    async def test_get_sensor_values(self, mocked_client):
+    async def test_context_manager(self, mocked_client):
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2900123456")
+        mocked_client.return_value = MockedBleakClient(device.address)
+
+        async with device as connected_device:
+            self.assertEqual(connected_device.address, "12:34:56:78:90:AB")
+            self.assertEqual(connected_device.serial, "2900123456")
+            self.assertTrue(await connected_device._client.is_connected())
+
+    async def test_get_sensor_values(self):
         """Test ``get_sensor_values`` is functioning correctly."""
 
         device = [self.WaveDevice]
@@ -105,7 +114,7 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
             self.WaveDevice.product,
         )
 
-        mocked_client.return_value = MockedBleakClient(device[0])
+        device[0]._client = MockedBleakClient(device[0].address)
         await device[0].get_sensor_values()
         self.assertEqual(device[0].sensor_readings, device_sensors)
 
@@ -295,7 +304,7 @@ class TestRetry(TestCase):
     def test_retry_eventually_successful(self):
         mock = MagicMock(side_effect=(ValueError, ValueError, 100))
 
-        @wave.retry(ValueError, delay=0)
+        @wave.retry(ValueError, delay=0, retries=3)
         def fake_function():
             v = mock()
             return v

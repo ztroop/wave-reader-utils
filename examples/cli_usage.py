@@ -1,10 +1,14 @@
 import argparse
 import asyncio
+import logging
+from typing import Any
 
 from rich.console import Console
 from rich.table import Table
 
 from wave_reader import WaveDevice
+
+logging.basicConfig(level=logging.INFO)
 
 
 def data_table(data: dict, serial: int) -> Table:
@@ -18,19 +22,35 @@ def data_table(data: dict, serial: int) -> Table:
     return table
 
 
+def simple_table(title: str, data: Any):
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column(title, style="dim", width=64)
+    table.add_row(data)
+    return table
+
+
+async def run(args):
+    console = Console()
+
+    async with WaveDevice.create(args.address, args.serial) as conn:
+        if args.characteristic:
+            c = await conn.get_gatt_char(args.characteristic)
+            console.print(simple_table("Characteristic", c.hex(" ")))
+        else:
+            await conn.get_sensor_values()
+            console.print(data_table(conn.sensor_readings.as_dict(), conn.serial))
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Wave sensor readings")
-    parser.add_argument("-a", "--address", help="Device address")
-    parser.add_argument("-s", "--serial", help="Device serial number")
+    parser.add_argument("-a", "--address", help="Device address", required=True)
+    parser.add_argument("-s", "--serial", help="Device serial number", required=True)
+    parser.add_argument("-c", "--characteristic", help="Get characteristic")
+
     args = parser.parse_args()
-
-    device = WaveDevice.create(args.address, args.serial)
-
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(device.get_sensor_values())
+    loop.run_until_complete(run(args))
 
-    console = Console()
-    console.print(data_table(device.sensor_readings.as_dict(), device.serial))
 
 # Example usage:
 #

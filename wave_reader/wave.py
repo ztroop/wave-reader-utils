@@ -13,6 +13,7 @@ from bleak import BleakClient, discover
 from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
 from bleak.exc import BleakError
+from txdbus.error import RemoteError
 
 from wave_reader.data import (
     AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
@@ -34,14 +35,14 @@ class UnsupportedError(Exception):
     :param addr: The device address (UUID in MacOS, MAC in Linux/Windows)
     """
 
-    def __init__(self, message: str, name: str, addr: str):
-        self.message = f"Device: {name} ({addr}) -> {message}"
+    def __init__(self, message: str, addr: str):
+        self.message = f"Device: ({addr}) -> {message}"
         _logger.error(self.message)
         super().__init__(self.message)
 
 
-def retry(exceptions: Exception, retries: int = 3, delay: int = 1):
-    """Decorator to gracefully handle raised exceptions.
+def retry(exceptions: Any, retries: int, delay: int):
+    """Decorator to gracefully handle and retry raised exceptions.
 
     :param exceptions: The exceptions to catch
     :param retries: The amount of times we will retry before raising
@@ -66,6 +67,20 @@ def retry(exceptions: Exception, retries: int = 3, delay: int = 1):
         return _retry
 
     return decorator
+
+
+def requires_client(f):
+    """Decorator that verifies the existance of the client implementation."""
+
+    @wraps(f)
+    def _requires_client(self, *args, **kwargs):
+        if not self._client:
+            _logger.error(f"Device: ({self.address}) client is not connected.")
+            return
+        else:
+            return f(self, *args, **kwargs)
+
+    return _requires_client
 
 
 @dataclass
@@ -172,73 +187,75 @@ class WaveDevice:
     def __str__(self):
         return f"WaveDevice ({self.serial})"
 
-    def _map_sensor_values(self, gatt_data):
+    async def __aenter__(self):
+        await self.connect()
+        return self
+
+    async def __aexit__(self, *_):
+        await self.disconnect()
+
+    def _map_sensor_values(self, gatt_data: bytearray) -> Optional[DeviceSensors]:
         """Extract binary data and load sensor values from bytes."""
 
         try:
-            data = struct.unpack(DEVICE[self.product]["BUFFER"], gatt_data)
+            data: List[int] = struct.unpack(DEVICE[self.product]["BUFFER"], gatt_data)  # type: ignore
         except struct.error as err:
-            raise UnsupportedError(err, self.name, self.address)
+            raise UnsupportedError(str(err), self.address)
 
         if self.product != WaveProduct.WAVE and data[0] != SENSOR_VER_SUPPORTED:  # 💩
             raise UnsupportedError(
                 f"Sensor version ({data[0]}) != ({SENSOR_VER_SUPPORTED})",
-                self.name,
                 self.address,
             )
         self.sensor_readings = DeviceSensors.from_bytes(data, self.product)
         self.readings_updated = datetime.utcnow()
         return self.sensor_readings
 
+    @retry((BleakError, RemoteError), retries=READER_RETRY, delay=READER_RETRY_DELAY)
     async def connect(self):
-        """Method for starting BLE communication."""
+        """Method for initiating BLE communication."""
 
         self._client: BleakClientBlueZDBus = BleakClient(self.address)
         await self._client.connect()
-        if self._client and await self._client.is_connected():
+        if await self._client.is_connected():
             return True
 
     async def disconnect(self):
         """Method for closing BLE communication."""
-        if self._client and await self._client.is_connected():
+
+        if self._client:
             await self._client.disconnect()
             return True
 
-    @retry(BleakError, retries=READER_RETRY, delay=READER_RETRY_DELAY)
+    @requires_client
     async def get_services(self):
         """Get available services, descriptors and characteristics for
         the device."""
 
-        if not self._client:
-            await self.connect()
-        if self._client:
-            return await self._client.get_services()
+        return await self._client.get_services()
 
-    @retry(BleakError, retries=READER_RETRY, delay=READER_RETRY_DELAY)
-    async def get_gatt_char(self, gatt_char: Optional[str] = None):
+    @requires_client
+    async def get_gatt_char(self, gatt_char: Optional[str] = None) -> bytearray:
         """Connect to Wave device and retrieve Generic Attribute Profile
         (GATT) data. The binary data is handled and mapped to a dataclass.
 
-        :param gatt_char: Manually specify a characteristic.
+        :param gatt_char: Manually specify a characteristic UUID.
         """
 
-        if not self._client:
-            await self.connect()
-        if self._client:
-            if gatt_char:
-                return await self._client.read_gatt_char(gatt_char)
-            else:
-                gatt_data = bytearray()
-                for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
-                    gatt_data += await self._client.read_gatt_char(uuid)
-                return gatt_data
+        if gatt_char:
+            return await self._client.read_gatt_char(gatt_char)  # type: ignore
+        else:
+            gatt_data = bytearray()
+            uuid: str
+            for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
+                gatt_data += await self._client.read_gatt_char(uuid)  # type: ignore
+            return gatt_data
 
+    @requires_client
     async def get_sensor_values(self) -> Optional[DeviceSensors]:
         """Retrieve sensor values from the specified Wave device."""
 
-        sensor_readings = self._map_sensor_values(await self.get_gatt_char())
-        await self.disconnect()
-        return sensor_readings
+        return self._map_sensor_values(await self.get_gatt_char())
 
     @staticmethod
     def parse_manufacturer_data(manufacturer_data: Dict[int, int]) -> Optional[str]:

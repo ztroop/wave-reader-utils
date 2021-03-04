@@ -6,8 +6,8 @@ class WaveProduct(Enum):
     WAVE2 = "295"
     WAVEPLUS = "293"
     WAVEMINI = "292"
-    WAVEMIST = "294"
     UNKNOWN = ""
+    # WAVEMIST = "294"
     # HUB = ["281", "282"]
 
 
