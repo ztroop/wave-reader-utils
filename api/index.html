@@ -1,0 +1,710 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.4">
+    
+    
+      
+        <title>API Documentation - Wave Reader Utils</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.77f3fd56.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.7fa14f5b.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-documentation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Wave Reader Utils" class="md-header__button md-logo" aria-label="Wave Reader Utils">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wave Reader Utils
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Documentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="md-header__options">
+      
+    </div>
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Wave Reader Utils" class="md-nav__button md-logo" aria-label="Wave Reader Utils">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Wave Reader Utils
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          API Documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        API Documentation
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#wavedevice-objects" class="md-nav__link">
+    WaveDevice Objects
+  </a>
+  
+    <nav class="md-nav" aria-label="WaveDevice Objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connect" class="md-nav__link">
+    connect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is_connected" class="md-nav__link">
+    is_connected
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disconnect" class="md-nav__link">
+    disconnect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_gatt_descriptor" class="md-nav__link">
+    read_gatt_descriptor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_gatt_characteristic" class="md-nav__link">
+    read_gatt_characteristic
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_services" class="md-nav__link">
+    get_services
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_sensor_values" class="md-nav__link">
+    get_sensor_values
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse_manufacturer_data" class="md-nav__link">
+    parse_manufacturer_data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    create
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#devicesensors-objects" class="md-nav__link">
+    DeviceSensors Objects
+  </a>
+  
+    <nav class="md-nav" aria-label="DeviceSensors Objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#as_dict" class="md-nav__link">
+    as_dict
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#as_tuple" class="md-nav__link">
+    as_tuple
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from_bytes" class="md-nav__link">
+    from_bytes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discover_devices" class="md-nav__link">
+    discover_devices
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../specs/" class="md-nav__link">
+        Device Specifications
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#wavedevice-objects" class="md-nav__link">
+    WaveDevice Objects
+  </a>
+  
+    <nav class="md-nav" aria-label="WaveDevice Objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connect" class="md-nav__link">
+    connect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is_connected" class="md-nav__link">
+    is_connected
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disconnect" class="md-nav__link">
+    disconnect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_gatt_descriptor" class="md-nav__link">
+    read_gatt_descriptor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_gatt_characteristic" class="md-nav__link">
+    read_gatt_characteristic
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_services" class="md-nav__link">
+    get_services
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_sensor_values" class="md-nav__link">
+    get_sensor_values
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse_manufacturer_data" class="md-nav__link">
+    parse_manufacturer_data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    create
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#devicesensors-objects" class="md-nav__link">
+    DeviceSensors Objects
+  </a>
+  
+    <nav class="md-nav" aria-label="DeviceSensors Objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#as_dict" class="md-nav__link">
+    as_dict
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#as_tuple" class="md-nav__link">
+    as_tuple
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from_bytes" class="md-nav__link">
+    from_bytes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discover_devices" class="md-nav__link">
+    discover_devices
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="api-documentation">API Documentation</h1>
+<p><a name="wave_reader.wave.WaveDevice"></a></p>
+<h2 id="wavedevice-objects">WaveDevice Objects</h2>
+<pre><code class="language-python">class WaveDevice()
+</code></pre>
+<p>An object that represents a Airthings Wave device. The
+<code>discover_devices</code> returns a list of <code>BLEDevice</code> objects
+that are used in the first parameter.</p>
+<p>If you want to instantiate a WaveDevice manually without using
+discovery, you can create a generic object with the following
+properties: <code>name</code>, <code>address</code> and optionally <code>rssi</code>, <code>metadata</code>.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>device</code>: Device information from Bleak's discover function</li>
+<li><code>serial</code>: Parsed serial number from manufacturer data</li>
+</ul>
+<p><a name="wave_reader.wave.WaveDevice.connect"></a></p>
+<h4 id="connect">connect</h4>
+<pre><code class="language-python"> | async connect() -&gt; bool
+</code></pre>
+<p>Method for initiating BLE communication.</p>
+<p><a name="wave_reader.wave.WaveDevice.is_connected"></a></p>
+<h4 id="is_connected">is_connected</h4>
+<pre><code class="language-python"> | async is_connected() -&gt; bool
+</code></pre>
+<p>Method for determining the status of the BLE connection.</p>
+<p><a name="wave_reader.wave.WaveDevice.disconnect"></a></p>
+<h4 id="disconnect">disconnect</h4>
+<pre><code class="language-python"> | async disconnect() -&gt; bool
+</code></pre>
+<p>Method for closing BLE communication.</p>
+<p><a name="wave_reader.wave.WaveDevice.read_gatt_descriptor"></a></p>
+<h4 id="read_gatt_descriptor">read_gatt_descriptor</h4>
+<pre><code class="language-python"> | async read_gatt_descriptor(gatt_desc: str) -&gt; bytearray
+</code></pre>
+<p>Read Generic Attribute Profile GATT descriptor data.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>handle</code>: Manually specify a descriptor UUID.</li>
+</ul>
+<p><a name="wave_reader.wave.WaveDevice.read_gatt_characteristic"></a></p>
+<h4 id="read_gatt_characteristic">read_gatt_characteristic</h4>
+<pre><code class="language-python"> | async read_gatt_characteristic(gatt_char: str) -&gt; bytearray
+</code></pre>
+<p>Read Generic Attribute Profile GATT characteristic data.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>gatt_char</code>: Manually specify a characteristic UUID.</li>
+</ul>
+<p><a name="wave_reader.wave.WaveDevice.get_services"></a></p>
+<h4 id="get_services">get_services</h4>
+<pre><code class="language-python"> | async get_services() -&gt; Dict
+</code></pre>
+<p>Get available services, descriptors and characteristics for
+the device.</p>
+<p><a name="wave_reader.wave.WaveDevice.get_sensor_values"></a></p>
+<h4 id="get_sensor_values">get_sensor_values</h4>
+<pre><code class="language-python"> | async get_sensor_values() -&gt; Optional[DeviceSensors]
+</code></pre>
+<p>Retrieve sensor values from the specified Wave device.</p>
+<p><a name="wave_reader.wave.WaveDevice.parse_manufacturer_data"></a></p>
+<h4 id="parse_manufacturer_data">parse_manufacturer_data</h4>
+<pre><code class="language-python"> | @staticmethod
+ | parse_manufacturer_data(manufacturer_data: Dict[int, int]) -&gt; Optional[str]
+</code></pre>
+<p>Converts manufacturer data and returns a serial number for the
+Airthings Wave devices.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>manufacturer_data</code>: The device manufacturer data</li>
+</ul>
+<p><a name="wave_reader.wave.WaveDevice.create"></a></p>
+<h4 id="create">create</h4>
+<pre><code class="language-python"> | @classmethod
+ | create(cls, address: str, serial: str)
+</code></pre>
+<p>Create a WaveDevice instance with three distinct arguments.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>address</code>: The device UUID in MacOS, or MAC in Linux and Windows.</li>
+<li><code>serial</code>: The serial number for the device.</li>
+</ul>
+<p><a name="wave_reader.wave.DeviceSensors"></a></p>
+<h2 id="devicesensors-objects">DeviceSensors Objects</h2>
+<pre><code class="language-python">@dataclass
+class DeviceSensors()
+</code></pre>
+<p>A dataclass to encapsulate sensor data.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>humidity</code>: Relative humidity level (%rH)</li>
+<li><code>radon_sta</code>: Short-term average for radon level (Bq/m3)</li>
+<li><code>radon_lta</code>: Long-term average for radon level (Bq/m3)</li>
+<li><code>temperature</code>: Ambient temperature (degC)</li>
+<li><code>pressure</code>: Atmospheric pressure (hPa)</li>
+<li><code>co2</code>: Carbon dioxide level (ppm)</li>
+<li><code>voc</code>: Volatile organic compound level (ppb)</li>
+<li><code>dew_pont</code>: Dew point approximation using the Magnus formula (degC)</li>
+</ul>
+<p><a name="wave_reader.wave.DeviceSensors.as_dict"></a></p>
+<h4 id="as_dict">as_dict</h4>
+<pre><code class="language-python"> | as_dict() -&gt; Dict[str, Union[int, float]]
+</code></pre>
+<p>Returns a dictionary of populated dataclass fields.</p>
+<p><a name="wave_reader.wave.DeviceSensors.as_tuple"></a></p>
+<h4 id="as_tuple">as_tuple</h4>
+<pre><code class="language-python"> | as_tuple() -&gt; tuple
+</code></pre>
+<p>Return a tuple of all dataclass fields.</p>
+<p><a name="wave_reader.wave.DeviceSensors.from_bytes"></a></p>
+<h4 id="from_bytes">from_bytes</h4>
+<pre><code class="language-python"> | @classmethod
+ | from_bytes(cls, data: List[int], product: WaveProduct)
+</code></pre>
+<p>Instantiate the class with raw sensor values and the <code>WaveProduct</code>
+selection. Each product can have different sensors or may require the
+raw data to be handled differently.</p>
+<p><a name="wave_reader.wave.discover_devices"></a></p>
+<h2 id="discover_devices">discover_devices</h2>
+<pre><code class="language-python">async discover_devices() -&gt; List[WaveDevice]
+</code></pre>
+<p>Discovers all valid, accessible Airthings Wave devices.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href=".." class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Introduction
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../specs/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Device Specifications
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.9b151c6a.min.js"></script>
+      
+    
+  </body>
+</html>
