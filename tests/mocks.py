@@ -44,3 +44,9 @@ class MockedBleakClient(object):
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.disconnect()
         return True
+
+
+class MockedFailingBleakClient(MockedBleakClient):
+    async def connect(self):
+        self._is_connected = False
+        return False

@@ -3,8 +3,9 @@ from unittest import IsolatedAsyncioTestCase, TestCase
 from unittest.mock import MagicMock, patch
 
 from wave_reader import data, wave
+from wave_reader.utils import requires_client
 
-from .mocks import MockedBleakClient, MockedBLEDevice
+from .mocks import MockedBleakClient, MockedBLEDevice, MockedFailingBleakClient
 
 
 class TestReaderUtils(TestCase):
@@ -105,18 +106,19 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
             self.assertEqual(connected_device.serial, "2900123456")
             self.assertTrue(await connected_device._client.is_connected())
 
-    async def test_get_sensor_values(self):
+    @patch("wave_reader.wave.BleakClient", autospec=True)
+    async def test_get_sensor_values(self, mocked_client):
         """Test ``get_sensor_values`` is functioning correctly."""
 
-        device = [self.WaveDevice]
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2930123456")
         device_sensors = wave.DeviceSensors.from_bytes(
             (1, 65, 0, 0, 136, 143, 2063, 48984, 692, 114, 0, 1564),
-            self.WaveDevice.product,
+            data.WaveProduct.WAVEPLUS,
         )
 
-        device[0]._client = MockedBleakClient(device[0].address)
-        await device[0].get_sensor_values()
-        self.assertEqual(device[0].sensor_readings, device_sensors)
+        mocked_client.return_value = MockedBleakClient(device.address)
+        await device.get_sensor_values()
+        self.assertEqual(device.sensor_readings, device_sensors)
 
     def test_create_valid_product(self):
         """Test WaveDevice is successfully created using the ``create()`` method."""
@@ -133,7 +135,7 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         wave.WaveDevice.create("12:34:56:78:90:AB", "123")
         self.assertTrue(mocked_logger.called)
 
-    @patch("wave_reader.wave._logger.error")
+    @patch("wave_reader.utils._logger.error")
     def test_invalid_map_sensor_values(self, mocked_logger):
         """Test errors around binary data handling."""
 
@@ -301,6 +303,8 @@ class TestDeviceSensors(TestCase):
 
 
 class TestRetry(TestCase):
+    """Test for the ``retry`` decorator."""
+
     def test_retry_eventually_successful(self):
         mock = MagicMock(side_effect=(ValueError, ValueError, 100))
 
@@ -322,3 +326,29 @@ class TestRetry(TestCase):
 
         with self.assertRaises(ValueError):
             fake_function()
+
+
+class TestRequiresClient(IsolatedAsyncioTestCase):
+    """Test the ``requires_client`` decorator."""
+
+    @patch("wave_reader.utils._logger.error")
+    @patch("wave_reader.wave.BleakClient", autospec=True)
+    async def test_requires_client(self, mocked_client, mocked_logger):
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2930123456")
+        mocked_client.return_value = MockedBleakClient(device.address)
+        device._client = None
+
+        @requires_client
+        async def fake_function(d):
+            return await d.is_connected()
+
+        # After not being connected, we log once and successfully connect.
+        self.assertTrue(await fake_function(device))
+        self.assertEqual(mocked_logger.call_count, 1)
+
+        mocked_client.return_value = MockedFailingBleakClient(device.address)
+        device._client = None
+
+        # We intentionally fail the connect to show the loop exists after 3 reconnects.
+        self.assertFalse(await fake_function(device))
+        self.assertEqual(mocked_logger.call_count, 5)  # +1 from the earlier execution.

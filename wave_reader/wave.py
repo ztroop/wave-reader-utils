@@ -4,9 +4,7 @@ import struct
 from collections import namedtuple
 from dataclasses import dataclass, fields
 from datetime import datetime
-from functools import wraps
 from math import log
-from time import sleep
 from typing import Any, Dict, List, Optional, Union
 
 from bleak import BleakClient, discover
@@ -19,68 +17,13 @@ from wave_reader.data import (
     AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
     WaveProduct,
 )
+from wave_reader.utils import UnsupportedError, requires_client, retry
 
 _logger = logging.getLogger(__name__)
 _logger.addHandler(logging.NullHandler())
 
 READER_RETRY = int(os.getenv("WAVE_READER_RETRY", 3))
 READER_RETRY_DELAY = int(os.getenv("WAVE_READER_RETRY_DELAY", 1))
-
-
-class UnsupportedError(Exception):
-    """Custom exception class for unsupported device errors.
-
-    :param message: The error message
-    :param name: The device name
-    :param addr: The device address (UUID in MacOS, MAC in Linux/Windows)
-    """
-
-    def __init__(self, message: str, addr: str):
-        self.message = f"Device: ({addr}) -> {message}"
-        _logger.error(self.message)
-        super().__init__(self.message)
-
-
-def retry(exceptions: Any, retries: int, delay: int):
-    """Decorator to gracefully handle and retry raised exceptions.
-
-    :param exceptions: The exceptions to catch
-    :param retries: The amount of times we will retry before raising
-    :param delay: The amount of time in seconds before retrying
-    """
-
-    def decorator(f):
-        @wraps(f)
-        def _retry(*args, **kwargs):
-            attempts = 0
-            while attempts <= retries:
-                attempts += 1
-                try:
-                    return f(*args, **kwargs)
-                except exceptions as err:
-                    if attempts >= retries:
-                        raise
-                    _logger.warning(err)
-                    sleep(delay)
-                    continue
-
-        return _retry
-
-    return decorator
-
-
-def requires_client(f):
-    """Decorator that verifies the existance of the client implementation."""
-
-    @wraps(f)
-    def _requires_client(self, *args, **kwargs):
-        if not self._client:
-            _logger.error(f"Device: ({self.address}) client is not connected.")
-            return
-        else:
-            return f(self, *args, **kwargs)
-
-    return _requires_client
 
 
 @dataclass
@@ -159,6 +102,7 @@ class WaveDevice:
     """
 
     _client: Optional[BleakClientBlueZDBus] = None
+    _gatt_services = None
     sensor_readings: Optional[DeviceSensors] = None
     readings_updated: Optional[datetime] = None
 
@@ -212,50 +156,67 @@ class WaveDevice:
         return self.sensor_readings
 
     @retry((BleakError, RemoteError), retries=READER_RETRY, delay=READER_RETRY_DELAY)
-    async def connect(self):
-        """Method for initiating BLE communication."""
+    async def connect(self) -> bool:
+        """Method for initiating BLE connection."""
 
         self._client: BleakClientBlueZDBus = BleakClient(self.address)
-        await self._client.connect()
-        if await self._client.is_connected():
-            return True
-
-    async def disconnect(self):
-        """Method for closing BLE communication."""
-
-        if self._client:
-            await self._client.disconnect()
-            return True
+        _logger.info(f"Device: ({self.address}) connecting BLE client.")
+        return await self._client.connect()
 
     @requires_client
-    async def get_services(self):
-        """Get available services, descriptors and characteristics for
-        the device."""
+    async def is_connected(self) -> bool:
+        """Method for determining the status of the BLE connection."""
 
-        return await self._client.get_services()
+        return await self._client.is_connected()  # type: ignore
 
     @requires_client
-    async def get_gatt_char(self, gatt_char: Optional[str] = None) -> bytearray:
-        """Connect to Wave device and retrieve Generic Attribute Profile
-        (GATT) data. The binary data is handled and mapped to a dataclass.
+    async def disconnect(self) -> bool:
+        """Method for closing BLE connection."""
 
-        :param gatt_char: Manually specify a characteristic UUID.
+        _logger.info(f"Device: ({self.address}) disconnecting BLE client.")
+        return await self._client.disconnect()  # type: ignore
+
+    @requires_client
+    async def read_gatt_descriptor(self, gatt_desc: str) -> Optional[bytearray]:
+        """Read Generic Attribute Profile GATT descriptor data.
+
+        :param handle: Specify a descriptor UUID string
         """
 
-        if gatt_char:
-            return await self._client.read_gatt_char(gatt_char)  # type: ignore
-        else:
-            gatt_data = bytearray()
-            uuid: str
-            for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
-                gatt_data += await self._client.read_gatt_char(uuid)  # type: ignore
-            return gatt_data
+        if not self._gatt_services:
+            await self.get_services()
+
+        for k, v in getattr(self._gatt_services, "descriptors", {}).items():
+            if getattr(v, "uuid") == gatt_desc:
+                return await self._client.read_gatt_descriptor(k)  # type: ignore
+
+        return None
+
+    @requires_client
+    async def read_gatt_characteristic(self, gatt_char: str) -> bytearray:
+        """Read Generic Attribute Profile GATT characteristic data.
+
+        :param gatt_char: Specify a characteristic UUID string
+        """
+
+        return await self._client.read_gatt_char(gatt_char)  # type: ignore
+
+    @requires_client
+    async def get_services(self) -> Dict:
+        """Get available services, descriptors and characteristics for the device."""
+
+        self._gatt_services = await self._client.get_services()  # type: ignore
+        return getattr(self._gatt_services, "services")
 
     @requires_client
     async def get_sensor_values(self) -> Optional[DeviceSensors]:
-        """Retrieve sensor values from the specified Wave device."""
+        """Get sensor values from the specified Wave device."""
 
-        return self._map_sensor_values(await self.get_gatt_char())
+        characteristics = bytearray()
+        uuid: str
+        for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
+            characteristics += await self.read_gatt_characteristic(uuid)
+        return self._map_sensor_values(characteristics)
 
     @staticmethod
     def parse_manufacturer_data(manufacturer_data: Dict[int, int]) -> Optional[str]:

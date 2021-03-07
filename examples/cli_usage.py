@@ -34,8 +34,11 @@ async def run(args):
 
     async with WaveDevice.create(args.address, args.serial) as conn:
         if args.characteristic:
-            c = await conn.get_gatt_char(args.characteristic)
+            c = await conn.read_gatt_char(args.characteristic)
             console.print(simple_table("Characteristic", c.hex(" ")))
+        elif args.descriptor:
+            c = await conn.read_gatt_descriptor(args.descriptor)
+            console.print(simple_table("Descriptor", c.hex(" ")))
         else:
             await conn.get_sensor_values()
             console.print(data_table(conn.sensor_readings.as_dict(), conn.serial))
@@ -46,6 +49,7 @@ if __name__ == "__main__":
     parser.add_argument("-a", "--address", help="Device address", required=True)
     parser.add_argument("-s", "--serial", help="Device serial number", required=True)
     parser.add_argument("-c", "--characteristic", help="Get characteristic")
+    parser.add_argument("-d", "--descriptor", help="Get descriptor")
 
     args = parser.parse_args()
     loop = asyncio.get_event_loop()

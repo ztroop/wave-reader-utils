@@ -7,7 +7,7 @@
 
 This is an **unofficial** Airthings Wave library designed to provide tools and information
 around device communication. The library wouldn't be possible without the existing scripts
-available by Airthings and contribution of other. We hope to continue making updates through
+available by Airthings and contribution of others. We hope to continue making updates through
 Airthings continued open-source contributions. See [documentation](https://ztroop.github.io/wave-reader-utils/) for more details.
 
 This library uses `bleak` as a dependency instead of `bluepy` for platform cross-compatibility
