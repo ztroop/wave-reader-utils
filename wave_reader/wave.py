@@ -1,66 +1,29 @@
 import logging
+import os
 import struct
 from collections import namedtuple
 from dataclasses import dataclass, fields
 from datetime import datetime
-from functools import wraps
 from math import log
-from time import sleep
 from typing import Any, Dict, List, Optional, Union
 
-from bleak import BleakClient, BleakError, discover
+from bleak import BleakClient, discover
 from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
+from bleak.exc import BleakError
+from txdbus.error import RemoteError
 
 from wave_reader.data import (
     AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
     WaveProduct,
 )
+from wave_reader.utils import UnsupportedError, requires_client, retry
 
 _logger = logging.getLogger(__name__)
 _logger.addHandler(logging.NullHandler())
 
-
-class UnsupportedError(Exception):
-    """Custom exception class for unsupported device errors.
-
-    :param message: The error message
-    :param name: The device name
-    :param addr: The device address (UUID in MacOS, MAC in Linux/Windows)
-    """
-
-    def __init__(self, message: str, name: str, addr: str):
-        self.message = f"Device: {name} ({addr}) -> {message}"
-        _logger.error(self.message)
-        super().__init__(self.message)
-
-
-def retry(exceptions: Exception, retries: int = 3, delay: int = 1):
-    """Decorator to gracefully handle raised exceptions.
-
-    :param exceptions: The exceptions to catch
-    :param retries: The amount of times we will retry before raising
-    :param delay: The amount of time in seconds before retrying
-    """
-
-    def decorator(f):
-        @wraps(f)
-        def _retry(*args, **kwargs):
-            attempts = 0
-            while attempts <= retries:
-                attempts += 1
-                try:
-                    return f(*args, **kwargs)
-                except exceptions as err:
-                    if attempts >= retries:
-                        raise
-                    _logger.warning(err)
-                    sleep(delay)
-                    continue
-
-        return _retry
-
-    return decorator
+READER_RETRY = int(os.getenv("WAVE_READER_RETRY", 3))
+READER_RETRY_DELAY = int(os.getenv("WAVE_READER_RETRY_DELAY", 1))
 
 
 @dataclass
@@ -122,7 +85,7 @@ class DeviceSensors:
         raw data to be handled differently.
         """
 
-        return cls(**DEVICE[product]["SENSOR_FORMAT"](data))  # type: ignore
+        return cls(**DEVICE[product]["DATA_FORMAT"](data))  # type: ignore
 
 
 class WaveDevice:
@@ -139,6 +102,7 @@ class WaveDevice:
     """
 
     _client: Optional[BleakClientBlueZDBus] = None
+    _gatt_services = None
     sensor_readings: Optional[DeviceSensors] = None
     readings_updated: Optional[datetime] = None
 
@@ -151,7 +115,12 @@ class WaveDevice:
 
         self.address: str = device.address  # UUID in MacOS, or MAC in Linux and Windows
         self.serial: str = serial
-        self.product: WaveProduct = WaveProduct(self.serial[:4])
+        try:
+            self.product: WaveProduct = WaveProduct(self.serial[:3])
+            _logger.debug(f"Device: ({self.address}) is a ({self.product}) device.")
+        except (KeyError, ValueError):
+            _logger.warning(f"Device: ({self.address}) is an unsupported Wave device.")
+            self.product = WaveProduct.UNKNOWN
 
     def __eq__(self, other):
         for prop in ("name", "address", "serial"):
@@ -162,40 +131,92 @@ class WaveDevice:
     def __str__(self):
         return f"WaveDevice ({self.serial})"
 
-    def _map_sensor_values(self, raw_gatt_data):
+    async def __aenter__(self):
+        await self.connect()
+        return self
+
+    async def __aexit__(self, *_):
+        await self.disconnect()
+
+    def _map_sensor_values(self, gatt_data: bytearray) -> Optional[DeviceSensors]:
         """Extract binary data and load sensor values from bytes."""
 
         try:
-            data = struct.unpack(DEVICE[self.product]["BUFFER"], raw_gatt_data)
+            data: List[int] = struct.unpack(DEVICE[self.product]["BUFFER"], gatt_data)  # type: ignore
         except struct.error as err:
-            raise UnsupportedError(err, self.name, self.address)
+            raise UnsupportedError(str(err), self.address)
 
         if self.product != WaveProduct.WAVE and data[0] != SENSOR_VER_SUPPORTED:  # 💩
             raise UnsupportedError(
                 f"Sensor version ({data[0]}) != ({SENSOR_VER_SUPPORTED})",
-                self.name,
                 self.address,
             )
         self.sensor_readings = DeviceSensors.from_bytes(data, self.product)
         self.readings_updated = datetime.utcnow()
-        return True
+        return self.sensor_readings
 
-    @retry(BleakError, retries=3, delay=1)
-    async def get_sensor_values(self) -> Optional[DeviceSensors]:
-        """Connect to Wave device and retrieve Generic Attribute Profile
-        (GATT) data. The binary data is handled and mapped to a dataclass.
+    @retry((BleakError, RemoteError), retries=READER_RETRY, delay=READER_RETRY_DELAY)
+    async def connect(self) -> bool:
+        """Method for initiating BLE connection."""
+
+        self._client: BleakClientBlueZDBus = BleakClient(self.address)
+        _logger.info(f"Device: ({self.address}) connecting BLE client.")
+        return await self._client.connect()
+
+    @requires_client
+    async def is_connected(self) -> bool:
+        """Method for determining the status of the BLE connection."""
+
+        return await self._client.is_connected()  # type: ignore
+
+    @requires_client
+    async def disconnect(self) -> bool:
+        """Method for closing BLE connection."""
+
+        _logger.info(f"Device: ({self.address}) disconnecting BLE client.")
+        return await self._client.disconnect()  # type: ignore
+
+    @requires_client
+    async def read_gatt_descriptor(self, gatt_desc: str) -> Optional[bytearray]:
+        """Read Generic Attribute Profile GATT descriptor data.
+
+        :param handle: Specify a descriptor UUID string
         """
 
-        async with BleakClient(self.address) as client:
-            self._client: BleakClientBlueZDBus = client
-            if self._client and await self._client.is_connected():
-                raw_gatt_data = bytearray()
-                for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
-                    raw_gatt_data += await client.read_gatt_char(uuid)
-                self._map_sensor_values(raw_gatt_data)
-                return self.sensor_readings
-            else:
-                return None
+        if not self._gatt_services:
+            await self.get_services()
+
+        for k, v in getattr(self._gatt_services, "descriptors", {}).items():
+            if getattr(v, "uuid") == gatt_desc:
+                return await self._client.read_gatt_descriptor(k)  # type: ignore
+
+        return None
+
+    @requires_client
+    async def read_gatt_characteristic(self, gatt_char: str) -> bytearray:
+        """Read Generic Attribute Profile GATT characteristic data.
+
+        :param gatt_char: Specify a characteristic UUID string
+        """
+
+        return await self._client.read_gatt_char(gatt_char)  # type: ignore
+
+    @requires_client
+    async def get_services(self) -> Dict:
+        """Get available services, descriptors and characteristics for the device."""
+
+        self._gatt_services = await self._client.get_services()  # type: ignore
+        return getattr(self._gatt_services, "services")
+
+    @requires_client
+    async def get_sensor_values(self) -> Optional[DeviceSensors]:
+        """Get sensor values from the specified Wave device."""
+
+        characteristics = bytearray()
+        uuid: str
+        for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
+            characteristics += await self.read_gatt_characteristic(uuid)
+        return self._map_sensor_values(characteristics)
 
     @staticmethod
     def parse_manufacturer_data(manufacturer_data: Dict[int, int]) -> Optional[str]:
@@ -237,20 +258,10 @@ async def discover_devices() -> List[WaveDevice]:
         serial = WaveDevice.parse_manufacturer_data(
             device.metadata.get("manufacturer_data")
         )
-        if not serial:
-            _logger.debug(
-                f"Device: {device.name} ({device.address}) is not a valid Wave device."
-            )
+        if serial:
+            wave_devices.append(WaveDevice(device, serial))
+        else:
+            _logger.debug(f"Device: ({device.address}) is not a valid Wave device.")
             continue
-        try:
-            wave_device = WaveDevice(device, serial)
-            wave_devices.append(wave_device)
-            _logger.debug(
-                f"Device: {device.name} ({device.address}) identified as a Wave device ({wave_device.product})."
-            )
-        except ValueError:
-            _logger.warning(
-                f"Device: {device.name} ({device.address}) identified as a Wave device, but unsupported."
-            )
-            continue
+
     return wave_devices
