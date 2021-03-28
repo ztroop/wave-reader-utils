@@ -11,11 +11,13 @@ from bleak import BleakClient, discover
 from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
 from bleak.exc import BleakError
-from txdbus.error import RemoteError
 
 from wave_reader.data import (
     AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
     WaveProduct,
+)
+from wave_reader.measure import (
+    CO2, PM, VOC, Humidity, Pressure, Radon, Temperature,
 )
 from wave_reader.utils import UnsupportedError, requires_client, retry
 
@@ -33,32 +35,21 @@ class DeviceSensors:
     :param humidity: Relative humidity level (%rH)
     :param radon_sta: Short-term average for radon level (Bq/m3)
     :param radon_lta: Long-term average for radon level (Bq/m3)
-    :param temperature: Ambient temperature (degC)
+    :param temperature: Ambient temperature (°C)
     :param pressure: Atmospheric pressure (hPa)
     :param co2: Carbon dioxide level (ppm)
     :param voc: Volatile organic compound level (ppb)
-    :param dew_pont: Dew point approximation using the Magnus formula (degC)
+    :param pm: Particulate matter (ug/m3)
     """
 
-    humidity: Optional[float] = None
-    radon_sta: Optional[int] = None
-    radon_lta: Optional[int] = None
-    temperature: Optional[float] = None
-    pressure: Optional[float] = None
-    co2: Optional[float] = None
-    voc: Optional[float] = None
-    dew_point: Optional[float] = None
-
-    def __post_init__(self):
-        if self.temperature and self.humidity:
-            T, RH = self.temperature, self.humidity
-            self.dew_point = round(
-                (243.12 * (log(RH / 100) + ((17.62 * T) / (243.12 + T))))
-                / (  # noqa: W503
-                    17.62 - (log(RH / 100) + ((17.62 * T) / (243.12 + T)))
-                ),
-                2,
-            )
+    humidity: Optional[Humidity] = None
+    radon_sta: Optional[Radon] = None
+    radon_lta: Optional[Radon] = None
+    temperature: Optional[Temperature] = None
+    pressure: Optional[Pressure] = None
+    co2: Optional[CO2] = None
+    voc: Optional[VOC] = None
+    pm: Optional[PM] = None
 
     def __str__(self):
         return f'DeviceSensors ({", ".join(f"{k}: {v}" for k, v in self.as_dict().items())})'
@@ -77,6 +68,20 @@ class DeviceSensors:
         """Return a tuple of all dataclass fields."""
 
         return fields(self)
+
+    @property
+    def dew_point(self) -> Optional[float]:
+        """Dew point approximation using the Magnus formula. (°C)"""
+
+        if not self.temperature or not self.humidity:
+            return None
+
+        T, RH = self.temperature, self.humidity
+        return round(
+            (243.12 * (log(RH / 100) + ((17.62 * T) / (243.12 + T))))
+            / (17.62 - (log(RH / 100) + ((17.62 * T) / (243.12 + T)))),  # noqa: W503
+            2,
+        )
 
     @classmethod
     def from_bytes(cls, data: List[int], product: WaveProduct):
@@ -155,7 +160,7 @@ class WaveDevice:
         self.readings_updated = datetime.utcnow()
         return self.sensor_readings
 
-    @retry((BleakError, RemoteError), retries=READER_RETRY, delay=READER_RETRY_DELAY)
+    @retry(BleakError, retries=READER_RETRY, delay=READER_RETRY_DELAY)
     async def connect(self) -> bool:
         """Method for initiating BLE connection."""
 

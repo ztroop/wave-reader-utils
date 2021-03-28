@@ -165,11 +165,11 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
             {
                 "humidity": 50.0,
                 "temperature": 30.0,
-                "dew_point": 18.44,
                 "radon_lta": 115,
                 "radon_sta": 125,
             },
         )
+        self.assertEqual(device.sensor_readings.dew_point, 18.44)
 
         # Wave (Second Gen)
         device = wave.WaveDevice.create("12:34:56:78:90:AB", "2950618893")
@@ -180,13 +180,13 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         self.assertEqual(
             device.sensor_readings.as_dict(),
             {
-                "dew_point": 0.04,
                 "humidity": 50.0,
                 "radon_lta": 145,
                 "radon_sta": 135,
                 "temperature": 10.0,
             },
         )
+        self.assertEqual(device.sensor_readings.dew_point, 0.04)
 
         # Wave Plus
         device = wave.WaveDevice.create("12:34:56:78:90:AB", "2930618893")
@@ -204,9 +204,9 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
                 "radon_sta": 136,
                 "temperature": 20.63,
                 "voc": 114.0,
-                "dew_point": 3.56,
             },
         )
+        self.assertEqual(device.sensor_readings.dew_point, 3.56)
 
         # Wave Mini
         device = wave.WaveDevice.create("12:34:56:78:90:AB", "2920618893")
@@ -220,9 +220,9 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
                 "voc": 200,
                 "humidity": 30.0,
                 "temperature": 22.73,
-                "dew_point": 4.25,
             },
         )
+        self.assertEqual(device.sensor_readings.dew_point, 4.25)
 
 
 class TestDeviceSensors(TestCase):
@@ -239,8 +239,7 @@ class TestDeviceSensors(TestCase):
                 )
             ),
             "DeviceSensors (humidity: 32.5, radon_sta: 136, radon_lta: 143, "
-            "temperature: 20.63, pressure: 979.68, co2: 692.0, voc: 114.0, "
-            "dew_point: 3.56)",
+            "temperature: 20.63, pressure: 979.68, co2: 692.0, voc: 114.0)",
         )
 
     def test_as_tuple(self):
@@ -263,9 +262,9 @@ class TestDeviceSensors(TestCase):
             "radon_lta": 145,
             "radon_sta": 140,
             "temperature": 20.0,
-            "dew_point": 12.62,
         }
         self.assertEqual(device_sensors.as_dict(), expected_dict)
+        self.assertEqual(device_sensors.dew_point, 12.62)
 
     def test_wave_plus(self):
         """Test WAVEPLUS device is returning the correct sensor values."""
@@ -282,9 +281,9 @@ class TestDeviceSensors(TestCase):
             "pressure": 979.68,
             "co2": 692.0,
             "voc": 114.0,
-            "dew_point": 3.56,
         }
         self.assertEqual(device_sensors.as_dict(), expected_dict)
+        self.assertEqual(device_sensors.dew_point, 3.56)
 
     def test_wave_mini(self):
         """Test WAVEMINI device is returning the correct sensor values."""
@@ -297,9 +296,9 @@ class TestDeviceSensors(TestCase):
             "humidity": 50.0,
             "temperature": 21.85,
             "voc": 600,
-            "dew_point": 10.96,
         }
         self.assertEqual(device_sensors.as_dict(), expected_dict)
+        self.assertEqual(device_sensors.dew_point, 10.96)
 
 
 class TestRetry(TestCase):
