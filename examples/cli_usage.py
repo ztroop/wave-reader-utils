@@ -8,7 +8,7 @@ from rich.table import Table
 
 from wave_reader import WaveDevice
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 def data_table(data: dict, serial: int) -> Table:
@@ -34,11 +34,13 @@ async def run(args):
 
     async with WaveDevice.create(args.address, args.serial) as conn:
         if args.characteristic:
-            c = await conn.read_gatt_char(args.characteristic)
-            console.print(simple_table("Characteristic", c.hex(" ")))
+            c = await conn.read_gatt_characteristic(args.characteristic)
+            if c:
+                console.print(simple_table("Characteristic", c.hex(" ")))
         elif args.descriptor:
             c = await conn.read_gatt_descriptor(args.descriptor)
-            console.print(simple_table("Descriptor", c.hex(" ")))
+            if c:
+                console.print(simple_table("Descriptor", c.hex(" ")))
         else:
             await conn.get_sensor_values()
             console.print(data_table(conn.sensor_readings.as_dict(), conn.serial))
