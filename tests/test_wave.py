@@ -1,6 +1,6 @@
 from copy import deepcopy
 from unittest import IsolatedAsyncioTestCase, TestCase
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from wave_reader import data, wave
 from wave_reader.utils import requires_client
@@ -299,32 +299,6 @@ class TestDeviceSensors(TestCase):
         }
         self.assertEqual(device_sensors.as_dict(), expected_dict)
         self.assertEqual(device_sensors.dew_point, 10.96)
-
-
-class TestRetry(TestCase):
-    """Test for the ``retry`` decorator."""
-
-    def test_retry_eventually_successful(self):
-        mock = MagicMock(side_effect=(ValueError, ValueError, 100))
-
-        @wave.retry(ValueError, delay=0, retries=3)
-        def fake_function():
-            v = mock()
-            return v
-
-        r = fake_function()
-        self.assertEqual(r, 100)
-
-    def test_retry_failed(self):
-        mock = MagicMock(side_effect=(ValueError))
-
-        @wave.retry(ValueError, retries=1, delay=0)
-        def fake_function():
-            v = mock()
-            return v
-
-        with self.assertRaises(ValueError):
-            fake_function()
 
 
 class TestRequiresClient(IsolatedAsyncioTestCase):

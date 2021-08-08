@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 import struct
@@ -10,16 +11,24 @@ from typing import Any, Dict, List, Optional, Union
 from bleak import BleakClient, discover
 from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
-from bleak.exc import BleakError
 
 from wave_reader.data import (
-    AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
+    AIRTHINGS_ID,
+    DEVICE,
+    MANUFACTURER_DATA_FORMAT,
+    SENSOR_VER_SUPPORTED,
     WaveProduct,
 )
 from wave_reader.measure import (
-    CO2, PM, VOC, Humidity, Pressure, Radon, Temperature,
+    CO2,
+    PM,
+    VOC,
+    Humidity,
+    Pressure,
+    Radon,
+    Temperature,
 )
-from wave_reader.utils import UnsupportedError, requires_client, retry
+from wave_reader.utils import UnsupportedError, requires_client
 
 _logger = logging.getLogger(__name__)
 _logger.addHandler(logging.NullHandler())
@@ -160,7 +169,6 @@ class WaveDevice:
         self.readings_updated = datetime.utcnow()
         return self.sensor_readings
 
-    @retry(BleakError, retries=READER_RETRY, delay=READER_RETRY_DELAY)
     async def connect(self) -> bool:
         """Method for initiating BLE connection."""
 
@@ -254,10 +262,10 @@ class WaveDevice:
         return cls(device(address), serial)
 
 
-async def discover_devices() -> List[WaveDevice]:
+async def discover_devices(wave_devices: Optional[List] = None) -> List[WaveDevice]:
     """Discovers all valid, accessible Airthings Wave devices."""
 
-    wave_devices = []
+    wave_devices = wave_devices if isinstance(wave_devices, list) else []
     device: BLEDevice  # Typing annotation
     for device in await discover():
         serial = WaveDevice.parse_manufacturer_data(
@@ -268,5 +276,34 @@ async def discover_devices() -> List[WaveDevice]:
         else:
             _logger.debug(f"Device: ({device.address}) is not a valid Wave device.")
             continue
+
+    return wave_devices
+
+
+def run(max_retries: int = 3):
+    """Convenience function for pulling device data. This is particularly useful
+    for users without strong experience with asynchronous programming.
+
+    :param max_retries: Number of attempts for connecting to devices
+    """
+
+    retry_attempts = 0
+    wave_devices = []
+
+    def _run():
+        loop = asyncio.get_event_loop()
+        task = loop.create_task(discover_devices(wave_devices))
+        tasks = asyncio.gather(task, return_exceptions=True)
+        loop.run_until_complete(tasks)
+
+    while retry_attempts < max_retries:
+        try:
+            _run()
+            break
+        except Exception as err:
+            _logger.debug(err)
+            _logger.warning("Encountered an error. Retrying.")
+            retry_attempts += 1
+        _logger.error(f"Exceeded {max_retries} attempts. Aborting.")
 
     return wave_devices
