@@ -13,20 +13,11 @@ from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
 from bleak.backends.device import BLEDevice
 
 from wave_reader.data import (
-    AIRTHINGS_ID,
-    DEVICE,
-    MANUFACTURER_DATA_FORMAT,
-    SENSOR_VER_SUPPORTED,
+    AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
     WaveProduct,
 )
 from wave_reader.measure import (
-    CO2,
-    PM,
-    VOC,
-    Humidity,
-    Pressure,
-    Radon,
-    Temperature,
+    CO2, PM, VOC, Humidity, Pressure, Radon, Temperature,
 )
 from wave_reader.utils import UnsupportedError, requires_client
 
@@ -262,7 +253,9 @@ class WaveDevice:
         return cls(device(address), serial)
 
 
-async def discover_devices(wave_devices: Optional[List] = None) -> List[WaveDevice]:
+async def discover_devices(
+    wave_devices: Optional[List[WaveDevice]] = None,
+) -> List[WaveDevice]:
     """Discovers all valid, accessible Airthings Wave devices."""
 
     wave_devices = wave_devices if isinstance(wave_devices, list) else []
@@ -280,30 +273,33 @@ async def discover_devices(wave_devices: Optional[List] = None) -> List[WaveDevi
     return wave_devices
 
 
-def run(max_retries: int = 3):
-    """Convenience function for pulling device data. This is particularly useful
-    for users without strong experience with asynchronous programming.
+def scan(max_retries: int = 3) -> List[WaveDevice]:
+    """Convenience function for discovering devices. This is particularly useful
+    for users that are not as comfortable asynchronous programming.
 
     :param max_retries: Number of attempts for connecting to devices
     """
 
     retry_attempts = 0
-    wave_devices = []
+    wave_devices: WaveDevice = []
 
-    def _run():
-        loop = asyncio.get_event_loop()
+    def _scan():
+        loop = asyncio.new_event_loop()
         task = loop.create_task(discover_devices(wave_devices))
         tasks = asyncio.gather(task, return_exceptions=True)
         loop.run_until_complete(tasks)
 
     while retry_attempts < max_retries:
         try:
-            _run()
+            _scan()
             break
         except Exception as err:
             _logger.debug(err)
-            _logger.warning("Encountered an error. Retrying.")
+            _logger.warning(
+                f"Encountered an error. Retrying. {retry_attempts}/{max_retries}"
+            )
             retry_attempts += 1
-        _logger.error(f"Exceeded {max_retries} attempts. Aborting.")
+        if retry_attempts >= max_retries:
+            _logger.error(f"Exceeded {max_retries} attempts. Aborting.")
 
     return wave_devices

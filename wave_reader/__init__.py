@@ -1,1 +1,1 @@
-from .wave import WaveDevice, discover_devices  # noqa: F401
+from .wave import WaveDevice, discover_devices, scan  # noqa: F401

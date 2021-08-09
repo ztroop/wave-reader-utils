@@ -225,6 +225,35 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         self.assertEqual(device.sensor_readings.dew_point, 4.25)
 
 
+class TestScan(TestCase):
+    def setUp(self) -> None:
+        self.BLEDevice = MockedBLEDevice()
+        self.WaveDevice = wave.WaveDevice(self.BLEDevice, "2930618893")
+
+    @patch("wave_reader.wave.discover")
+    def test_scan(self, mocked_discover):
+        mocked_discover.return_value = [self.WaveDevice]
+
+        devices = wave.scan()
+        self.assertEqual(devices, [self.WaveDevice])
+
+    @patch("wave_reader.wave._logger.warning")
+    @patch("wave_reader.wave._logger.error")
+    @patch("wave_reader.wave.asyncio.new_event_loop")
+    def test_failing_scan(self, mocked_discover, mocked_log_err, mocked_log_warn):
+        # We're trying to catch upstream failures. For example, bleak might raise
+        # a txdbus.error.RemoteError or related exception (bleak.exc.BleakError)
+        # potentially due to txdbus and how it handles the DBus connections.
+        #
+        # See Issue #5 for more information
+        mocked_discover.side_effect = Exception()
+        devices = wave.scan()
+
+        self.assertEqual(len(mocked_log_warn.mock_calls), 3)
+        mocked_log_err.assert_called_once()
+        self.assertEqual(devices, [])
+
+
 class TestDeviceSensors(TestCase):
     """TestCase for DeviceSensors class."""
 
