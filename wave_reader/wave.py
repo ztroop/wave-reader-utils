@@ -243,7 +243,7 @@ class WaveDevice:
 
     @classmethod
     def create(cls, address: str, serial: str):
-        """Create a WaveDevice instance with three distinct arguments.
+        """Create a WaveDevice instance with arguments.
 
         :param address: The device UUID in MacOS, or MAC in Linux and Windows.
         :param serial: The serial number for the device.
