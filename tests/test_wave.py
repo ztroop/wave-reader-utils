@@ -245,7 +245,7 @@ class TestScan(TestCase):
         # a txdbus.error.RemoteError or related exception (bleak.exc.BleakError)
         # potentially due to txdbus and how it handles the DBus connections.
         #
-        # See Issue #5 for more information
+        # See Issue #5 for more information.
         mocked_discover.side_effect = Exception()
         devices = wave.scan()
 

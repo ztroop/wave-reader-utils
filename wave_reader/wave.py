@@ -281,7 +281,7 @@ def scan(max_retries: int = 3) -> List[WaveDevice]:
     """
 
     retry_attempts = 0
-    wave_devices: WaveDevice = []
+    wave_devices: List[WaveDevice] = []
 
     def _scan():
         loop = asyncio.new_event_loop()
