@@ -1,2 +1,8 @@
 site_name: Wave Reader Utils
 theme: material
+repo_url: https://github.com/ztroop/wave-reader-utils
+nav:
+    - Introduction: 'index.md'
+    - 'API Documentation': 'api.md'
+    - 'Device Specifications': 'specs.md'
+    - 'Issue Tracker': 'https://github.com/ztroop/wave-reader-utils/issues'

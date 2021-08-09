@@ -1,6 +1,6 @@
 from copy import deepcopy
 from unittest import IsolatedAsyncioTestCase, TestCase
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from wave_reader import data, wave
 from wave_reader.utils import requires_client
@@ -225,6 +225,35 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         self.assertEqual(device.sensor_readings.dew_point, 4.25)
 
 
+class TestScan(TestCase):
+    def setUp(self) -> None:
+        self.BLEDevice = MockedBLEDevice()
+        self.WaveDevice = wave.WaveDevice(self.BLEDevice, "2930618893")
+
+    @patch("wave_reader.wave.discover")
+    def test_scan(self, mocked_discover):
+        mocked_discover.return_value = [self.WaveDevice]
+
+        devices = wave.scan()
+        self.assertEqual(devices, [self.WaveDevice])
+
+    @patch("wave_reader.wave._logger.warning")
+    @patch("wave_reader.wave._logger.error")
+    @patch("wave_reader.wave.asyncio.new_event_loop")
+    def test_failing_scan(self, mocked_discover, mocked_log_err, mocked_log_warn):
+        # We're trying to catch upstream failures. For example, bleak might raise
+        # a txdbus.error.RemoteError or related exception (bleak.exc.BleakError)
+        # potentially due to txdbus and how it handles the DBus connections.
+        #
+        # See Issue #5 for more information.
+        mocked_discover.side_effect = Exception()
+        devices = wave.scan()
+
+        self.assertEqual(len(mocked_log_warn.mock_calls), 3)
+        mocked_log_err.assert_called_once()
+        self.assertEqual(devices, [])
+
+
 class TestDeviceSensors(TestCase):
     """TestCase for DeviceSensors class."""
 
@@ -299,32 +328,6 @@ class TestDeviceSensors(TestCase):
         }
         self.assertEqual(device_sensors.as_dict(), expected_dict)
         self.assertEqual(device_sensors.dew_point, 10.96)
-
-
-class TestRetry(TestCase):
-    """Test for the ``retry`` decorator."""
-
-    def test_retry_eventually_successful(self):
-        mock = MagicMock(side_effect=(ValueError, ValueError, 100))
-
-        @wave.retry(ValueError, delay=0, retries=3)
-        def fake_function():
-            v = mock()
-            return v
-
-        r = fake_function()
-        self.assertEqual(r, 100)
-
-    def test_retry_failed(self):
-        mock = MagicMock(side_effect=(ValueError))
-
-        @wave.retry(ValueError, retries=1, delay=0)
-        def fake_function():
-            v = mock()
-            return v
-
-        with self.assertRaises(ValueError):
-            fake_function()
 
 
 class TestRequiresClient(IsolatedAsyncioTestCase):
