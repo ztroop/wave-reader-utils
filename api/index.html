@@ -9,8 +9,8 @@
       
       
       
-      <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.4">
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.2">
     
     
       
@@ -18,10 +18,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.77f3fd56.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.1118c9be.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.7fa14f5b.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ba0d045b.min.css">
         
       
     
@@ -38,6 +38,8 @@
     
     
       
+
+
     
     
   </head>
@@ -49,8 +51,9 @@
     
     
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
-      
   
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -67,11 +70,9 @@
       
     </div>
     
-      
-
-<header class="md-header" data-md-component="header">
+      <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Wave Reader Utils" class="md-header__button md-logo" aria-label="Wave Reader Utils">
+    <a href=".." title="Wave Reader Utils" class="md-header__button md-logo" aria-label="Wave Reader Utils" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -96,9 +97,8 @@
         </div>
       </div>
     </div>
-    <div class="md-header__options">
-      
-    </div>
+    
+    
     
       <label class="md-header__button md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
@@ -108,14 +108,18 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
       </label>
-      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
-      </button>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
@@ -130,6 +134,19 @@
   </div>
 </div>
     
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ztroop/wave-reader-utils/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
     
   </nav>
 </header>
@@ -150,11 +167,9 @@
                     
 
 
-
-
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Wave Reader Utils" class="md-nav__button md-logo" aria-label="Wave Reader Utils">
+    <a href=".." title="Wave Reader Utils" class="md-nav__button md-logo" aria-label="Wave Reader Utils" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -162,6 +177,19 @@
     </a>
     Wave Reader Utils
   </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ztroop/wave-reader-utils/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -193,6 +221,7 @@
       
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
+      
         
       
       
@@ -209,6 +238,7 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
     
   
   
@@ -217,6 +247,47 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#devicesensors-objects" class="md-nav__link">
+    DeviceSensors Objects
+  </a>
+  
+    <nav class="md-nav" aria-label="DeviceSensors Objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#as_dict" class="md-nav__link">
+    as_dict
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#as_tuple" class="md-nav__link">
+    as_tuple
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dew_point" class="md-nav__link">
+    dew_point
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from_bytes" class="md-nav__link">
+    from_bytes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#wavedevice-objects" class="md-nav__link">
@@ -289,49 +360,22 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#devicesensors-objects" class="md-nav__link">
-    DeviceSensors Objects
-  </a>
-  
-    <nav class="md-nav" aria-label="DeviceSensors Objects">
-      <ul class="md-nav__list">
-        
           <li class="md-nav__item">
-  <a href="#as_dict" class="md-nav__link">
-    as_dict
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#as_tuple" class="md-nav__link">
-    as_tuple
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#from_bytes" class="md-nav__link">
-    from_bytes
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#discover_devices" class="md-nav__link">
     discover_devices
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scan" class="md-nav__link">
+    scan
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -358,6 +402,21 @@
   
 
     
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ztroop/wave-reader-utils/issues" class="md-nav__link">
+        Issue Tracker
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -373,6 +432,7 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
     
   
   
@@ -381,6 +441,47 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#devicesensors-objects" class="md-nav__link">
+    DeviceSensors Objects
+  </a>
+  
+    <nav class="md-nav" aria-label="DeviceSensors Objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#as_dict" class="md-nav__link">
+    as_dict
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#as_tuple" class="md-nav__link">
+    as_tuple
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dew_point" class="md-nav__link">
+    dew_point
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from_bytes" class="md-nav__link">
+    from_bytes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#wavedevice-objects" class="md-nav__link">
@@ -453,49 +554,22 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#devicesensors-objects" class="md-nav__link">
-    DeviceSensors Objects
-  </a>
-  
-    <nav class="md-nav" aria-label="DeviceSensors Objects">
-      <ul class="md-nav__list">
-        
           <li class="md-nav__item">
-  <a href="#as_dict" class="md-nav__link">
-    as_dict
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#as_tuple" class="md-nav__link">
-    as_tuple
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#from_bytes" class="md-nav__link">
-    from_bytes
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#discover_devices" class="md-nav__link">
     discover_devices
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scan" class="md-nav__link">
+    scan
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -511,8 +585,53 @@
             <article class="md-content__inner md-typeset">
               
                 
+                  <a href="https://github.com/ztroop/wave-reader-utils/edit/master/docs/api.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
                 
                 <h1 id="api-documentation">API Documentation</h1>
+<p><a name="wave_reader.wave.DeviceSensors"></a></p>
+<h2 id="devicesensors-objects">DeviceSensors Objects</h2>
+<pre><code class="language-python">@dataclass
+class DeviceSensors()
+</code></pre>
+<p>A dataclass to encapsulate sensor data.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>humidity</code>: Relative humidity level (%rH)</li>
+<li><code>radon_sta</code>: Short-term average for radon level (Bq/m3)</li>
+<li><code>radon_lta</code>: Long-term average for radon level (Bq/m3)</li>
+<li><code>temperature</code>: Ambient temperature (°C)</li>
+<li><code>pressure</code>: Atmospheric pressure (hPa)</li>
+<li><code>co2</code>: Carbon dioxide level (ppm)</li>
+<li><code>voc</code>: Volatile organic compound level (ppb)</li>
+<li><code>pm</code>: Particulate matter (ug/m3)</li>
+</ul>
+<p><a name="wave_reader.wave.DeviceSensors.as_dict"></a></p>
+<h4 id="as_dict">as_dict</h4>
+<pre><code class="language-python"> | as_dict() -&gt; Dict[str, Union[int, float]]
+</code></pre>
+<p>Returns a dictionary of populated dataclass fields.</p>
+<p><a name="wave_reader.wave.DeviceSensors.as_tuple"></a></p>
+<h4 id="as_tuple">as_tuple</h4>
+<pre><code class="language-python"> | as_tuple() -&gt; tuple
+</code></pre>
+<p>Return a tuple of all dataclass fields.</p>
+<p><a name="wave_reader.wave.DeviceSensors.dew_point"></a></p>
+<h4 id="dew_point">dew_point</h4>
+<pre><code class="language-python"> | @property
+ | dew_point() -&gt; Optional[float]
+</code></pre>
+<p>Dew point approximation using the Magnus formula. (°C)</p>
+<p><a name="wave_reader.wave.DeviceSensors.from_bytes"></a></p>
+<h4 id="from_bytes">from_bytes</h4>
+<pre><code class="language-python"> | @classmethod
+ | from_bytes(cls, data: List[int], product: WaveProduct)
+</code></pre>
+<p>Instantiate the class with raw sensor values and the <code>WaveProduct</code>
+selection. Each product can have different sensors or may require the
+raw data to be handled differently.</p>
 <p><a name="wave_reader.wave.WaveDevice"></a></p>
 <h2 id="wavedevice-objects">WaveDevice Objects</h2>
 <pre><code class="language-python">class WaveDevice()
@@ -532,46 +651,51 @@ properties: <code>name</code>, <code>address</code> and optionally <code>rssi</c
 <h4 id="connect">connect</h4>
 <pre><code class="language-python"> | async connect() -&gt; bool
 </code></pre>
-<p>Method for initiating BLE communication.</p>
+<p>Method for initiating BLE connection.</p>
 <p><a name="wave_reader.wave.WaveDevice.is_connected"></a></p>
 <h4 id="is_connected">is_connected</h4>
-<pre><code class="language-python"> | async is_connected() -&gt; bool
+<pre><code class="language-python"> | @requires_client
+ | async is_connected() -&gt; bool
 </code></pre>
 <p>Method for determining the status of the BLE connection.</p>
 <p><a name="wave_reader.wave.WaveDevice.disconnect"></a></p>
 <h4 id="disconnect">disconnect</h4>
-<pre><code class="language-python"> | async disconnect() -&gt; bool
+<pre><code class="language-python"> | @requires_client
+ | async disconnect() -&gt; bool
 </code></pre>
-<p>Method for closing BLE communication.</p>
+<p>Method for closing BLE connection.</p>
 <p><a name="wave_reader.wave.WaveDevice.read_gatt_descriptor"></a></p>
 <h4 id="read_gatt_descriptor">read_gatt_descriptor</h4>
-<pre><code class="language-python"> | async read_gatt_descriptor(gatt_desc: str) -&gt; bytearray
+<pre><code class="language-python"> | @requires_client
+ | async read_gatt_descriptor(gatt_desc: str) -&gt; Optional[bytearray]
 </code></pre>
 <p>Read Generic Attribute Profile GATT descriptor data.</p>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>handle</code>: Manually specify a descriptor UUID.</li>
+<li><code>handle</code>: Specify a descriptor UUID string</li>
 </ul>
 <p><a name="wave_reader.wave.WaveDevice.read_gatt_characteristic"></a></p>
 <h4 id="read_gatt_characteristic">read_gatt_characteristic</h4>
-<pre><code class="language-python"> | async read_gatt_characteristic(gatt_char: str) -&gt; bytearray
+<pre><code class="language-python"> | @requires_client
+ | async read_gatt_characteristic(gatt_char: str) -&gt; bytearray
 </code></pre>
 <p>Read Generic Attribute Profile GATT characteristic data.</p>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>gatt_char</code>: Manually specify a characteristic UUID.</li>
+<li><code>gatt_char</code>: Specify a characteristic UUID string</li>
 </ul>
 <p><a name="wave_reader.wave.WaveDevice.get_services"></a></p>
 <h4 id="get_services">get_services</h4>
-<pre><code class="language-python"> | async get_services() -&gt; Dict
+<pre><code class="language-python"> | @requires_client
+ | async get_services() -&gt; Dict
 </code></pre>
-<p>Get available services, descriptors and characteristics for
-the device.</p>
+<p>Get available services, descriptors and characteristics for the device.</p>
 <p><a name="wave_reader.wave.WaveDevice.get_sensor_values"></a></p>
 <h4 id="get_sensor_values">get_sensor_values</h4>
-<pre><code class="language-python"> | async get_sensor_values() -&gt; Optional[DeviceSensors]
+<pre><code class="language-python"> | @requires_client
+ | async get_sensor_values() -&gt; Optional[DeviceSensors]
 </code></pre>
-<p>Retrieve sensor values from the specified Wave device.</p>
+<p>Get sensor values from the specified Wave device.</p>
 <p><a name="wave_reader.wave.WaveDevice.parse_manufacturer_data"></a></p>
 <h4 id="parse_manufacturer_data">parse_manufacturer_data</h4>
 <pre><code class="language-python"> | @staticmethod
@@ -588,52 +712,27 @@ Airthings Wave devices.</p>
 <pre><code class="language-python"> | @classmethod
  | create(cls, address: str, serial: str)
 </code></pre>
-<p>Create a WaveDevice instance with three distinct arguments.</p>
+<p>Create a WaveDevice instance with arguments.</p>
 <p><strong>Arguments</strong>:</p>
 <ul>
 <li><code>address</code>: The device UUID in MacOS, or MAC in Linux and Windows.</li>
 <li><code>serial</code>: The serial number for the device.</li>
 </ul>
-<p><a name="wave_reader.wave.DeviceSensors"></a></p>
-<h2 id="devicesensors-objects">DeviceSensors Objects</h2>
-<pre><code class="language-python">@dataclass
-class DeviceSensors()
-</code></pre>
-<p>A dataclass to encapsulate sensor data.</p>
-<p><strong>Arguments</strong>:</p>
-<ul>
-<li><code>humidity</code>: Relative humidity level (%rH)</li>
-<li><code>radon_sta</code>: Short-term average for radon level (Bq/m3)</li>
-<li><code>radon_lta</code>: Long-term average for radon level (Bq/m3)</li>
-<li><code>temperature</code>: Ambient temperature (degC)</li>
-<li><code>pressure</code>: Atmospheric pressure (hPa)</li>
-<li><code>co2</code>: Carbon dioxide level (ppm)</li>
-<li><code>voc</code>: Volatile organic compound level (ppb)</li>
-<li><code>dew_pont</code>: Dew point approximation using the Magnus formula (degC)</li>
-</ul>
-<p><a name="wave_reader.wave.DeviceSensors.as_dict"></a></p>
-<h4 id="as_dict">as_dict</h4>
-<pre><code class="language-python"> | as_dict() -&gt; Dict[str, Union[int, float]]
-</code></pre>
-<p>Returns a dictionary of populated dataclass fields.</p>
-<p><a name="wave_reader.wave.DeviceSensors.as_tuple"></a></p>
-<h4 id="as_tuple">as_tuple</h4>
-<pre><code class="language-python"> | as_tuple() -&gt; tuple
-</code></pre>
-<p>Return a tuple of all dataclass fields.</p>
-<p><a name="wave_reader.wave.DeviceSensors.from_bytes"></a></p>
-<h4 id="from_bytes">from_bytes</h4>
-<pre><code class="language-python"> | @classmethod
- | from_bytes(cls, data: List[int], product: WaveProduct)
-</code></pre>
-<p>Instantiate the class with raw sensor values and the <code>WaveProduct</code>
-selection. Each product can have different sensors or may require the
-raw data to be handled differently.</p>
 <p><a name="wave_reader.wave.discover_devices"></a></p>
-<h2 id="discover_devices">discover_devices</h2>
-<pre><code class="language-python">async discover_devices() -&gt; List[WaveDevice]
+<h4 id="discover_devices">discover_devices</h4>
+<pre><code class="language-python">async discover_devices(wave_devices: Optional[List[WaveDevice]] = None) -&gt; List[WaveDevice]
 </code></pre>
 <p>Discovers all valid, accessible Airthings Wave devices.</p>
+<p><a name="wave_reader.wave.scan"></a></p>
+<h4 id="scan">scan</h4>
+<pre><code class="language-python">scan(max_retries: int = 3) -&gt; List[WaveDevice]
+</code></pre>
+<p>Convenience function for discovering devices. This is particularly useful
+for users that are not as comfortable asynchronous programming.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>max_retries</code>: Number of attempts for connecting to devices</li>
+</ul>
                 
               
               
@@ -644,6 +743,7 @@ raw data to be handled differently.</p>
             </article>
           </div>
         </div>
+        
       </main>
       
         
@@ -651,7 +751,8 @@ raw data to be handled differently.</p>
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href=".." class="md-footer__link md-footer__link--prev" rel="prev">
+        
+        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Introduction" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -666,7 +767,8 @@ raw data to be handled differently.</p>
         </a>
       
       
-        <a href="../specs/" class="md-footer__link md-footer__link--next" rel="next">
+        
+        <a href="../specs/" class="md-footer__link md-footer__link--next" aria-label="Next: Device Specifications" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
@@ -690,6 +792,7 @@ raw data to be handled differently.</p>
         <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs
         </a>
+        
       </div>
       
     </div>
@@ -700,10 +803,10 @@ raw data to be handled differently.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.9b151c6a.min.js"></script>
+      <script src="../assets/javascripts/bundle.2b46852b.min.js"></script>
       
     
   </body>
