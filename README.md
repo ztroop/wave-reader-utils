@@ -3,28 +3,22 @@
 [![PyPI version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader)
 [![PyPI downloads](https://img.shields.io/pypi/dm/wave-reader)](https://pypi.org/project/wave-reader/)
 
-## Summary
+## Wave Reader Utilities
 
-This is an **unofficial** Airthings Wave library designed to provide tools and information
-around device communication. The library wouldn't be possible without the existing scripts
-available by Airthings and contribution of others.
-See [documentation](https://ztroop.github.io/wave-reader-utils/) for more information.
+The `Airthings Wave` is a series of devices that track Radon levels in the home. Radon is a radioactive
+gas that comes from the breakdown of uranium in soil and rock. It's invisible, odourless and tasteless.
 
-This library uses `bleak` as a dependency instead of `bluepy` for platform cross-compatibility
-and support for asynchronous operation.
+This is an **unofficial** Airthings Wave community library designed to provide utilities and interface
+for device communication. The library wouldn't be possible without the existing efforts from Airthings
+and the contribution of others. See [documentation](https://ztroop.github.io/wave-reader-utils/) for
+more information.
 
 ## Goals
 
-These are the goals for this project, _in no particular order_:
-
-- [x] Support platform cross-compatibility. Windows, Mac and Linux.
-- [x] Support WavePlus, Wave (Version 2) and Wave Mini devices.
-- [x] Support operation across multiple devices asynchronously.
-- [x] Code testing, linting, type hinting, formatting and coverage reporting.
-- [x] Discover all Wave devices or inherit WaveDevice class for sensor readings.
-- [x] Support other devices like Wave (Version 1).
-- [ ] Add View Plus support.
-- [ ] Add battery life support.
+- Using `bleak` as a dependency for platform cross-compatibility and support for asynchronous operation.
+- Support for major models: Wave+, Wave, Wave (Version 2) and Wave Mini devices.
+- Code testing, coverage reporting, linting, type hinting, and formatting.
+- Provide a more comprehensive programming interface for a developer audience.
 
 ## Requirements
 
