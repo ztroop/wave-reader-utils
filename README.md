@@ -13,7 +13,7 @@ for device communication. The library wouldn't be possible without the existing 
 and the contribution of others. See [documentation](https://ztroop.github.io/wave-reader-utils/) for
 more information.
 
-## Goals
+## Features
 
 - Using `bleak` as a dependency for platform cross-compatibility and support for asynchronous operation.
 - Support for major models: Wave+, Wave, Wave (Version 2) and Wave Mini devices.
@@ -59,6 +59,10 @@ if __name__ == "__main__":
 
 # >>> DeviceSensors (humidity: 32.5, radon_sta: 116, radon_lta: 113 ...
 ```
+
+## Contribution
+
+If you identify a bug, please open a ticket. Pull requests are always welcome.
 
 ## Testing
 

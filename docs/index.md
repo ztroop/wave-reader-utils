@@ -12,7 +12,7 @@ This is an **unofficial** Airthings Wave community library designed to provide u
 for device communication. The library wouldn't be possible without the existing efforts from Airthings
 and the contribution of others.
 
-## Goals
+## Features
 
 - Using `bleak` as a dependency for platform cross-compatibility and support for asynchronous operation.
 - Support for major models: Wave+, Wave, Wave (Version 2) and Wave Mini devices.
@@ -58,6 +58,10 @@ if __name__ == "__main__":
 
 # >>> DeviceSensors (humidity: 32.5, radon_sta: 116, radon_lta: 113 ...
 ```
+
+## Contribution
+
+If you identify a bug, please open a ticket. Pull requests are always welcome.
 
 ## Testing
 
