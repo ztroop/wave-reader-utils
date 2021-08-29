@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import os
 import struct
 from collections import namedtuple
 from dataclasses import dataclass, fields
@@ -23,9 +22,6 @@ from wave_reader.utils import UnsupportedError, requires_client
 
 _logger = logging.getLogger(__name__)
 _logger.addHandler(logging.NullHandler())
-
-READER_RETRY = int(os.getenv("WAVE_READER_RETRY", 3))
-READER_RETRY_DELAY = int(os.getenv("WAVE_READER_RETRY_DELAY", 1))
 
 
 @dataclass
