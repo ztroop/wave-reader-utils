@@ -5,5 +5,6 @@ nav:
     - 'Introduction': 'index.md'
     - 'API Documentation': 'api.md'
     - 'Device Specifications': 'specs.md'
+    - 'Web Client': 'web.md'
     - 'Code Repository': 'https://github.com/ztroop/wave-reader-utils'
     - 'Issue Tracker': 'https://github.com/ztroop/wave-reader-utils/issues'

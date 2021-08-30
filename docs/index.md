@@ -8,9 +8,10 @@
 The `Airthings Wave` is a series of devices that track Radon levels in the home. Radon is a radioactive
 gas that comes from the breakdown of uranium in soil and rock. It's invisible, odourless and tasteless.
 
-This is an **unofficial** Airthings Wave community library designed to provide utilities and interface
-for device communication. The library wouldn't be possible without the existing efforts from Airthings
-and the contribution of others.
+This is an **unofficial** Airthings Wave community library designed to provide utilities for device
+and web communication. The library wouldn't be possible without the existing efforts from Airthings
+and the contribution from the community. See [documentation](https://ztroop.github.io/wave-reader-utils/)
+for more information.
 
 ## Features
 
@@ -21,13 +22,15 @@ and the contribution of others.
 
 ## Requirements
 
-In Ubuntu Linux, make sure you have `libglib2.0-dev` and `bluez` installed:
+In Ubuntu/Debian, make sure you have `libglib2.0-dev` and `bluez` installed:
 
 ```sh
 sudo apt-get install libglib2.0-dev bluez -y
 ```
 
-In theory, other platforms (Windows, Mac) _are_ supported by using `bleak` as a dependency, but open a ticket if you run into any issues.
+Other Linux distributions should have equivalent packages. In theory, other platforms
+(Windows, Mac) _are_ supported by using `bleak` as a dependency, but open a ticket
+if you run into any issues.
 
 ## Installation
 
@@ -58,6 +61,11 @@ if __name__ == "__main__":
 
 # >>> DeviceSensors (humidity: 32.5, radon_sta: 116, radon_lta: 113 ...
 ```
+
+## Web API Client Module
+
+The `wave_reader/web` module in this library provides a client for the Airthings
+web API. See [this page](./wave_reader/web/README.md) for more details.
 
 ## Contribution
 
