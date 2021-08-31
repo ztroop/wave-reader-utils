@@ -16,9 +16,10 @@ First, create a client:
 ```python
 from wave_reader.web import client
 
-client = client.OAuth2ClientHandler(client_id, client_secret, redirect_uri)
-client.new_authorization_url()
-client.new_access_token()
+handler = client.OAuth2ClientHandler(client_id, client_secret, redirect_uri)
+handler.new_authorization_url()
+handler.new_access_token()
+client = handler.new_client()
 ```
 
 Now call your endpoint and use the models:
@@ -41,7 +42,9 @@ from wave_reader.web.types import Response
 response: Response[GetDeviceDetailedResponse] = await device_info.asyncio_detailed(1234567890, client=client)
 ```
 
-## Special Notes
+All path/query params, and bodies become method arguments. In the example above, the serial number is required.
+
+## Important Notes
 
 1. Every path/method combo becomes a Python module with four functions:
     - `sync`: Blocking request that returns parsed data (if successful) or `None`
