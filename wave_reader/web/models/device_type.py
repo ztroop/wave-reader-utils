@@ -1,0 +1,28 @@
+from enum import Enum
+
+
+class DeviceType(str, Enum):
+    WAVE = "WAVE"
+    WAVE_MIST = "WAVE_MIST"
+    WAVE_GEN2 = "WAVE_GEN2"
+    WAVE_MINI = "WAVE_MINI"
+    WAVE_PLUS = "WAVE_PLUS"
+    WAVE_CO2 = "WAVE_CO2"
+    VIEW_PLUS = "VIEW_PLUS"
+    VIEW_PLUS_BUSINESS = "VIEW_PLUS_BUSINESS"
+    HUB = "HUB"
+    HOME = "HOME"
+    PRO = "PRO"
+    CLOUDBERRY = "CLOUDBERRY"
+    AIRTIGHT = "AIRTIGHT"
+    AGGREGATED_GROUP = "AGGREGATED_GROUP"
+    ZONE_GROUP = "ZONE_GROUP"
+    BALANCE_CONTROL = "BALANCE_CONTROL"
+    AIRLY = "AIRLY"
+    AIRLY_NO2 = "AIRLY_NO2"
+    AIRLY_CO = "AIRLY_CO"
+    BREEZOMETER_WEATHER = "BREEZOMETER_WEATHER"
+    UNKNOWN = "UNKNOWN"
+
+    def __str__(self) -> str:
+        return str(self.value)
