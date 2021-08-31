@@ -286,8 +286,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#special-notes" class="md-nav__link">
-    Special Notes
+  <a href="#important-notes" class="md-nav__link">
+    Important Notes
   </a>
   
 </li>
@@ -370,8 +370,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#special-notes" class="md-nav__link">
-    Special Notes
+  <a href="#important-notes" class="md-nav__link">
+    Important Notes
   </a>
   
 </li>
@@ -411,9 +411,10 @@ isn't working correctly, please open a bug ticket.</p>
 <p>First, create a client:</p>
 <pre><code class="language-python">from wave_reader.web import client
 
-client = client.OAuth2ClientHandler(client_id, client_secret, redirect_uri)
-client.new_authorization_url()
-client.new_access_token()
+handler = client.OAuth2ClientHandler(client_id, client_secret, redirect_uri)
+handler.new_authorization_url()
+handler.new_access_token()
+client = handler.new_client()
 </code></pre>
 <p>Now call your endpoint and use the models:</p>
 <pre><code class="language-python">from wave_reader.web.models.get_device_detailed_response import GetDeviceDetailedResponse
@@ -429,7 +430,8 @@ from wave_reader.web.types import Response
 
 response: Response[GetDeviceDetailedResponse] = await device_info.asyncio_detailed(1234567890, client=client)
 </code></pre>
-<h2 id="special-notes">Special Notes</h2>
+<p>All path/query params, and bodies become method arguments. In the example above, the serial number is required.</p>
+<h2 id="important-notes">Important Notes</h2>
 <ol>
 <li>
 <p>Every path/method combo becomes a Python module with four functions:</p>
