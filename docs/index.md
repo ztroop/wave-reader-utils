@@ -10,8 +10,7 @@ gas that comes from the breakdown of uranium in soil and rock. It's invisible, o
 
 This is an **unofficial** Airthings Wave community library designed to provide utilities for device
 and web communication. The library wouldn't be possible without the existing efforts from Airthings
-and the contribution from the community. See [documentation](https://ztroop.github.io/wave-reader-utils/)
-for more information.
+and the community. See [documentation](https://ztroop.github.io/wave-reader-utils/) for more information.
 
 ## Features
 
