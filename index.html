@@ -10,7 +10,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.2">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.5">
     
     
       
@@ -18,10 +18,10 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.1118c9be.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.be71726b.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ba0d045b.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.3f5d1f46.min.css">
         
       
     
@@ -61,7 +61,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#summary" class="md-skip">
+        <a href="#wave-reader-utilities" class="md-skip">
           Skip to content
         </a>
       
@@ -230,8 +230,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    Summary
+  <a href="#wave-reader-utilities" class="md-nav__link">
+    Wave Reader Utilities
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
   </a>
   
 </li>
@@ -253,6 +260,20 @@
         <li class="md-nav__item">
   <a href="#example-usage" class="md-nav__link">
     Example Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-api-client-module" class="md-nav__link">
+    Web API Client Module
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contribution" class="md-nav__link">
+    Contribution
   </a>
   
 </li>
@@ -310,6 +331,36 @@
   
   
     <li class="md-nav__item">
+      <a href="web/" class="md-nav__link">
+        Web Client
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ztroop/wave-reader-utils" class="md-nav__link">
+        Code Repository
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="https://github.com/ztroop/wave-reader-utils/issues" class="md-nav__link">
         Issue Tracker
       </a>
@@ -341,8 +392,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    Summary
+  <a href="#wave-reader-utilities" class="md-nav__link">
+    Wave Reader Utilities
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
   </a>
   
 </li>
@@ -364,6 +422,20 @@
         <li class="md-nav__item">
   <a href="#example-usage" class="md-nav__link">
     Example Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-api-client-module" class="md-nav__link">
+    Web API Client Module
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contribution" class="md-nav__link">
+    Contribution
   </a>
   
 </li>
@@ -398,18 +470,26 @@
 <a href="https://codecov.io/gh/ztroop/wave-reader-utils"><img alt="codecov" src="https://codecov.io/gh/ztroop/wave-reader-utils/branch/master/graph/badge.svg?token=NG9H8YO1ID" /></a>
 <a href="https://badge.fury.io/py/wave-reader"><img alt="PyPI version" src="https://badge.fury.io/py/wave-reader.svg" /></a>
 <a href="https://pypi.org/project/wave-reader/"><img alt="PyPI downloads" src="https://img.shields.io/pypi/dm/wave-reader" /></a></p>
-<h2 id="summary">Summary</h2>
-<p>This is an <strong>unofficial</strong> Airthings Wave library designed to provide tools and information
-around device communication. The library wouldn't be possible without the existing scripts
-available by Airthings and contribution of others.
-See <a href="https://ztroop.github.io/wave-reader-utils/">documentation</a> for more information.</p>
-<p>This library uses <code>bleak</code> as a dependency instead of <code>bluepy</code> for platform cross-compatibility
-and support for asynchronous operation.</p>
+<h2 id="wave-reader-utilities">Wave Reader Utilities</h2>
+<p>The <code>Airthings Wave</code> is a series of devices that track Radon levels in the home. Radon is a radioactive
+gas that comes from the breakdown of uranium in soil and rock. It's invisible, odourless and tasteless.</p>
+<p>This is an <strong>unofficial</strong> Airthings Wave community library designed to provide utilities for device
+and web communication. The library wouldn't be possible without the existing efforts from Airthings
+and the community. See <a href="https://ztroop.github.io/wave-reader-utils/">documentation</a> for more information.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Using <code>bleak</code> as a dependency for platform cross-compatibility and support for asynchronous operation.</li>
+<li>Support for major models: Wave+, Wave, Wave (Version 2) and Wave Mini devices.</li>
+<li>Code testing, coverage reporting, linting, type hinting, and formatting.</li>
+<li>Provide a more comprehensive programming interface for a developer audience.</li>
+</ul>
 <h2 id="requirements">Requirements</h2>
-<p>In Ubuntu Linux, make sure you have <code>libglib2.0-dev</code> and <code>bluez</code> installed:</p>
+<p>In Ubuntu/Debian, make sure you have <code>libglib2.0-dev</code> and <code>bluez</code> installed:</p>
 <pre><code class="language-sh">sudo apt-get install libglib2.0-dev bluez -y
 </code></pre>
-<p>In theory, other platforms (Windows, Mac) <em>are</em> supported by using <code>bleak</code> as a dependency, but open a ticket if you run into any issues.</p>
+<p>Other Linux distributions should have equivalent packages. In theory, other platforms
+(Windows, Mac) <em>are</em> supported by using <code>bleak</code> as a dependency, but open a ticket
+if you run into any issues.</p>
 <h2 id="installation">Installation</h2>
 <p>You can install the library by running:</p>
 <pre><code class="language-sh">pip install wave-reader
@@ -432,6 +512,11 @@ if __name__ == &quot;__main__&quot;:
 
 # &gt;&gt;&gt; DeviceSensors (humidity: 32.5, radon_sta: 116, radon_lta: 113 ...
 </code></pre>
+<h2 id="web-api-client-module">Web API Client Module</h2>
+<p>The <code>wave_reader/web</code> module in this library provides a client for the Airthings
+web API. See <a href="./wave_reader/web/README.md">this page</a> for more details.</p>
+<h2 id="contribution">Contribution</h2>
+<p>If you identify a bug, please open a ticket. Pull requests are always welcome.</p>
 <h2 id="testing">Testing</h2>
 <p>You can run the entire test suite by running <code>tox</code>. It will run <code>flake8</code>, <code>isort</code> and <code>pytest</code>.
 If you'd like to just run unit tests, running <code>pytest ./tests</code> is sufficient.</p>
@@ -490,10 +575,10 @@ If you'd like to just run unit tests, running <code>pytest ./tests</code> is suf
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.409db549.min.js", "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.2b46852b.min.js"></script>
+      <script src="assets/javascripts/bundle.56a63758.min.js"></script>
       
     
   </body>
