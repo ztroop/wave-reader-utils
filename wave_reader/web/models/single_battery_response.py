@@ -10,8 +10,6 @@ T = TypeVar("T", bound="SingleBatteryResponse")
 
 @attr.s(auto_attribs=True)
 class SingleBatteryResponse:
-    """  """
-
     id: str
     data: Union[Unset, SingleBatteryResponseData] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)

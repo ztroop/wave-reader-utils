@@ -10,8 +10,6 @@ T = TypeVar("T", bound="SingleSampleResponse")
 
 @attr.s(auto_attribs=True)
 class SingleSampleResponse:
-    """  """
-
     data: Union[Unset, SingleSampleData] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 

@@ -10,8 +10,6 @@ T = TypeVar("T", bound="GetDevicesResponse")
 
 @attr.s(auto_attribs=True)
 class GetDevicesResponse:
-    """  """
-
     devices: Union[Unset, List[GetDeviceDetailedResponse]] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 

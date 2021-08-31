@@ -12,8 +12,6 @@ T = TypeVar("T", bound="CreateHookRequest")
 
 @attr.s(auto_attribs=True)
 class CreateHookRequest:
-    """  """
-
     name: str
     url: str
     labels: Union[Unset, CreateHookRequestLabels] = UNSET

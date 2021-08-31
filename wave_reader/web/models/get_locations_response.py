@@ -9,8 +9,6 @@ T = TypeVar("T", bound="GetLocationsResponse")
 
 @attr.s(auto_attribs=True)
 class GetLocationsResponse:
-    """  """
-
     locations: List[Location]
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 

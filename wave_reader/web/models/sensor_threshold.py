@@ -12,8 +12,6 @@ T = TypeVar("T", bound="SensorThreshold")
 
 @attr.s(auto_attribs=True)
 class SensorThreshold:
-    """  """
-
     type: Union[Unset, SensorType] = UNSET
     unit: Union[Unset, SensorUnit] = UNSET
     ranges: Union[Unset, List[ThresholdRange]] = UNSET

@@ -10,8 +10,6 @@ T = TypeVar("T", bound="ThresholdRange")
 
 @attr.s(auto_attribs=True)
 class ThresholdRange:
-    """  """
-
     from_: Union[Unset, float] = UNSET
     to: Union[Unset, float] = UNSET
     rating: Union[Unset, RangeRating] = UNSET

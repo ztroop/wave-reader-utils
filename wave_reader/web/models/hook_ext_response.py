@@ -15,8 +15,6 @@ T = TypeVar("T", bound="HookExtResponse")
 
 @attr.s(auto_attribs=True)
 class HookExtResponse:
-    """  """
-
     name: str
     id: str
     url: str

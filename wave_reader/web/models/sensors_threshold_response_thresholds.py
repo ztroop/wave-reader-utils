@@ -9,8 +9,6 @@ T = TypeVar("T", bound="SensorsThresholdResponseThresholds")
 
 @attr.s(auto_attribs=True)
 class SensorsThresholdResponseThresholds:
-    """  """
-
     additional_properties: Dict[str, SensorThreshold] = attr.ib(
         init=False, factory=dict
     )

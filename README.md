@@ -19,6 +19,7 @@ for more information.
 - Support for major models: Wave+, Wave, Wave (Version 2) and Wave Mini devices.
 - Code testing, coverage reporting, linting, type hinting, and formatting.
 - Provide a more comprehensive programming interface for a developer audience.
+- Auxillary module that provides a web client for Airthings API and OAuth2 authentication.
 
 ## Requirements
 

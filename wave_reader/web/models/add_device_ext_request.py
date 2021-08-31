@@ -9,8 +9,6 @@ T = TypeVar("T", bound="AddDeviceExtRequest")
 
 @attr.s(auto_attribs=True)
 class AddDeviceExtRequest:
-    """  """
-
     serial_number: Union[Unset, str] = UNSET
     id: Union[Unset, str] = UNSET
     name: Union[Unset, str] = UNSET

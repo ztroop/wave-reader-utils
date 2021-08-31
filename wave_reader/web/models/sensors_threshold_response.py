@@ -12,8 +12,6 @@ T = TypeVar("T", bound="SensorsThresholdResponse")
 
 @attr.s(auto_attribs=True)
 class SensorsThresholdResponse:
-    """  """
-
     thresholds: Union[Unset, SensorsThresholdResponseThresholds] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 

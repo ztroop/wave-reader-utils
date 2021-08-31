@@ -10,8 +10,6 @@ T = TypeVar("T", bound="DeviceSampleResponse")
 
 @attr.s(auto_attribs=True)
 class DeviceSampleResponse:
-    """  """
-
     id: str
     data: SingleSampleData
     segment: SegmentSimpleResponse

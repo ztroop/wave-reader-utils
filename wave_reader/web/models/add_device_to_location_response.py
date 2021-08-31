@@ -7,8 +7,6 @@ T = TypeVar("T", bound="AddDeviceToLocationResponse")
 
 @attr.s(auto_attribs=True)
 class AddDeviceToLocationResponse:
-    """  """
-
     serial_number: str
     name: str
     location_id: str

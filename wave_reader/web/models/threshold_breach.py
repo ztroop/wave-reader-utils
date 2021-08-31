@@ -14,8 +14,6 @@ T = TypeVar("T", bound="ThresholdBreach")
 
 @attr.s(auto_attribs=True)
 class ThresholdBreach:
-    """  """
-
     sensor_type: Union[Unset, SensorType] = UNSET
     threshold_level: Union[Unset, ThresholdLevel] = UNSET
     sensor_value: Union[Unset, float] = UNSET

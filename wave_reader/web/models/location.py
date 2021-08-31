@@ -9,8 +9,6 @@ T = TypeVar("T", bound="Location")
 
 @attr.s(auto_attribs=True)
 class Location:
-    """  """
-
     id: str
     name: str
     labels: LocationLabels

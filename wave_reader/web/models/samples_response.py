@@ -13,8 +13,6 @@ T = TypeVar("T", bound="SamplesResponse")
 
 @attr.s(auto_attribs=True)
 class SamplesResponse:
-    """  """
-
     data: Union[Unset, SampleData] = UNSET
     start: Union[Unset, datetime.datetime] = UNSET
     end: Union[Unset, datetime.datetime] = UNSET

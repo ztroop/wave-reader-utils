@@ -9,8 +9,6 @@ T = TypeVar("T", bound="SegmentsResponse")
 
 @attr.s(auto_attribs=True)
 class SegmentsResponse:
-    """  """
-
     segments: List[SegmentResponse]
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 

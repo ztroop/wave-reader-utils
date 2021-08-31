@@ -12,8 +12,6 @@ T = TypeVar("T", bound="GetDeviceDetailedResponse")
 
 @attr.s(auto_attribs=True)
 class GetDeviceDetailedResponse:
-    """  """
-
     id: str
     device_type: DeviceType
     sensors: List[SensorType]

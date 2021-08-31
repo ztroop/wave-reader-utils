@@ -9,8 +9,6 @@ T = TypeVar("T", bound="LocationSimpleResponse")
 
 @attr.s(auto_attribs=True)
 class LocationSimpleResponse:
-    """  """
-
     id: Union[Unset, str] = UNSET
     name: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)

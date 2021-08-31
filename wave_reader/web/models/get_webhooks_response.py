@@ -9,8 +9,6 @@ T = TypeVar("T", bound="GetWebhooksResponse")
 
 @attr.s(auto_attribs=True)
 class GetWebhooksResponse:
-    """  """
-
     webhooks: List[HookExtResponse]
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 

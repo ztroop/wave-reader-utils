@@ -13,8 +13,6 @@ T = TypeVar("T", bound="SegmentResponse")
 
 @attr.s(auto_attribs=True)
 class SegmentResponse:
-    """  """
-
     id: str
     started: datetime.datetime
     name: str

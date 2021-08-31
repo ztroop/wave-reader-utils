@@ -9,8 +9,6 @@ T = TypeVar("T", bound="GetLocationSamplesResponse")
 
 @attr.s(auto_attribs=True)
 class GetLocationSamplesResponse:
-    """  """
-
     devices: List[DeviceSampleResponse]
     id: str
     name: str

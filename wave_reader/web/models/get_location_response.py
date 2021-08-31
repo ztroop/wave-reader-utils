@@ -10,8 +10,6 @@ T = TypeVar("T", bound="GetLocationResponse")
 
 @attr.s(auto_attribs=True)
 class GetLocationResponse:
-    """  """
-
     id: str
     name: str
     labels: GetLocationResponseLabels

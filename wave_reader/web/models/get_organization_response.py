@@ -7,8 +7,6 @@ T = TypeVar("T", bound="GetOrganizationResponse")
 
 @attr.s(auto_attribs=True)
 class GetOrganizationResponse:
-    """  """
-
     id: str
     name: str
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)

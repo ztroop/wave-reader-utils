@@ -9,8 +9,6 @@ T = TypeVar("T", bound="SingleSampleData")
 
 @attr.s(auto_attribs=True)
 class SingleSampleData:
-    """  """
-
     battery: Union[Unset, int] = UNSET
     co2: Union[Unset, float] = UNSET
     humidity: Union[Unset, float] = UNSET

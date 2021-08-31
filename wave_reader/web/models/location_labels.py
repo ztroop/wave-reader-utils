@@ -7,8 +7,6 @@ T = TypeVar("T", bound="LocationLabels")
 
 @attr.s(auto_attribs=True)
 class LocationLabels:
-    """  """
-
     additional_properties: Dict[str, str] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:

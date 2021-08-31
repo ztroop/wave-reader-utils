@@ -10,8 +10,6 @@ T = TypeVar("T", bound="GetThresholdBreachesResponse")
 
 @attr.s(auto_attribs=True)
 class GetThresholdBreachesResponse:
-    """  """
-
     device_id: Union[Unset, str] = UNSET
     breaches: Union[Unset, List[ThresholdBreach]] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
