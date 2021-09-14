@@ -104,7 +104,7 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         async with device as connected_device:
             self.assertEqual(connected_device.address, "12:34:56:78:90:AB")
             self.assertEqual(connected_device.serial, "2900123456")
-            self.assertTrue(await connected_device._client.is_connected())
+            self.assertTrue(connected_device._client.is_connected)
 
     @patch("wave_reader.wave.BleakClient", autospec=True)
     async def test_get_sensor_values(self, mocked_client):
@@ -342,15 +342,14 @@ class TestRequiresClient(IsolatedAsyncioTestCase):
 
         @requires_client
         async def fake_function(d):
-            return await d.is_connected()
+            return d.is_connected
 
-        # After not being connected, we log once and successfully connect.
+        # After not being connected, successfully connect.
         self.assertTrue(await fake_function(device))
-        self.assertEqual(mocked_logger.call_count, 1)
 
         mocked_client.return_value = MockedFailingBleakClient(device.address)
         device._client = None
 
         # We intentionally fail the connect to show the loop exists after 3 reconnects.
         self.assertFalse(await fake_function(device))
-        self.assertEqual(mocked_logger.call_count, 5)  # +1 from the earlier execution.
+        self.assertEqual(mocked_logger.call_count, 1)

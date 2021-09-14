@@ -19,10 +19,7 @@ class MockedBLEDevice:
 class MockedBleakClient(object):
     def __init__(self, addr):
         self.addr = addr
-        self._is_connected = False
-
-    async def is_connected(self):
-        return self._is_connected
+        self.is_connected = False
 
     async def read_gatt_char(self, _uuid):
         return bytearray(
@@ -30,11 +27,11 @@ class MockedBleakClient(object):
         )
 
     async def connect(self):
-        self._is_connected = True
+        self.is_connected = True
         return True
 
     async def disconnect(self):
-        self._is_connected = False
+        self.is_connected = False
         return True
 
     async def __aenter__(self):
@@ -48,5 +45,5 @@ class MockedBleakClient(object):
 
 class MockedFailingBleakClient(MockedBleakClient):
     async def connect(self):
-        self._is_connected = False
+        self.is_connected = False
         return False
