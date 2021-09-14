@@ -8,7 +8,7 @@ from math import log
 from typing import Any, Dict, List, Optional, Union
 
 from bleak import BleakClient, discover
-from bleak.backends.bluezdbus.client import BleakClientBlueZDBus
+from bleak.backends.client import BaseBleakClient
 from bleak.backends.device import BLEDevice
 
 from wave_reader.data import (
@@ -102,7 +102,7 @@ class WaveDevice:
     :param serial: Parsed serial number from manufacturer data
     """
 
-    _client: Optional[BleakClientBlueZDBus] = None
+    _client: Optional[BaseBleakClient] = None
     _gatt_services = None
     sensor_readings: Optional[DeviceSensors] = None
     readings_updated: Optional[datetime] = None
@@ -159,7 +159,7 @@ class WaveDevice:
     async def connect(self) -> bool:
         """Method for initiating BLE connection."""
 
-        self._client: BleakClientBlueZDBus = BleakClient(self.address)
+        self._client: BaseBleakClient = BleakClient(self.address)
         _logger.info(f"Device: ({self.address}) connecting BLE client.")
         return await self._client.connect()
 
