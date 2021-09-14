@@ -25,12 +25,12 @@ def requires_client(f):
     async def _requires_client(self, *args, **kwargs):
         reconnects = 0
 
-        while not self._client or not await self._client.is_connected():
-            _logger.error(f"Device: ({self.address}) client is not connected.")
+        while not self._client or not self._client.is_connected:
             await self.connect()
 
             reconnects += 1
             if reconnects > 3:
+                _logger.error(f"Device: ({self.address}) client is not connected.")
                 return
 
         return await f(self, *args, **kwargs)
