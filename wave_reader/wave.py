@@ -159,9 +159,9 @@ class WaveDevice:
     async def connect(self) -> bool:
         """Method for initiating BLE connection."""
 
-        self._client: BaseBleakClient = BleakClient(self.address)
+        self._client = BleakClient(self.address)  # type: ignore
         _logger.info(f"Device: ({self.address}) connecting BLE client.")
-        return await self._client.connect()
+        return await self._client.connect() if self._client else False
 
     @requires_client
     async def is_connected(self) -> bool:
@@ -174,7 +174,7 @@ class WaveDevice:
         """Method for closing BLE connection."""
 
         _logger.info(f"Device: ({self.address}) disconnecting BLE client.")
-        return await self._client.disconnect()  # type: ignore
+        return await self._client.disconnect() if self._client else False
 
     @requires_client
     async def read_gatt_descriptor(self, gatt_desc: str) -> Optional[bytearray]:
