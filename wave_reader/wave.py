@@ -7,7 +7,7 @@ from datetime import datetime
 from math import log
 from typing import Any, Dict, List, Optional, Union
 
-from bleak import BleakClient, discover
+from bleak import BleakClient, BleakScanner
 from bleak.backends.client import BaseBleakClient
 from bleak.backends.device import BLEDevice
 
@@ -159,9 +159,9 @@ class WaveDevice:
     async def connect(self) -> bool:
         """Method for initiating BLE connection."""
 
-        self._client: BaseBleakClient = BleakClient(self.address)
+        self._client = BleakClient(self.address)  # type: ignore
         _logger.info(f"Device: ({self.address}) connecting BLE client.")
-        return await self._client.connect()
+        return await self._client.connect() if self._client else False
 
     @requires_client
     async def is_connected(self) -> bool:
@@ -174,7 +174,7 @@ class WaveDevice:
         """Method for closing BLE connection."""
 
         _logger.info(f"Device: ({self.address}) disconnecting BLE client.")
-        return await self._client.disconnect()  # type: ignore
+        return await self._client.disconnect() if self._client else False
 
     @requires_client
     async def read_gatt_descriptor(self, gatt_desc: str) -> Optional[bytearray]:
@@ -250,13 +250,17 @@ class WaveDevice:
 
 
 async def discover_devices(
-    wave_devices: Optional[List[WaveDevice]] = None,
+    wave_devices: Optional[List[WaveDevice]] = None, timeout=5.0, **kwargs
 ) -> List[WaveDevice]:
-    """Discovers all valid, accessible Airthings Wave devices."""
+    """Discovers all valid, accessible Airthings Wave devices.
+
+    :param wave_devices: List to return devices from asyncio task
+    :param timeout: Scanning timeout in seconds (Default: 5.0)
+    """
 
     wave_devices = wave_devices if isinstance(wave_devices, list) else []
     device: BLEDevice  # Typing annotation
-    for device in await discover():
+    for device in await BleakScanner.discover(timeout=timeout, **kwargs):
         serial = WaveDevice.parse_manufacturer_data(
             device.metadata.get("manufacturer_data")
         )
@@ -269,11 +273,12 @@ async def discover_devices(
     return wave_devices
 
 
-def scan(max_retries: int = 3) -> List[WaveDevice]:
+def scan(max_retries: int = 3, timeout=5.0, **kwargs) -> List[WaveDevice]:
     """Convenience function for discovering devices. This is particularly useful
     for users that are not as comfortable asynchronous programming.
 
     :param max_retries: Number of attempts for connecting to devices
+    :param timeout: Scanning timeout in seconds (Default: 5.0)
     """
 
     retry_attempts = 0
@@ -281,7 +286,8 @@ def scan(max_retries: int = 3) -> List[WaveDevice]:
 
     def _scan():
         loop = asyncio.new_event_loop()
-        task = loop.create_task(discover_devices(wave_devices))
+        task = loop.create_task(
+            discover_devices(wave_devices, timeout=timeout, **kwargs))
         tasks = asyncio.gather(task, return_exceptions=True)
         loop.run_until_complete(tasks)
 

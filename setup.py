@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     author="Zackary Troop",
     name="wave-reader",
-    version="0.0.10",
+    version="1.0.0",
     url="https://github.com/ztroop/wave-reader-utils",
     license="MIT",
     description="Unofficial package for Airthings Wave communication.",
@@ -11,8 +11,8 @@ setup(
     long_description_content_type="text/markdown",
     packages=find_packages(exclude=["examples", "tests"]),
     install_requires=[
-        "Authlib>=0.15.4",
-        "bleak>=0.10.0",
+        "Authlib>=0.15.6",
+        "bleak>=0.19.5",
         "httpx>=0.18.2",
     ],
     python_requires=">=3.7.*",
@@ -23,5 +23,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
 )

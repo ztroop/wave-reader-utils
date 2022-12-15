@@ -34,7 +34,7 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         self.WaveDevice = wave.WaveDevice(self.BLEDevice, "2930618893")
 
     @patch("wave_reader.wave._logger.debug")
-    @patch("wave_reader.wave.discover")
+    @patch("wave_reader.wave.BleakScanner.discover")
     async def test_discover_devices(self, mocked_discover, mocked_logger):
         """Test device discovery, omitting invalid or unknown devices."""
 
@@ -56,7 +56,7 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         self.assertTrue(mocked_logger.called)
 
     @patch("wave_reader.wave._logger.warning")
-    @patch("wave_reader.wave.discover")
+    @patch("wave_reader.wave.BleakScanner.discover")
     async def test_unsupported_discover_devices(self, mocked_discover, mocked_logger):
         """Test device discovery, emit a warning for a detected, but unsupported
         Wave device."""
@@ -72,7 +72,7 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         self.assertEqual(devices[0].product, data.WaveProduct.UNKNOWN)
         self.assertTrue(mocked_logger.called)
 
-    @patch("wave_reader.wave.discover")
+    @patch("wave_reader.wave.BleakScanner.discover")
     async def test_discover_valid_unnamed_device(self, mocked_discover):
         """Test device discovery when the BLE advertisement does not include the model name."""
         BLEUnnamedDevice = deepcopy(self.BLEDevice)
@@ -230,7 +230,7 @@ class TestScan(TestCase):
         self.BLEDevice = MockedBLEDevice()
         self.WaveDevice = wave.WaveDevice(self.BLEDevice, "2930618893")
 
-    @patch("wave_reader.wave.discover")
+    @patch("wave_reader.wave.BleakScanner.discover")
     def test_scan(self, mocked_discover):
         mocked_discover.return_value = [self.WaveDevice]
 

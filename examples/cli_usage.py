@@ -54,7 +54,7 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--descriptor", help="Get descriptor")
 
     args = parser.parse_args()
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
     loop.run_until_complete(run(args))
 
 
