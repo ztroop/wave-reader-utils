@@ -7,7 +7,7 @@ from datetime import datetime
 from math import log
 from typing import Any, Dict, List, Optional, Union
 
-from bleak import BleakClient, discover
+from bleak import BleakClient, BleakScanner
 from bleak.backends.client import BaseBleakClient
 from bleak.backends.device import BLEDevice
 
@@ -250,13 +250,13 @@ class WaveDevice:
 
 
 async def discover_devices(
-    wave_devices: Optional[List[WaveDevice]] = None,
+    wave_devices: Optional[List[WaveDevice]] = None, **kwargs
 ) -> List[WaveDevice]:
     """Discovers all valid, accessible Airthings Wave devices."""
 
     wave_devices = wave_devices if isinstance(wave_devices, list) else []
     device: BLEDevice  # Typing annotation
-    for device in await discover():
+    for device in await BleakScanner.discover(**kwargs):
         serial = WaveDevice.parse_manufacturer_data(
             device.metadata.get("manufacturer_data")
         )
@@ -269,7 +269,7 @@ async def discover_devices(
     return wave_devices
 
 
-def scan(max_retries: int = 3) -> List[WaveDevice]:
+def scan(max_retries: int = 3, **kwargs) -> List[WaveDevice]:
     """Convenience function for discovering devices. This is particularly useful
     for users that are not as comfortable asynchronous programming.
 
@@ -281,7 +281,7 @@ def scan(max_retries: int = 3) -> List[WaveDevice]:
 
     def _scan():
         loop = asyncio.new_event_loop()
-        task = loop.create_task(discover_devices(wave_devices))
+        task = loop.create_task(discover_devices(wave_devices, **kwargs))
         tasks = asyncio.gather(task, return_exceptions=True)
         loop.run_until_complete(tasks)
 
