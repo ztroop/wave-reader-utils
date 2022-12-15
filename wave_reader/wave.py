@@ -250,13 +250,17 @@ class WaveDevice:
 
 
 async def discover_devices(
-    wave_devices: Optional[List[WaveDevice]] = None, **kwargs
+    wave_devices: Optional[List[WaveDevice]] = None, timeout=5.0, **kwargs
 ) -> List[WaveDevice]:
-    """Discovers all valid, accessible Airthings Wave devices."""
+    """Discovers all valid, accessible Airthings Wave devices.
+
+    :param wave_devices: List to return devices from asyncio task
+    :param timeout: Scanning timeout in seconds (Default: 5.0)
+    """
 
     wave_devices = wave_devices if isinstance(wave_devices, list) else []
     device: BLEDevice  # Typing annotation
-    for device in await BleakScanner.discover(**kwargs):
+    for device in await BleakScanner.discover(timeout=timeout, **kwargs):
         serial = WaveDevice.parse_manufacturer_data(
             device.metadata.get("manufacturer_data")
         )
@@ -269,11 +273,12 @@ async def discover_devices(
     return wave_devices
 
 
-def scan(max_retries: int = 3, **kwargs) -> List[WaveDevice]:
+def scan(max_retries: int = 3, timeout=5.0, **kwargs) -> List[WaveDevice]:
     """Convenience function for discovering devices. This is particularly useful
     for users that are not as comfortable asynchronous programming.
 
     :param max_retries: Number of attempts for connecting to devices
+    :param timeout: Scanning timeout in seconds (Default: 5.0)
     """
 
     retry_attempts = 0
@@ -281,7 +286,8 @@ def scan(max_retries: int = 3, **kwargs) -> List[WaveDevice]:
 
     def _scan():
         loop = asyncio.new_event_loop()
-        task = loop.create_task(discover_devices(wave_devices, **kwargs))
+        task = loop.create_task(
+            discover_devices(wave_devices, timeout=timeout, **kwargs))
         tasks = asyncio.gather(task, return_exceptions=True)
         loop.run_until_complete(tasks)
 

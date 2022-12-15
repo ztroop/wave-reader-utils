@@ -17,7 +17,7 @@ if __name__ == "__main__":
     # Event loop to run asynchronous tasks.
     loop = asyncio.get_event_loop()
     # Scan for BTLE Wave devices.
-    devices = loop.run_until_complete(discover_devices())
+    devices = loop.run_until_complete(discover_devices(timeout=5.0))
     # Get sensor readings from available wave devices.
     for device in devices:
         loop.run_until_complete(get_readings(device))
