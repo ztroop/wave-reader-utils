@@ -7,6 +7,8 @@ T = TypeVar("T", bound="CreateHookRequestHeaders")
 
 @attr.s(auto_attribs=True)
 class CreateHookRequestHeaders:
+    """ """
+
     additional_properties: Dict[str, str] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:

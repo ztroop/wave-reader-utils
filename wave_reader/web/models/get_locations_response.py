@@ -1,15 +1,22 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
-from ..models.location import Location
+if TYPE_CHECKING:
+    from ..models.location import Location
+
 
 T = TypeVar("T", bound="GetLocationsResponse")
 
 
 @attr.s(auto_attribs=True)
 class GetLocationsResponse:
-    locations: List[Location]
+    """
+    Attributes:
+        locations (List['Location']):
+    """
+
+    locations: List["Location"]
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -31,6 +38,8 @@ class GetLocationsResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.location import Location
+
         d = src_dict.copy()
         locations = []
         _locations = d.pop("locations")

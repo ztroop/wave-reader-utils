@@ -11,6 +11,14 @@ T = TypeVar("T", bound="BatteryResponseData")
 
 @attr.s(auto_attribs=True)
 class BatteryResponseData:
+    """
+    Attributes:
+        time (List[int]):
+        battery_level (List[int]):
+        battery_type (BatteryType):
+        battery_changed (datetime.datetime):
+    """
+
     time: List[int]
     battery_level: List[int]
     battery_type: BatteryType

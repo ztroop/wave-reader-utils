@@ -1,15 +1,22 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
-from ..models.get_organization_response import GetOrganizationResponse
+if TYPE_CHECKING:
+    from ..models.get_organization_response import GetOrganizationResponse
+
 
 T = TypeVar("T", bound="GetOrganizationsResponse")
 
 
 @attr.s(auto_attribs=True)
 class GetOrganizationsResponse:
-    organizations: List[GetOrganizationResponse]
+    """
+    Attributes:
+        organizations (List['GetOrganizationResponse']):
+    """
+
+    organizations: List["GetOrganizationResponse"]
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -31,6 +38,8 @@ class GetOrganizationsResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.get_organization_response import GetOrganizationResponse
+
         d = src_dict.copy()
         organizations = []
         _organizations = d.pop("organizations")

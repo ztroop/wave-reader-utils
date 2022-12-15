@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from typing import Any, Dict, Union
 
 import httpx
@@ -16,17 +17,20 @@ def _get_kwargs(
 ) -> Dict[str, Any]:
     url = "{}/locations/{locationId}".format(client.base_url, locationId=location_id)
 
-    headers: Dict[str, Any] = client.get_headers()
+    headers: Dict[str, str] = client.get_headers()
     cookies: Dict[str, Any] = client.get_cookies()
 
-    params: Dict[str, Any] = {
-        "showInactive": show_inactive,
-        "organizationId": organization_id,
-        "userGroupId": user_group_id,
-    }
+    params: Dict[str, Any] = {}
+    params["showInactive"] = show_inactive
+
+    params["organizationId"] = organization_id
+
+    params["userGroupId"] = user_group_id
+
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
     return {
+        "method": "get",
         "url": url,
         "headers": headers,
         "cookies": cookies,
@@ -37,7 +41,7 @@ def _get_kwargs(
 
 def _build_response(*, response: httpx.Response) -> Response[Any]:
     return Response(
-        status_code=response.status_code,
+        status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
         parsed=None,
@@ -52,6 +56,18 @@ def sync_detailed(
     organization_id: Union[Unset, None, str] = UNSET,
     user_group_id: Union[Unset, None, str] = UNSET,
 ) -> Response[Any]:
+    """Get info about a specific Location
+
+    Args:
+        location_id (str):
+        show_inactive (Union[Unset, None, bool]):
+        organization_id (Union[Unset, None, str]):
+        user_group_id (Union[Unset, None, str]):
+
+    Returns:
+        Response[Any]
+    """
+
     kwargs = _get_kwargs(
         location_id=location_id,
         client=client,
@@ -60,7 +76,8 @@ def sync_detailed(
         user_group_id=user_group_id,
     )
 
-    response = httpx.get(
+    response = httpx.request(
+        verify=client.verify_ssl,
         **kwargs,
     )
 
@@ -75,6 +92,18 @@ async def asyncio_detailed(
     organization_id: Union[Unset, None, str] = UNSET,
     user_group_id: Union[Unset, None, str] = UNSET,
 ) -> Response[Any]:
+    """Get info about a specific Location
+
+    Args:
+        location_id (str):
+        show_inactive (Union[Unset, None, bool]):
+        organization_id (Union[Unset, None, str]):
+        user_group_id (Union[Unset, None, str]):
+
+    Returns:
+        Response[Any]
+    """
+
     kwargs = _get_kwargs(
         location_id=location_id,
         client=client,
@@ -83,7 +112,7 @@ async def asyncio_detailed(
         user_group_id=user_group_id,
     )
 
-    async with httpx.AsyncClient() as _client:
-        response = await _client.get(**kwargs)
+    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
+        response = await _client.request(**kwargs)
 
     return _build_response(response=response)

@@ -1,20 +1,30 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
 from ..models.sensor_type import SensorType
 from ..models.sensor_unit import SensorUnit
-from ..models.threshold_range import ThresholdRange
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.threshold_range import ThresholdRange
+
 
 T = TypeVar("T", bound="SensorThreshold")
 
 
 @attr.s(auto_attribs=True)
 class SensorThreshold:
+    """
+    Attributes:
+        type (Union[Unset, SensorType]):
+        unit (Union[Unset, SensorUnit]):
+        ranges (Union[Unset, List['ThresholdRange']]):
+    """
+
     type: Union[Unset, SensorType] = UNSET
     unit: Union[Unset, SensorUnit] = UNSET
-    ranges: Union[Unset, List[ThresholdRange]] = UNSET
+    ranges: Union[Unset, List["ThresholdRange"]] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -48,6 +58,8 @@ class SensorThreshold:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.threshold_range import ThresholdRange
+
         d = src_dict.copy()
         _type = d.pop("type", UNSET)
         type: Union[Unset, SensorType]

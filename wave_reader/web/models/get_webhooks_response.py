@@ -1,15 +1,22 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
-from ..models.hook_ext_response import HookExtResponse
+if TYPE_CHECKING:
+    from ..models.hook_ext_response import HookExtResponse
+
 
 T = TypeVar("T", bound="GetWebhooksResponse")
 
 
 @attr.s(auto_attribs=True)
 class GetWebhooksResponse:
-    webhooks: List[HookExtResponse]
+    """
+    Attributes:
+        webhooks (List['HookExtResponse']):
+    """
+
+    webhooks: List["HookExtResponse"]
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -31,6 +38,8 @@ class GetWebhooksResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.hook_ext_response import HookExtResponse
+
         d = src_dict.copy()
         webhooks = []
         _webhooks = d.pop("webhooks")

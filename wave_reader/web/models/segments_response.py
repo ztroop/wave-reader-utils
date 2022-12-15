@@ -1,15 +1,22 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
-from ..models.segment_response import SegmentResponse
+if TYPE_CHECKING:
+    from ..models.segment_response import SegmentResponse
+
 
 T = TypeVar("T", bound="SegmentsResponse")
 
 
 @attr.s(auto_attribs=True)
 class SegmentsResponse:
-    segments: List[SegmentResponse]
+    """
+    Attributes:
+        segments (List['SegmentResponse']):
+    """
+
+    segments: List["SegmentResponse"]
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -31,6 +38,8 @@ class SegmentsResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.segment_response import SegmentResponse
+
         d = src_dict.copy()
         segments = []
         _segments = d.pop("segments")

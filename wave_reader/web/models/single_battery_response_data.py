@@ -1,20 +1,29 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 
 import attr
 from dateutil.parser import isoparse
 
 from ..models.battery_type import BatteryType
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="SingleBatteryResponseData")
 
 
 @attr.s(auto_attribs=True)
 class SingleBatteryResponseData:
+    """
+    Attributes:
+        time (int):
+        battery_level (int):
+        battery_type (BatteryType):
+        battery_changed (Union[Unset, datetime.datetime]):
+    """
+
     time: int
     battery_level: int
     battery_type: BatteryType
-    battery_changed: datetime.datetime
+    battery_changed: Union[Unset, datetime.datetime] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -22,7 +31,9 @@ class SingleBatteryResponseData:
         battery_level = self.battery_level
         battery_type = self.battery_type.value
 
-        battery_changed = self.battery_changed.isoformat()
+        battery_changed: Union[Unset, str] = UNSET
+        if not isinstance(self.battery_changed, Unset):
+            battery_changed = self.battery_changed.isoformat()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -31,9 +42,10 @@ class SingleBatteryResponseData:
                 "time": time,
                 "batteryLevel": battery_level,
                 "batteryType": battery_type,
-                "batteryChanged": battery_changed,
             }
         )
+        if battery_changed is not UNSET:
+            field_dict["batteryChanged"] = battery_changed
 
         return field_dict
 
@@ -46,7 +58,12 @@ class SingleBatteryResponseData:
 
         battery_type = BatteryType(d.pop("batteryType"))
 
-        battery_changed = isoparse(d.pop("batteryChanged"))
+        _battery_changed = d.pop("batteryChanged", UNSET)
+        battery_changed: Union[Unset, datetime.datetime]
+        if isinstance(_battery_changed, Unset):
+            battery_changed = UNSET
+        else:
+            battery_changed = isoparse(_battery_changed)
 
         single_battery_response_data = cls(
             time=time,

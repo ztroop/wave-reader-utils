@@ -7,13 +7,22 @@ T = TypeVar("T", bound="GetOrganizationResponse")
 
 @attr.s(auto_attribs=True)
 class GetOrganizationResponse:
+    """
+    Attributes:
+        id (str):
+        name (str):
+        user_group_id (str):
+    """
+
     id: str
     name: str
+    user_group_id: str
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
         name = self.name
+        user_group_id = self.user_group_id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -21,6 +30,7 @@ class GetOrganizationResponse:
             {
                 "id": id,
                 "name": name,
+                "userGroupId": user_group_id,
             }
         )
 
@@ -33,9 +43,12 @@ class GetOrganizationResponse:
 
         name = d.pop("name")
 
+        user_group_id = d.pop("userGroupId")
+
         get_organization_response = cls(
             id=id,
             name=name,
+            user_group_id=user_group_id,
         )
 
         get_organization_response.additional_properties = d

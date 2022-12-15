@@ -6,9 +6,12 @@ class SensorUnit(str, Enum):
     F = "f"
     MBAR = "mbar"
     PA = "pa"
+    HPA = "hpa"
+    INHG = "inhg"
     BQ = "bq"
     PCI = "pci"
     PCT = "pct"
+    V = "V"
     MV = "mv"
     PPM = "ppm"
     PPB = "ppb"
@@ -28,7 +31,11 @@ class SensorUnit(str, Enum):
     BINARY = "binary"
     SECONDS = "seconds"
     INFO = "info"
+    MM = "mm"
+    DBM = "dbm"
     OCC = "occ"
+    ACH = "ach"
+    LX = "lx"
 
     def __str__(self) -> str:
         return str(self.value)

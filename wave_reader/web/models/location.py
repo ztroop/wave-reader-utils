@@ -1,17 +1,26 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
-from ..models.location_labels import LocationLabels
+if TYPE_CHECKING:
+    from ..models.location_labels import LocationLabels
+
 
 T = TypeVar("T", bound="Location")
 
 
 @attr.s(auto_attribs=True)
 class Location:
+    """
+    Attributes:
+        id (str):
+        name (str):
+        labels (LocationLabels):
+    """
+
     id: str
     name: str
-    labels: LocationLabels
+    labels: "LocationLabels"
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -33,6 +42,8 @@ class Location:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.location_labels import LocationLabels
+
         d = src_dict.copy()
         id = d.pop("id")
 

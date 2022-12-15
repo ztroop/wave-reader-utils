@@ -287,7 +287,8 @@ def scan(max_retries: int = 3, timeout=5.0, **kwargs) -> List[WaveDevice]:
     def _scan():
         loop = asyncio.new_event_loop()
         task = loop.create_task(
-            discover_devices(wave_devices, timeout=timeout, **kwargs))
+            discover_devices(wave_devices, timeout=timeout, **kwargs)
+        )
         tasks = asyncio.gather(task, return_exceptions=True)
         loop.run_until_complete(tasks)
 

@@ -9,6 +9,14 @@ T = TypeVar("T", bound="SegmentSimpleResponse")
 
 @attr.s(auto_attribs=True)
 class SegmentSimpleResponse:
+    """
+    Attributes:
+        id (str):
+        name (str):
+        started (datetime.datetime):
+        active (bool):
+    """
+
     id: str
     name: str
     started: datetime.datetime

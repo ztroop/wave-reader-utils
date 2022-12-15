@@ -1,22 +1,34 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
 from ..models.device_type import DeviceType
-from ..models.location_simple_response import LocationSimpleResponse
-from ..models.segment_simple_response import SegmentSimpleResponse
 from ..models.sensor_type import SensorType
+
+if TYPE_CHECKING:
+    from ..models.location_simple_response import LocationSimpleResponse
+    from ..models.segment_simple_response import SegmentSimpleResponse
+
 
 T = TypeVar("T", bound="GetDeviceDetailedResponse")
 
 
 @attr.s(auto_attribs=True)
 class GetDeviceDetailedResponse:
+    """
+    Attributes:
+        id (str):
+        device_type (DeviceType):
+        sensors (List[SensorType]):
+        segment (SegmentSimpleResponse):
+        location (LocationSimpleResponse):
+    """
+
     id: str
     device_type: DeviceType
     sensors: List[SensorType]
-    segment: SegmentSimpleResponse
-    location: LocationSimpleResponse
+    segment: "SegmentSimpleResponse"
+    location: "LocationSimpleResponse"
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -49,6 +61,9 @@ class GetDeviceDetailedResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.location_simple_response import LocationSimpleResponse
+        from ..models.segment_simple_response import SegmentSimpleResponse
+
         d = src_dict.copy()
         id = d.pop("id")
 

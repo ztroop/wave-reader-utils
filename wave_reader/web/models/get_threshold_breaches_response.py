@@ -1,17 +1,26 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
-from ..models.threshold_breach import ThresholdBreach
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.threshold_breach import ThresholdBreach
+
 
 T = TypeVar("T", bound="GetThresholdBreachesResponse")
 
 
 @attr.s(auto_attribs=True)
 class GetThresholdBreachesResponse:
+    """
+    Attributes:
+        device_id (Union[Unset, str]):
+        breaches (Union[Unset, List['ThresholdBreach']]):
+    """
+
     device_id: Union[Unset, str] = UNSET
-    breaches: Union[Unset, List[ThresholdBreach]] = UNSET
+    breaches: Union[Unset, List["ThresholdBreach"]] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -36,6 +45,8 @@ class GetThresholdBreachesResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.threshold_breach import ThresholdBreach
+
         d = src_dict.copy()
         device_id = d.pop("deviceId", UNSET)
 

@@ -1,18 +1,26 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
-from ..models.sensors_threshold_response_thresholds import (
-    SensorsThresholdResponseThresholds,
-)
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.sensors_threshold_response_thresholds import (
+        SensorsThresholdResponseThresholds,
+    )
+
 
 T = TypeVar("T", bound="SensorsThresholdResponse")
 
 
 @attr.s(auto_attribs=True)
 class SensorsThresholdResponse:
-    thresholds: Union[Unset, SensorsThresholdResponseThresholds] = UNSET
+    """
+    Attributes:
+        thresholds (Union[Unset, SensorsThresholdResponseThresholds]):
+    """
+
+    thresholds: Union[Unset, "SensorsThresholdResponseThresholds"] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -30,6 +38,10 @@ class SensorsThresholdResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.sensors_threshold_response_thresholds import (
+            SensorsThresholdResponseThresholds,
+        )
+
         d = src_dict.copy()
         _thresholds = d.pop("thresholds", UNSET)
         thresholds: Union[Unset, SensorsThresholdResponseThresholds]

@@ -1,18 +1,28 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
 from ..models.device_type import DeviceType
-from ..models.segment_simple_response import SegmentSimpleResponse
+
+if TYPE_CHECKING:
+    from ..models.segment_simple_response import SegmentSimpleResponse
+
 
 T = TypeVar("T", bound="DeviceSimpleResponse")
 
 
 @attr.s(auto_attribs=True)
 class DeviceSimpleResponse:
+    """
+    Attributes:
+        id (str):
+        device_type (DeviceType):
+        segment (SegmentSimpleResponse):
+    """
+
     id: str
     device_type: DeviceType
-    segment: SegmentSimpleResponse
+    segment: "SegmentSimpleResponse"
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -35,6 +45,8 @@ class DeviceSimpleResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.segment_simple_response import SegmentSimpleResponse
+
         d = src_dict.copy()
         id = d.pop("id")
 

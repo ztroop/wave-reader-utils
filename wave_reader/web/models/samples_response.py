@@ -1,19 +1,31 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 import attr
 from dateutil.parser import isoparse
 
 from ..models.measurement_system import MeasurementSystem
-from ..models.sample_data import SampleData
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.sample_data import SampleData
+
 
 T = TypeVar("T", bound="SamplesResponse")
 
 
 @attr.s(auto_attribs=True)
 class SamplesResponse:
-    data: Union[Unset, SampleData] = UNSET
+    """
+    Attributes:
+        data (Union[Unset, SampleData]):
+        start (Union[Unset, datetime.datetime]):
+        end (Union[Unset, datetime.datetime]):
+        measurement_system (Union[Unset, MeasurementSystem]):
+        cursor (Union[Unset, str]):
+    """
+
+    data: Union[Unset, "SampleData"] = UNSET
     start: Union[Unset, datetime.datetime] = UNSET
     end: Union[Unset, datetime.datetime] = UNSET
     measurement_system: Union[Unset, MeasurementSystem] = UNSET
@@ -57,6 +69,8 @@ class SamplesResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.sample_data import SampleData
+
         d = src_dict.copy()
         _data = d.pop("data", UNSET)
         data: Union[Unset, SampleData]

@@ -44,6 +44,8 @@ response: Response[GetDeviceDetailedResponse] = await device_info.asyncio_detail
 
 All path/query params, and bodies become method arguments. In the example above, the serial number is required.
 
+See `examples` for a concrete code sample.
+
 ## Important Notes
 
 1. Every path/method combo becomes a Python module with four functions:

@@ -1,16 +1,24 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
-from ..models.single_sample_data import SingleSampleData
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.single_sample_data import SingleSampleData
+
 
 T = TypeVar("T", bound="SingleSampleResponse")
 
 
 @attr.s(auto_attribs=True)
 class SingleSampleResponse:
-    data: Union[Unset, SingleSampleData] = UNSET
+    """
+    Attributes:
+        data (Union[Unset, SingleSampleData]):
+    """
+
+    data: Union[Unset, "SingleSampleData"] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -28,6 +36,8 @@ class SingleSampleResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.single_sample_data import SingleSampleData
+
         d = src_dict.copy()
         _data = d.pop("data", UNSET)
         data: Union[Unset, SingleSampleData]

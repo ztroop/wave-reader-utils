@@ -1,1 +1,7 @@
-from .client import AuthenticatedClient, Client  # noqa: F401
+""" A client library for accessing Airthings API """
+from .client import AuthenticatedClient, Client
+
+__all__ = (
+    "AuthenticatedClient",
+    "Client",
+)

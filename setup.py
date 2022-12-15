@@ -14,6 +14,8 @@ setup(
         "Authlib>=0.15.6",
         "bleak>=0.19.5",
         "httpx>=0.18.2",
+        "attrs>=21.3.0",
+        "python-dateutil>=2.8.2",
     ],
     python_requires=">=3.7.*",
     classifiers=[

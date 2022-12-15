@@ -1,25 +1,39 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 import attr
 from dateutil.parser import isoparse
 
-from ..models.location_simple_response import LocationSimpleResponse
-from ..models.segment_response_labels import SegmentResponseLabels
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.location_simple_response import LocationSimpleResponse
+    from ..models.segment_response_labels import SegmentResponseLabels
+
 
 T = TypeVar("T", bound="SegmentResponse")
 
 
 @attr.s(auto_attribs=True)
 class SegmentResponse:
+    """
+    Attributes:
+        id (str):
+        started (datetime.datetime):
+        name (str):
+        ended (Union[Unset, datetime.datetime]):
+        location (Union[Unset, LocationSimpleResponse]):
+        device_id (Union[Unset, str]):
+        labels (Union[Unset, SegmentResponseLabels]):
+    """
+
     id: str
     started: datetime.datetime
     name: str
     ended: Union[Unset, datetime.datetime] = UNSET
-    location: Union[Unset, LocationSimpleResponse] = UNSET
+    location: Union[Unset, "LocationSimpleResponse"] = UNSET
     device_id: Union[Unset, str] = UNSET
-    labels: Union[Unset, SegmentResponseLabels] = UNSET
+    labels: Union[Unset, "SegmentResponseLabels"] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -62,6 +76,9 @@ class SegmentResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.location_simple_response import LocationSimpleResponse
+        from ..models.segment_response_labels import SegmentResponseLabels
+
         d = src_dict.copy()
         id = d.pop("id")
 

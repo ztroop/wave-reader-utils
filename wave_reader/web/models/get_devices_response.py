@@ -1,16 +1,30 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
-from ..models.get_device_detailed_response import GetDeviceDetailedResponse
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.get_device_detailed_response import GetDeviceDetailedResponse
+
 
 T = TypeVar("T", bound="GetDevicesResponse")
 
 
 @attr.s(auto_attribs=True)
 class GetDevicesResponse:
-    devices: Union[Unset, List[GetDeviceDetailedResponse]] = UNSET
+    """
+    Attributes:
+        devices (Union[Unset, List['GetDeviceDetailedResponse']]):
+        limit (Union[Unset, int]):
+        offset (Union[Unset, int]):
+        total (Union[Unset, int]):
+    """
+
+    devices: Union[Unset, List["GetDeviceDetailedResponse"]] = UNSET
+    limit: Union[Unset, int] = UNSET
+    offset: Union[Unset, int] = UNSET
+    total: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -22,16 +36,30 @@ class GetDevicesResponse:
 
                 devices.append(devices_item)
 
+        limit = self.limit
+        offset = self.offset
+        total = self.total
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if devices is not UNSET:
             field_dict["devices"] = devices
+        if limit is not UNSET:
+            field_dict["limit"] = limit
+        if offset is not UNSET:
+            field_dict["offset"] = offset
+        if total is not UNSET:
+            field_dict["total"] = total
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.get_device_detailed_response import (
+            GetDeviceDetailedResponse,
+        )
+
         d = src_dict.copy()
         devices = []
         _devices = d.pop("devices", UNSET)
@@ -40,8 +68,17 @@ class GetDevicesResponse:
 
             devices.append(devices_item)
 
+        limit = d.pop("limit", UNSET)
+
+        offset = d.pop("offset", UNSET)
+
+        total = d.pop("total", UNSET)
+
         get_devices_response = cls(
             devices=devices,
+            limit=limit,
+            offset=offset,
+            total=total,
         )
 
         get_devices_response.additional_properties = d

@@ -1,23 +1,42 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
 import attr
 
-from ..models.create_hook_request_headers import CreateHookRequestHeaders
-from ..models.create_hook_request_labels import CreateHookRequestLabels
 from ..models.measurement_system import MeasurementSystem
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.create_hook_request_headers import CreateHookRequestHeaders
+    from ..models.create_hook_request_labels import CreateHookRequestLabels
+    from ..models.hook_sensor_units import HookSensorUnits
+
 
 T = TypeVar("T", bound="CreateHookRequest")
 
 
 @attr.s(auto_attribs=True)
 class CreateHookRequest:
+    """
+    Attributes:
+        name (str):
+        url (str):
+        labels (Union[Unset, CreateHookRequestLabels]):
+        headers (Union[Unset, CreateHookRequestHeaders]):
+        event_types (Union[Unset, List[str]]):
+        measurement_system (Union[Unset, MeasurementSystem]):
+        sensor_units (Union[Unset, HookSensorUnits]):
+        locations (Union[Unset, List[str]]):
+        devices (Union[Unset, List[str]]):
+        active (Union[Unset, bool]):
+    """
+
     name: str
     url: str
-    labels: Union[Unset, CreateHookRequestLabels] = UNSET
-    headers: Union[Unset, CreateHookRequestHeaders] = UNSET
+    labels: Union[Unset, "CreateHookRequestLabels"] = UNSET
+    headers: Union[Unset, "CreateHookRequestHeaders"] = UNSET
     event_types: Union[Unset, List[str]] = UNSET
     measurement_system: Union[Unset, MeasurementSystem] = UNSET
+    sensor_units: Union[Unset, "HookSensorUnits"] = UNSET
     locations: Union[Unset, List[str]] = UNSET
     devices: Union[Unset, List[str]] = UNSET
     active: Union[Unset, bool] = UNSET
@@ -41,6 +60,10 @@ class CreateHookRequest:
         measurement_system: Union[Unset, str] = UNSET
         if not isinstance(self.measurement_system, Unset):
             measurement_system = self.measurement_system.value
+
+        sensor_units: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.sensor_units, Unset):
+            sensor_units = self.sensor_units.to_dict()
 
         locations: Union[Unset, List[str]] = UNSET
         if not isinstance(self.locations, Unset):
@@ -68,6 +91,8 @@ class CreateHookRequest:
             field_dict["eventTypes"] = event_types
         if measurement_system is not UNSET:
             field_dict["measurementSystem"] = measurement_system
+        if sensor_units is not UNSET:
+            field_dict["sensorUnits"] = sensor_units
         if locations is not UNSET:
             field_dict["locations"] = locations
         if devices is not UNSET:
@@ -79,6 +104,12 @@ class CreateHookRequest:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.create_hook_request_headers import (
+            CreateHookRequestHeaders,
+        )
+        from ..models.create_hook_request_labels import CreateHookRequestLabels
+        from ..models.hook_sensor_units import HookSensorUnits
+
         d = src_dict.copy()
         name = d.pop("name")
 
@@ -107,6 +138,13 @@ class CreateHookRequest:
         else:
             measurement_system = MeasurementSystem(_measurement_system)
 
+        _sensor_units = d.pop("sensorUnits", UNSET)
+        sensor_units: Union[Unset, HookSensorUnits]
+        if isinstance(_sensor_units, Unset):
+            sensor_units = UNSET
+        else:
+            sensor_units = HookSensorUnits.from_dict(_sensor_units)
+
         locations = cast(List[str], d.pop("locations", UNSET))
 
         devices = cast(List[str], d.pop("devices", UNSET))
@@ -120,6 +158,7 @@ class CreateHookRequest:
             headers=headers,
             event_types=event_types,
             measurement_system=measurement_system,
+            sensor_units=sensor_units,
             locations=locations,
             devices=devices,
             active=active,

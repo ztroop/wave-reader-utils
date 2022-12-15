@@ -1,31 +1,52 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
 import attr
 
-from ..models.get_device_detailed_response import GetDeviceDetailedResponse
-from ..models.hook_event import HookEvent
-from ..models.hook_ext_response_headers import HookExtResponseHeaders
-from ..models.hook_ext_response_labels import HookExtResponseLabels
-from ..models.location import Location
 from ..models.measurement_system import MeasurementSystem
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.get_device_detailed_response import GetDeviceDetailedResponse
+    from ..models.hook_event import HookEvent
+    from ..models.hook_ext_response_headers import HookExtResponseHeaders
+    from ..models.hook_ext_response_labels import HookExtResponseLabels
+    from ..models.hook_sensor_units import HookSensorUnits
+    from ..models.location import Location
+
 
 T = TypeVar("T", bound="HookExtResponse")
 
 
 @attr.s(auto_attribs=True)
 class HookExtResponse:
+    """
+    Attributes:
+        name (str):
+        id (str):
+        url (str):
+        locations (List['Location']):
+        devices (List['GetDeviceDetailedResponse']):
+        event_types (List[str]):
+        labels (HookExtResponseLabels):
+        headers (HookExtResponseHeaders):
+        measurement_system (MeasurementSystem):
+        sensor_units (HookSensorUnits):
+        active (bool):
+        most_recent_event (Union[Unset, HookEvent]):
+    """
+
     name: str
     id: str
     url: str
-    locations: List[Location]
-    devices: List[GetDeviceDetailedResponse]
+    locations: List["Location"]
+    devices: List["GetDeviceDetailedResponse"]
     event_types: List[str]
-    labels: HookExtResponseLabels
-    headers: HookExtResponseHeaders
+    labels: "HookExtResponseLabels"
+    headers: "HookExtResponseHeaders"
     measurement_system: MeasurementSystem
+    sensor_units: "HookSensorUnits"
     active: bool
-    most_recent_event: Union[Unset, HookEvent] = UNSET
+    most_recent_event: Union[Unset, "HookEvent"] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -52,6 +73,8 @@ class HookExtResponse:
 
         measurement_system = self.measurement_system.value
 
+        sensor_units = self.sensor_units.to_dict()
+
         active = self.active
         most_recent_event: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.most_recent_event, Unset):
@@ -70,6 +93,7 @@ class HookExtResponse:
                 "labels": labels,
                 "headers": headers,
                 "measurementSystem": measurement_system,
+                "sensorUnits": sensor_units,
                 "active": active,
             }
         )
@@ -80,6 +104,15 @@ class HookExtResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.get_device_detailed_response import (
+            GetDeviceDetailedResponse,
+        )
+        from ..models.hook_event import HookEvent
+        from ..models.hook_ext_response_headers import HookExtResponseHeaders
+        from ..models.hook_ext_response_labels import HookExtResponseLabels
+        from ..models.hook_sensor_units import HookSensorUnits
+        from ..models.location import Location
+
         d = src_dict.copy()
         name = d.pop("name")
 
@@ -109,6 +142,8 @@ class HookExtResponse:
 
         measurement_system = MeasurementSystem(d.pop("measurementSystem"))
 
+        sensor_units = HookSensorUnits.from_dict(d.pop("sensorUnits"))
+
         active = d.pop("active")
 
         _most_recent_event = d.pop("mostRecentEvent", UNSET)
@@ -128,6 +163,7 @@ class HookExtResponse:
             labels=labels,
             headers=headers,
             measurement_system=measurement_system,
+            sensor_units=sensor_units,
             active=active,
             most_recent_event=most_recent_event,
         )

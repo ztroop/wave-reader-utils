@@ -11,6 +11,18 @@ T = TypeVar("T", bound="HookEvent")
 
 @attr.s(auto_attribs=True)
 class HookEvent:
+    """
+    Attributes:
+        hook_id (Union[Unset, str]):
+        correlation_id (Union[Unset, str]):
+        url (Union[Unset, str]):
+        content (Union[Unset, str]):
+        created_at (Union[Unset, datetime.datetime]):
+        completed_at (Union[Unset, datetime.datetime]):
+        updated_at (Union[Unset, datetime.datetime]):
+        status_code (Union[Unset, int]):
+    """
+
     hook_id: Union[Unset, str] = UNSET
     correlation_id: Union[Unset, str] = UNSET
     url: Union[Unset, str] = UNSET

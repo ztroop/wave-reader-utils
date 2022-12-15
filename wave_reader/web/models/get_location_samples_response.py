@@ -1,15 +1,24 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
-from ..models.device_sample_response import DeviceSampleResponse
+if TYPE_CHECKING:
+    from ..models.device_sample_response import DeviceSampleResponse
+
 
 T = TypeVar("T", bound="GetLocationSamplesResponse")
 
 
 @attr.s(auto_attribs=True)
 class GetLocationSamplesResponse:
-    devices: List[DeviceSampleResponse]
+    """
+    Attributes:
+        devices (List['DeviceSampleResponse']):
+        id (str):
+        name (str):
+    """
+
+    devices: List["DeviceSampleResponse"]
     id: str
     name: str
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
@@ -38,6 +47,8 @@ class GetLocationSamplesResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.device_sample_response import DeviceSampleResponse
+
         d = src_dict.copy()
         devices = []
         _devices = d.pop("devices")

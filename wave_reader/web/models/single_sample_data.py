@@ -9,15 +9,62 @@ T = TypeVar("T", bound="SingleSampleData")
 
 @attr.s(auto_attribs=True)
 class SingleSampleData:
+    """
+    Attributes:
+        battery (Union[Unset, int]):
+        co2 (Union[Unset, float]):
+        humidity (Union[Unset, float]):
+        light (Union[Unset, int]):
+        lux (Union[Unset, int]):
+        mold (Union[Unset, float]):
+        pm1 (Union[Unset, float]):
+        pm10 (Union[Unset, float]):
+        pm25 (Union[Unset, float]):
+        pressure (Union[Unset, float]):
+        pressure_difference (Union[Unset, float]):
+        radon_short_term_avg (Union[Unset, float]):
+        rssi (Union[Unset, int]):
+        sla (Union[Unset, float]):
+        temp (Union[Unset, float]):
+        time (Union[Unset, int]):
+        virus_risk (Union[Unset, float]):
+        voc (Union[Unset, float]):
+        outdoor_temp (Union[Unset, float]):
+        outdoor_humidity (Union[Unset, float]):
+        outdoor_pressure (Union[Unset, float]):
+        outdoor_pm_10 (Union[Unset, float]):
+        outdoor_pm_1 (Union[Unset, float]):
+        outdoor_pm_25 (Union[Unset, float]):
+        outdoor_no_2 (Union[Unset, float]):
+        outdoor_o3 (Union[Unset, float]):
+        outdoor_so_2 (Union[Unset, float]):
+        outdoor_co (Union[Unset, float]):
+        outdoor_no (Union[Unset, float]):
+        control_signal (Union[Unset, float]):
+        control_signal_slot_01 (Union[Unset, float]):
+        control_signal_slot_02 (Union[Unset, float]):
+        control_signal_slot_03 (Union[Unset, float]):
+        control_signal_slot_04 (Union[Unset, float]):
+        control_signal_slot_05 (Union[Unset, float]):
+        control_signal_slot_06 (Union[Unset, float]):
+        control_signal_slot_07 (Union[Unset, float]):
+        control_signal_slot_08 (Union[Unset, float]):
+        regulation_pressure (Union[Unset, float]):
+        regulation_height (Union[Unset, float]):
+        relay_device_type (Union[Unset, str]):
+    """
+
     battery: Union[Unset, int] = UNSET
     co2: Union[Unset, float] = UNSET
     humidity: Union[Unset, float] = UNSET
     light: Union[Unset, int] = UNSET
+    lux: Union[Unset, int] = UNSET
     mold: Union[Unset, float] = UNSET
     pm1: Union[Unset, float] = UNSET
     pm10: Union[Unset, float] = UNSET
     pm25: Union[Unset, float] = UNSET
     pressure: Union[Unset, float] = UNSET
+    pressure_difference: Union[Unset, float] = UNSET
     radon_short_term_avg: Union[Unset, float] = UNSET
     rssi: Union[Unset, int] = UNSET
     sla: Union[Unset, float] = UNSET
@@ -35,7 +82,16 @@ class SingleSampleData:
     outdoor_o3: Union[Unset, float] = UNSET
     outdoor_so_2: Union[Unset, float] = UNSET
     outdoor_co: Union[Unset, float] = UNSET
+    outdoor_no: Union[Unset, float] = UNSET
     control_signal: Union[Unset, float] = UNSET
+    control_signal_slot_01: Union[Unset, float] = UNSET
+    control_signal_slot_02: Union[Unset, float] = UNSET
+    control_signal_slot_03: Union[Unset, float] = UNSET
+    control_signal_slot_04: Union[Unset, float] = UNSET
+    control_signal_slot_05: Union[Unset, float] = UNSET
+    control_signal_slot_06: Union[Unset, float] = UNSET
+    control_signal_slot_07: Union[Unset, float] = UNSET
+    control_signal_slot_08: Union[Unset, float] = UNSET
     regulation_pressure: Union[Unset, float] = UNSET
     regulation_height: Union[Unset, float] = UNSET
     relay_device_type: Union[Unset, str] = UNSET
@@ -46,11 +102,13 @@ class SingleSampleData:
         co2 = self.co2
         humidity = self.humidity
         light = self.light
+        lux = self.lux
         mold = self.mold
         pm1 = self.pm1
         pm10 = self.pm10
         pm25 = self.pm25
         pressure = self.pressure
+        pressure_difference = self.pressure_difference
         radon_short_term_avg = self.radon_short_term_avg
         rssi = self.rssi
         sla = self.sla
@@ -68,7 +126,16 @@ class SingleSampleData:
         outdoor_o3 = self.outdoor_o3
         outdoor_so_2 = self.outdoor_so_2
         outdoor_co = self.outdoor_co
+        outdoor_no = self.outdoor_no
         control_signal = self.control_signal
+        control_signal_slot_01 = self.control_signal_slot_01
+        control_signal_slot_02 = self.control_signal_slot_02
+        control_signal_slot_03 = self.control_signal_slot_03
+        control_signal_slot_04 = self.control_signal_slot_04
+        control_signal_slot_05 = self.control_signal_slot_05
+        control_signal_slot_06 = self.control_signal_slot_06
+        control_signal_slot_07 = self.control_signal_slot_07
+        control_signal_slot_08 = self.control_signal_slot_08
         regulation_pressure = self.regulation_pressure
         regulation_height = self.regulation_height
         relay_device_type = self.relay_device_type
@@ -84,6 +151,8 @@ class SingleSampleData:
             field_dict["humidity"] = humidity
         if light is not UNSET:
             field_dict["light"] = light
+        if lux is not UNSET:
+            field_dict["lux"] = lux
         if mold is not UNSET:
             field_dict["mold"] = mold
         if pm1 is not UNSET:
@@ -94,6 +163,8 @@ class SingleSampleData:
             field_dict["pm25"] = pm25
         if pressure is not UNSET:
             field_dict["pressure"] = pressure
+        if pressure_difference is not UNSET:
+            field_dict["pressureDifference"] = pressure_difference
         if radon_short_term_avg is not UNSET:
             field_dict["radonShortTermAvg"] = radon_short_term_avg
         if rssi is not UNSET:
@@ -128,8 +199,26 @@ class SingleSampleData:
             field_dict["outdoorSo2"] = outdoor_so_2
         if outdoor_co is not UNSET:
             field_dict["outdoorCo"] = outdoor_co
+        if outdoor_no is not UNSET:
+            field_dict["outdoorNo"] = outdoor_no
         if control_signal is not UNSET:
             field_dict["controlSignal"] = control_signal
+        if control_signal_slot_01 is not UNSET:
+            field_dict["controlSignalSlot01"] = control_signal_slot_01
+        if control_signal_slot_02 is not UNSET:
+            field_dict["controlSignalSlot02"] = control_signal_slot_02
+        if control_signal_slot_03 is not UNSET:
+            field_dict["controlSignalSlot03"] = control_signal_slot_03
+        if control_signal_slot_04 is not UNSET:
+            field_dict["controlSignalSlot04"] = control_signal_slot_04
+        if control_signal_slot_05 is not UNSET:
+            field_dict["controlSignalSlot05"] = control_signal_slot_05
+        if control_signal_slot_06 is not UNSET:
+            field_dict["controlSignalSlot06"] = control_signal_slot_06
+        if control_signal_slot_07 is not UNSET:
+            field_dict["controlSignalSlot07"] = control_signal_slot_07
+        if control_signal_slot_08 is not UNSET:
+            field_dict["controlSignalSlot08"] = control_signal_slot_08
         if regulation_pressure is not UNSET:
             field_dict["regulationPressure"] = regulation_pressure
         if regulation_height is not UNSET:
@@ -150,6 +239,8 @@ class SingleSampleData:
 
         light = d.pop("light", UNSET)
 
+        lux = d.pop("lux", UNSET)
+
         mold = d.pop("mold", UNSET)
 
         pm1 = d.pop("pm1", UNSET)
@@ -159,6 +250,8 @@ class SingleSampleData:
         pm25 = d.pop("pm25", UNSET)
 
         pressure = d.pop("pressure", UNSET)
+
+        pressure_difference = d.pop("pressureDifference", UNSET)
 
         radon_short_term_avg = d.pop("radonShortTermAvg", UNSET)
 
@@ -194,7 +287,25 @@ class SingleSampleData:
 
         outdoor_co = d.pop("outdoorCo", UNSET)
 
+        outdoor_no = d.pop("outdoorNo", UNSET)
+
         control_signal = d.pop("controlSignal", UNSET)
+
+        control_signal_slot_01 = d.pop("controlSignalSlot01", UNSET)
+
+        control_signal_slot_02 = d.pop("controlSignalSlot02", UNSET)
+
+        control_signal_slot_03 = d.pop("controlSignalSlot03", UNSET)
+
+        control_signal_slot_04 = d.pop("controlSignalSlot04", UNSET)
+
+        control_signal_slot_05 = d.pop("controlSignalSlot05", UNSET)
+
+        control_signal_slot_06 = d.pop("controlSignalSlot06", UNSET)
+
+        control_signal_slot_07 = d.pop("controlSignalSlot07", UNSET)
+
+        control_signal_slot_08 = d.pop("controlSignalSlot08", UNSET)
 
         regulation_pressure = d.pop("regulationPressure", UNSET)
 
@@ -207,11 +318,13 @@ class SingleSampleData:
             co2=co2,
             humidity=humidity,
             light=light,
+            lux=lux,
             mold=mold,
             pm1=pm1,
             pm10=pm10,
             pm25=pm25,
             pressure=pressure,
+            pressure_difference=pressure_difference,
             radon_short_term_avg=radon_short_term_avg,
             rssi=rssi,
             sla=sla,
@@ -229,7 +342,16 @@ class SingleSampleData:
             outdoor_o3=outdoor_o3,
             outdoor_so_2=outdoor_so_2,
             outdoor_co=outdoor_co,
+            outdoor_no=outdoor_no,
             control_signal=control_signal,
+            control_signal_slot_01=control_signal_slot_01,
+            control_signal_slot_02=control_signal_slot_02,
+            control_signal_slot_03=control_signal_slot_03,
+            control_signal_slot_04=control_signal_slot_04,
+            control_signal_slot_05=control_signal_slot_05,
+            control_signal_slot_06=control_signal_slot_06,
+            control_signal_slot_07=control_signal_slot_07,
+            control_signal_slot_08=control_signal_slot_08,
             regulation_pressure=regulation_pressure,
             regulation_height=regulation_height,
             relay_device_type=relay_device_type,

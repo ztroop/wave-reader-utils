@@ -1,17 +1,26 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
-from ..models.battery_response_data import BatteryResponseData
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.battery_response_data import BatteryResponseData
+
 
 T = TypeVar("T", bound="BatteryResponse")
 
 
 @attr.s(auto_attribs=True)
 class BatteryResponse:
+    """
+    Attributes:
+        id (str):
+        data (Union[Unset, BatteryResponseData]):
+    """
+
     id: str
-    data: Union[Unset, BatteryResponseData] = UNSET
+    data: Union[Unset, "BatteryResponseData"] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -34,6 +43,8 @@ class BatteryResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.battery_response_data import BatteryResponseData
+
         d = src_dict.copy()
         id = d.pop("id")
 
