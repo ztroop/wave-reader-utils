@@ -35,7 +35,8 @@ class DeviceSensors:
     :param pressure: Atmospheric pressure (hPa)
     :param co2: Carbon dioxide level (ppm)
     :param voc: Volatile organic compound level (ppb)
-    :param pm: Particulate matter (ug/m3)
+    :param pm1: Particulate matter 1 (ug/m3)
+    :param pm2_5: Particulate matter 2.5 (ug/m3)
     """
 
     humidity: Optional[Humidity] = None
@@ -45,7 +46,8 @@ class DeviceSensors:
     pressure: Optional[Pressure] = None
     co2: Optional[CO2] = None
     voc: Optional[VOC] = None
-    pm: Optional[PM] = None
+    pm1: Optional[PM] = None
+    pm2_5: Optional[PM] = None
 
     def __str__(self):
         return f'DeviceSensors ({", ".join(f"{k}: {v}" for k, v in self.as_dict().items())})'
@@ -114,6 +116,7 @@ class WaveDevice:
             device, "metadata", None
         )
 
+        print(f"{self.metadata=}")
         self.address: str = device.address  # UUID in MacOS, or MAC in Linux and Windows
         self.serial: str = serial
         try:
@@ -146,6 +149,8 @@ class WaveDevice:
             data: List[int] = struct.unpack(DEVICE[self.product]["BUFFER"], gatt_data)  # type: ignore
         except struct.error as err:
             raise UnsupportedError(str(err), self.address)
+
+        print(f"{gatt_data=}")
 
         if self.product != WaveProduct.WAVE and data[0] != SENSOR_VER_SUPPORTED:  # 💩
             raise UnsupportedError(
