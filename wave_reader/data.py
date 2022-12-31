@@ -4,6 +4,7 @@ from enum import Enum
 class WaveProduct(Enum):
     WAVE = "290"
     WAVE2 = "295"
+    VIEWPLUS = "296"
     WAVEPLUS = "293"
     WAVEMINI = "292"
     UNKNOWN = ""
