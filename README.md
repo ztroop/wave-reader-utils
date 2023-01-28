@@ -15,7 +15,7 @@ and the community. See [documentation](https://ztroop.github.io/wave-reader-util
 ## Features
 
 - Using `bleak` as a dependency for platform cross-compatibility and support for asynchronous operation.
-- Support for major models: Wave+, Wave, Wave (Version 2) and Wave Mini devices.
+- Support for major models: Wave+, Wave, Wave (Version 2) and Wave Mini devices. View Plus is not supported, as it sends data over WiFi, not BTLE.
 - Code testing, coverage reporting, linting, type hinting, and formatting.
 - Provide a more comprehensive programming interface for a developer audience.
 - Auxillary module that provides a web client for Airthings API and OAuth2 authentication.
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     # Scan for BTLE Wave devices.
     devices = wave.scan()
     # Event loop to run asynchronous tasks.
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
     # Get sensor readings from available wave devices.
     for d in devices:
         sensor_readings = loop.run_until_complete(d.get_sensor_values())
