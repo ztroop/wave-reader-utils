@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     author="Zackary Troop",
     name="wave-reader",
-    version="1.0.1",
+    version="1.0.2",
     url="https://github.com/ztroop/wave-reader-utils",
     license="MIT",
     description="Unofficial package for Airthings Wave communication.",
@@ -17,7 +17,7 @@ setup(
         "attrs>=21.3.0",
         "python-dateutil>=2.8.2",
     ],
-    python_requires=">=3.7.*",
+    python_requires=">=3.7.0",
     classifiers=[
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
