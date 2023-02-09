@@ -114,7 +114,7 @@ class WaveDevice:
             device, "metadata", None
         )
 
-        self.address: str = device.address  # UUID in MacOS, or MAC in Linux and Windows
+        self.address: str = getattr(device, "address", "")  # UUID in MacOS, or MAC in Linux and Windows
         self.serial: str = serial
         try:
             self.product: WaveProduct = WaveProduct(self.serial[:3])
@@ -205,7 +205,7 @@ class WaveDevice:
     async def get_services(self) -> Dict:
         """Get available services, descriptors and characteristics for the device."""
 
-        self._gatt_services = await self._client.get_services()  # type: ignore
+        self._gatt_services = self._client.services  # type: ignore
         return getattr(self._gatt_services, "services")
 
     @requires_client
