@@ -7,8 +7,6 @@ class WaveProduct(Enum):
     WAVEPLUS = "293"
     WAVEMINI = "292"
     UNKNOWN = ""
-    # WAVEMIST = "294"
-    # HUB = ["281", "282"]
 
 
 # Company Identifier registered with the Bluetooth SIG
