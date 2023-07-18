@@ -15,10 +15,12 @@ class TestTemperature(TestCase):
         hot_temp = measure.Temperature(30.0).threshold()
         cold_temp = measure.Temperature(10.0).threshold()
         good_temp = measure.Temperature(21).threshold()
+        error_temp = measure.Temperature(100).threshold()
 
         self.assertEqual(hot_temp, measure.TempThreshold.RED)
         self.assertEqual(cold_temp, measure.TempThreshold.BLUE)
         self.assertEqual(good_temp, measure.TempThreshold.GREEN)
+        self.assertEqual(error_temp, measure.TempThreshold.WHITE)
 
 
 class TestRadon(TestCase):
@@ -33,10 +35,12 @@ class TestRadon(TestCase):
         good = measure.Radon(25.0).threshold()
         fair = measure.Radon(100.0).threshold()
         poor = measure.Radon(150.0).threshold()
+        error = measure.Radon(0).threshold()
 
         self.assertEqual(good, measure.Threshold.GREEN)
         self.assertEqual(fair, measure.Threshold.YELLOW)
         self.assertEqual(poor, measure.Threshold.RED)
+        self.assertEqual(error, measure.Threshold.WHITE)
 
 
 class TestPressure(TestCase):
@@ -62,10 +66,12 @@ class TestCO2(TestCase):
         good = measure.CO2(799).threshold()
         fair = measure.CO2(950).threshold()
         poor = measure.CO2(1000).threshold()
+        error = measure.CO2(0).threshold()
 
         self.assertEqual(good, measure.Threshold.GREEN)
         self.assertEqual(fair, measure.Threshold.YELLOW)
         self.assertEqual(poor, measure.Threshold.RED)
+        self.assertEqual(error, measure.Threshold.WHITE)
 
 
 class TestVOC(TestCase):
@@ -80,10 +86,12 @@ class TestVOC(TestCase):
         good = measure.VOC(249).threshold()
         fair = measure.VOC(500).threshold()
         poor = measure.VOC(2000.0).threshold()
+        error = measure.VOC(30000).threshold()
 
         self.assertEqual(good, measure.Threshold.GREEN)
         self.assertEqual(fair, measure.Threshold.YELLOW)
         self.assertEqual(poor, measure.Threshold.RED)
+        self.assertEqual(error, measure.Threshold.WHITE)
 
 
 class TestPM(TestCase):
@@ -97,10 +105,12 @@ class TestPM(TestCase):
         good = measure.PM(9).threshold()
         fair = measure.PM(20).threshold()
         poor = measure.PM(25).threshold()
+        error = measure.PM(0).threshold()
 
         self.assertEqual(good, measure.Threshold.GREEN)
         self.assertEqual(fair, measure.Threshold.YELLOW)
         self.assertEqual(poor, measure.Threshold.RED)
+        self.assertEqual(error, measure.Threshold.WHITE)
 
 
 class TestHumidity(TestCase):
@@ -115,8 +125,10 @@ class TestHumidity(TestCase):
         too_wet = measure.Humidity(70.0).threshold()
         fair = measure.Humidity(60.0).threshold()
         good = measure.Humidity(40.0).threshold()
+        error = measure.Humidity(119).threshold()
 
         self.assertEqual(too_dry, measure.Threshold.RED)
         self.assertEqual(too_wet, measure.Threshold.RED)
         self.assertEqual(fair, measure.Threshold.YELLOW)
         self.assertEqual(good, measure.Threshold.GREEN)
+        self.assertEqual(error, measure.Threshold.WHITE)
