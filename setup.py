@@ -12,7 +12,7 @@ setup(
     packages=find_packages(exclude=["examples", "tests"]),
     install_requires=[
         "Authlib>=0.15.6",
-        "bleak>=0.19.5",
+        "bleak>=0.19.0",
         "httpx>=0.18.2",
         "attrs>=21.3.0",
         "python-dateutil>=2.8.2",
