@@ -1,17 +1,16 @@
 import asyncio
 import logging
-from wave_reader.wave import WaveDevice
-
-from wave_reader import discover_devices
+from wave_reader import discover_devices, wave
 
 logging.basicConfig(level=logging.INFO)
 
 
-async def get_readings(device: WaveDevice) -> None:
+async def get_readings(device: wave.WaveDevice) -> None:
     print(device.address, device.serial)
     sensor_readings = await device.get_sensor_values()
     print(sensor_readings)
     await device.disconnect()
+
 
 if __name__ == "__main__":
     # Event loop to run asynchronous tasks.
