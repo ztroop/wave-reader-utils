@@ -13,11 +13,20 @@ from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
 
 from wave_reader.data import (
-    AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
+    AIRTHINGS_ID,
+    DEVICE,
+    MANUFACTURER_DATA_FORMAT,
+    SENSOR_VER_SUPPORTED,
     WaveProduct,
 )
 from wave_reader.measure import (
-    CO2, PM, VOC, Humidity, Pressure, Radon, Temperature,
+    CO2,
+    PM,
+    VOC,
+    Humidity,
+    Pressure,
+    Radon,
+    Temperature,
 )
 from wave_reader.utils import UnsupportedError, requires_client
 
@@ -271,8 +280,8 @@ async def discover_devices(
 
     wave_devices = wave_devices if isinstance(wave_devices, list) else []
     devices = await BleakScanner.discover(timeout=timeout, return_adv=True, **kwargs)
+    i: Tuple[BLEDevice, AdvertisementData]
     for i in devices.values():
-        i: Tuple[BLEDevice, AdvertisementData]
         serial = WaveDevice.parse_manufacturer_data(
             i[0].metadata.get("manufacturer_data", {})
         )

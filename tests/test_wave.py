@@ -45,11 +45,11 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         BLEIgnoredDevice = deepcopy(self.BLEDevice)
         BLEIgnoredDevice.metadata["manufacturer_data"] = {}
 
-        mocked_discover.return_value = [
-            self.BLEDevice,
-            BLEUnknownDevice,
-            BLEIgnoredDevice,
-        ]
+        mocked_discover.return_value = {
+            "D7:FB:30:A9:17:F1": (self.BLEDevice, None),
+            "D7:FB:30:A9:17:F2": (BLEUnknownDevice, None),
+            "D7:FB:30:A9:17:F3": (BLEIgnoredDevice, None),
+        }
         expected_result = [self.WaveDevice]
         devices = await wave.discover_devices()
         self.assertTrue((devices == expected_result))
@@ -67,7 +67,9 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
             820: [13, 25, 160, 170, 9, 0]
         }
 
-        mocked_discover.return_value = [BLEUnsupportedDevice]
+        mocked_discover.return_value = {
+            "D7:FB:30:A9:17:F1": (BLEUnsupportedDevice, None)
+        }
         devices = await wave.discover_devices()
         self.assertEqual(devices[0].product, data.WaveProduct.UNKNOWN)
         self.assertTrue(mocked_logger.called)
@@ -78,7 +80,7 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         BLEUnnamedDevice = deepcopy(self.BLEDevice)
         BLEUnnamedDevice.name = BLEUnnamedDevice.address.replace(":", "-")
 
-        mocked_discover.return_value = [BLEUnnamedDevice]
+        mocked_discover.return_value = {"D7:FB:30:A9:17:F1": (BLEUnnamedDevice, None)}
         devices = await wave.discover_devices()
         self.assertNotEqual(devices, [])
 
@@ -232,7 +234,7 @@ class TestScan(TestCase):
 
     @patch("wave_reader.wave.BleakScanner.discover")
     def test_scan(self, mocked_discover):
-        mocked_discover.return_value = [self.WaveDevice]
+        mocked_discover.return_value = {"D7:FB:30:A9:17:F1": (self.WaveDevice, None)}
 
         devices = wave.scan()
         self.assertEqual(devices, [self.WaveDevice])
