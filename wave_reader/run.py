@@ -1,5 +1,6 @@
 import asyncio
 import logging
+
 from wave_reader import discover_devices, wave
 
 logging.basicConfig(level=logging.INFO)
