@@ -66,7 +66,7 @@ class DeviceSensors:
         data = {}
         for i in fields(self):
             v = getattr(self, i.name)
-            if v:
+            if v is not None:
                 data[i.name] = v
         return data
 
