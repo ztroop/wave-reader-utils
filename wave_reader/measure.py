@@ -3,12 +3,14 @@ class Threshold:
     YELLOW = "Fair"
     RED = "Poor"
     NONE = "N/A"
+    WHITE = "Error"
 
 
 class TempThreshold:
     RED = "Hot"
     GREEN = "Good"
     BLUE = "Cold"
+    WHITE = "Error"
 
 
 class Temperature(float):
@@ -23,7 +25,9 @@ class Temperature(float):
         self.kelvin = self.celsius + 273.15
 
     def threshold(self) -> str:
-        if self.celsius >= 25:
+        if self.celsius > 50 or self.celsius < -20:
+            _threshold = TempThreshold.WHITE
+        elif self.celsius >= 25:
             _threshold = TempThreshold.RED
         elif self.celsius < 18:
             _threshold = TempThreshold.BLUE
@@ -43,7 +47,9 @@ class Radon(float):
         self.picocuries = self.becquerels / 37
 
     def threshold(self) -> str:
-        if self.becquerels >= 150:
+        if self.becquerels <= 0 or self.becquerels >= 9000:
+            _threshold = Threshold.WHITE
+        elif self.becquerels >= 150:
             _threshold = Threshold.RED
         elif self.becquerels < 100:
             _threshold = Threshold.GREEN
@@ -63,7 +69,11 @@ class Pressure(float):
         self.kilopascals = self.hectopascals / 10
 
     def threshold(self) -> str:
-        return Threshold.NONE
+        if self.hectopascals < 800 or self.hectopascals > 1100:
+            _threshold = Threshold.WHITE
+        else:
+            _threshold = Threshold.NONE
+        return _threshold
 
 
 class CO2(float):
@@ -77,7 +87,9 @@ class CO2(float):
         self.parts_per_billion = self.parts_per_million * 1000
 
     def threshold(self) -> str:
-        if self.parts_per_million >= 1000:
+        if self.parts_per_million <= 0 or self.parts_per_million > 30000:
+            _threshold = Threshold.WHITE
+        elif self.parts_per_million >= 1000:
             _threshold = Threshold.RED
         elif self.parts_per_million < 800:
             _threshold = Threshold.GREEN
@@ -97,7 +109,9 @@ class VOC(float):
         self.parts_per_million = self.parts_per_billion / 1000
 
     def threshold(self) -> str:
-        if self.parts_per_billion >= 2000:
+        if self.parts_per_billion <= 0 or self.parts_per_billion >= 30000:
+            _threshold = Threshold.WHITE
+        elif self.parts_per_billion >= 2000:
             _threshold = Threshold.RED
         elif self.parts_per_billion < 250:
             _threshold = Threshold.GREEN
@@ -116,7 +130,9 @@ class PM(float):
         self.microgram_per_cubic_meter = value
 
     def threshold(self) -> str:
-        if self.microgram_per_cubic_meter >= 25:
+        if self.microgram_per_cubic_meter <= 0:
+            _threshold = Threshold.WHITE
+        elif self.microgram_per_cubic_meter >= 25:
             _threshold = Threshold.RED
         elif self.microgram_per_cubic_meter < 10:
             _threshold = Threshold.GREEN
@@ -135,7 +151,9 @@ class Humidity(float):
         self.relative_humidity = value
 
     def threshold(self) -> str:
-        if self.relative_humidity < 25.0 or self.relative_humidity >= 70.0:
+        if self.relative_humidity <= 0 or self.relative_humidity > 100:
+            _threshold = Threshold.WHITE
+        elif self.relative_humidity < 25.0 or self.relative_humidity >= 70.0:
             _threshold = Threshold.RED
         elif (self.relative_humidity < 70.0 and self.relative_humidity >= 60.0) or (
             self.relative_humidity < 30.0 and self.relative_humidity >= 25.0

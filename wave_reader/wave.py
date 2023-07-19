@@ -5,18 +5,28 @@ from collections import namedtuple
 from dataclasses import dataclass, fields
 from datetime import datetime
 from math import log
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from bleak import BleakClient, BleakScanner
 from bleak.backends.client import BaseBleakClient
 from bleak.backends.device import BLEDevice
+from bleak.backends.scanner import AdvertisementData
 
 from wave_reader.data import (
-    AIRTHINGS_ID, DEVICE, MANUFACTURER_DATA_FORMAT, SENSOR_VER_SUPPORTED,
+    AIRTHINGS_ID,
+    DEVICE,
+    MANUFACTURER_DATA_FORMAT,
+    SENSOR_VER_SUPPORTED,
     WaveProduct,
 )
 from wave_reader.measure import (
-    CO2, PM, VOC, Humidity, Pressure, Radon, Temperature,
+    CO2,
+    PM,
+    VOC,
+    Humidity,
+    Pressure,
+    Radon,
+    Temperature,
 )
 from wave_reader.utils import UnsupportedError, requires_client
 
@@ -56,7 +66,7 @@ class DeviceSensors:
         data = {}
         for i in fields(self):
             v = getattr(self, i.name)
-            if v:
+            if v is not None:
                 data[i.name] = v
         return data
 
@@ -100,6 +110,7 @@ class WaveDevice:
 
     :param device: Device information from Bleak's discover function
     :param serial: Parsed serial number from manufacturer data
+    :param adv: Advertisement data for the device (Optional)
     """
 
     _client: Optional[BaseBleakClient] = None
@@ -107,15 +118,24 @@ class WaveDevice:
     sensor_readings: Optional[DeviceSensors] = None
     readings_updated: Optional[datetime] = None
 
-    def __init__(self, device: Union[BLEDevice, Any], serial: str):
+    def __init__(
+        self,
+        device: Union[BLEDevice, Any],
+        serial: str,
+        adv: Optional[AdvertisementData] = None,
+    ):
         self.name: Optional[str] = getattr(device, "name", None)
         self.rssi: Optional[int] = getattr(device, "rssi", None)
         self.metadata: Optional[Dict[str, Union[List, Dict]]] = getattr(
             device, "metadata", None
         )
 
-        self.address: str = getattr(device, "address", "")  # UUID in MacOS, or MAC in Linux and Windows
+        self.address: str = getattr(
+            device, "address", ""
+        )  # UUID in MacOS, or MAC in Linux and Windows
         self.serial: str = serial
+        self.advertisement_data = adv
+
         try:
             self.product: WaveProduct = WaveProduct(self.serial[:3])
             _logger.debug(f"Device: ({self.address}) is a ({self.product}) device.")
@@ -219,7 +239,7 @@ class WaveDevice:
         return self._map_sensor_values(characteristics)
 
     @staticmethod
-    def parse_manufacturer_data(manufacturer_data: Dict[int, int]) -> Optional[str]:
+    def parse_manufacturer_data(manufacturer_data: Optional[Dict]) -> Optional[str]:
         """Converts manufacturer data and returns a serial number for the
         Airthings Wave devices.
 
@@ -259,15 +279,16 @@ async def discover_devices(
     """
 
     wave_devices = wave_devices if isinstance(wave_devices, list) else []
-    device: BLEDevice  # Typing annotation
-    for device in await BleakScanner.discover(timeout=timeout, **kwargs):
+    devices = await BleakScanner.discover(timeout=timeout, return_adv=True, **kwargs)
+    i: Tuple[BLEDevice, AdvertisementData]
+    for i in devices.values():
         serial = WaveDevice.parse_manufacturer_data(
-            device.metadata.get("manufacturer_data")
+            i[0].metadata.get("manufacturer_data", {})
         )
         if serial:
-            wave_devices.append(WaveDevice(device, serial))
+            wave_devices.append(WaveDevice(i[0], serial, adv=i[1]))
         else:
-            _logger.debug(f"Device: ({device.address}) is not a valid Wave device.")
+            _logger.debug(f"Device: ({i[0].address}) is not a valid Wave device.")
             continue
 
     return wave_devices
