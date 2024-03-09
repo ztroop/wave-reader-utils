@@ -1,7 +1,8 @@
 ![Build Status](https://github.com/ztroop/wave-reader/workflows/Build%20Status/badge.svg)
 [![codecov](https://codecov.io/gh/ztroop/wave-reader-utils/branch/master/graph/badge.svg?token=NG9H8YO1ID)](https://codecov.io/gh/ztroop/wave-reader-utils)
 [![PyPI version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader)
-[![PyPI downloads](https://img.shields.io/pypi/dm/wave-reader)](https://pypi.org/project/wave-reader/)
+
+**This package is currently in maintenance mode. Please use [airthings-ble](https://github.com/Airthings/airthings-ble) for new projects.**
 
 ## Wave Reader Utilities
 
@@ -10,7 +11,7 @@ gas that comes from the breakdown of uranium in soil and rock. It's invisible, o
 
 This is an **unofficial** Airthings Wave community library designed to provide utilities for device
 and web communication. The library wouldn't be possible without the existing efforts from Airthings
-and the community. See [documentation](https://ztroop.github.io/wave-reader-utils/) for more information.
+and the community.
 
 ## Features
 
