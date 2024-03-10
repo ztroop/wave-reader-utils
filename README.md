@@ -10,8 +10,7 @@ The `Airthings Wave` is a series of devices that track Radon levels in the home.
 gas that comes from the breakdown of uranium in soil and rock. It's invisible, odourless and tasteless.
 
 This is an **unofficial** Airthings Wave community library designed to provide utilities for device
-and web communication. The library wouldn't be possible without the existing efforts from Airthings
-and the community.
+and web communication.
 
 ## Features
 
