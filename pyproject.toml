@@ -40,5 +40,4 @@ not_skip = "__init__.py"
 relative_files = true
 
 [tool.mypy]
-exclude = ["wave_reader/web/"]
 ignore_missing_imports = true

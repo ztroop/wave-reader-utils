@@ -1,5 +1,6 @@
 ![Build Status](https://github.com/ztroop/wave-reader/workflows/Build%20Status/badge.svg)
-[![PyPI version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader)
+[![PyPI Version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/wave-reader)](https://pypi.org/project/wave-reader/)
 
 **This package is currently in maintenance mode. Please use [airthings-ble](https://github.com/Airthings/airthings-ble) for new projects.**
 
@@ -9,7 +10,7 @@ The `Airthings Wave` is a series of devices that track Radon levels in the home.
 gas that comes from the breakdown of uranium in soil and rock. It's invisible, odourless and tasteless.
 
 This is an **unofficial** Airthings Wave community library designed to provide utilities for device
-and web communication.
+communication.
 
 ## Features
 
@@ -17,7 +18,7 @@ and web communication.
 - Support for major models: Wave+, Wave, Wave (Version 2) and Wave Mini devices. View Plus is not supported, as it sends data over WiFi, not BTLE.
 - Code testing, coverage reporting, linting, type hinting, and formatting.
 - Provide a more comprehensive programming interface for a developer audience.
-- Auxillary module that provides a web client for Airthings API and OAuth2 authentication.
+
 
 ## Requirements
 
@@ -61,10 +62,7 @@ if __name__ == "__main__":
 # >>> DeviceSensors (humidity: 32.5, radon_sta: 116, radon_lta: 113 ...
 ```
 
-## Web API Client Module
-
-The `wave_reader/web` module in this library provides a client for the Airthings
-web API. See [this page](./wave_reader/web/README.md) for more details.
+> **Note:** The `wave_reader/web` module has been removed. It relied on an external API that we do not control and cannot guarantee works anymore.
 
 ## Contribution
 

@@ -1,6 +1,6 @@
 ![Build Status](https://github.com/ztroop/wave-reader/workflows/Build%20Status/badge.svg)
-[![PyPI version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader)
-[![PyPI downloads](https://img.shields.io/pypi/dm/wave-reader)](https://pypi.org/project/wave-reader/)
+[![PyPI Version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/wave-reader)](https://pypi.org/project/wave-reader/)
 
 ## Wave Reader Utilities
 
@@ -60,10 +60,7 @@ if __name__ == "__main__":
 # >>> DeviceSensors (humidity: 32.5, radon_sta: 116, radon_lta: 113 ...
 ```
 
-## Web API Client Module
-
-The `wave_reader/web` module in this library provides a client for the Airthings
-web API. See [this page](./wave_reader/web/README.md) for more details.
+> **Note:** The `wave_reader/web` module has been removed. It relied on an external API that we do not control and cannot guarantee works anymore.
 
 ## Contribution
 
