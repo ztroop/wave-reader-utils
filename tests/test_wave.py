@@ -1,9 +1,10 @@
+import struct
 from copy import deepcopy
 from unittest import IsolatedAsyncioTestCase, TestCase
 from unittest.mock import patch
 
 from wave_reader import data, wave
-from wave_reader.utils import requires_client
+from wave_reader.utils import battery_percentage, requires_client
 
 from .mocks import MockedBleakClient, MockedBLEDevice, MockedFailingBleakClient
 
@@ -279,7 +280,7 @@ class TestDeviceSensors(TestCase):
             data.WaveProduct.WAVE2,
         ).as_tuple()
         self.assertTrue(isinstance(fields, tuple))
-        self.assertEqual(len(fields), 8)
+        self.assertEqual(len(fields), 9)
 
     def test_wave2(self):
         """Test WAVE2 device is returning the correct sensor values."""
@@ -355,3 +356,116 @@ class TestRequiresClient(IsolatedAsyncioTestCase):
         # We intentionally fail the connect to show the loop exists after 3 reconnects.
         self.assertFalse(await fake_function(device))
         self.assertEqual(mocked_logger.call_count, 1)
+
+
+class TestBatteryCalculation(TestCase):
+    """Unit tests for battery percentage calculation."""
+
+    def test_two_battery_full(self):
+        self.assertEqual(battery_percentage(3.0, 2), 100)
+        self.assertEqual(battery_percentage(3.2, 2), 100)
+
+    def test_two_battery_empty(self):
+        self.assertEqual(battery_percentage(2.1, 2), 0)
+        self.assertEqual(battery_percentage(2.0, 2), 0)
+
+    def test_two_battery_interpolated(self):
+        self.assertEqual(battery_percentage(2.8, 2), 81)
+        self.assertEqual(battery_percentage(2.6, 2), 53)
+        self.assertEqual(battery_percentage(2.5, 2), 28)
+        self.assertEqual(battery_percentage(2.2, 2), 5)
+
+    def test_three_battery_full(self):
+        self.assertEqual(battery_percentage(4.5, 3), 100)
+        self.assertEqual(battery_percentage(5.0, 3), 100)
+
+    def test_three_battery_empty(self):
+        self.assertEqual(battery_percentage(2.4, 3), 0)
+        self.assertEqual(battery_percentage(2.0, 3), 0)
+
+    def test_three_battery_interpolated(self):
+        self.assertEqual(battery_percentage(4.2, 3), 85)
+        self.assertEqual(battery_percentage(3.9, 3), 62)
+        self.assertEqual(battery_percentage(3.75, 3), 42)
+        self.assertEqual(battery_percentage(3.3, 3), 23)
+
+
+class TestWaveDeviceBattery(IsolatedAsyncioTestCase):
+    """Tests for WaveDevice.get_battery()."""
+
+    async def test_get_battery_wave_plus(self):
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2930123456")
+        payload = bytearray(2 + 28)
+        payload[0:2] = b"\x6d\x00"
+        struct.pack_into("<H", payload, 26, 3000)
+
+        mocked_client = MockedBleakClient(device.address, battery_response=payload)
+        await mocked_client.connect()
+        device._client = mocked_client
+
+        battery = await device.get_battery()
+        self.assertIsNotNone(battery)
+        self.assertEqual(battery.voltage, 3.0)
+        self.assertEqual(battery.percentage, 100)
+
+    async def test_get_battery_wave_mini(self):
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2920123456")
+        payload = bytearray(2 + 32)
+        payload[0:2] = b"\x6d\x00"
+        struct.pack_into("<H", payload, 26, 4500)
+
+        mocked_client = MockedBleakClient(device.address, battery_response=payload)
+        await mocked_client.connect()
+        device._client = mocked_client
+
+        battery = await device.get_battery()
+        self.assertIsNotNone(battery)
+        self.assertEqual(battery.voltage, 4.5)
+        self.assertEqual(battery.percentage, 100)
+
+    async def test_get_battery_unknown_device(self):
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "123")
+        mocked_client = MockedBleakClient(device.address)
+        await mocked_client.connect()
+        device._client = mocked_client
+
+        battery = await device.get_battery()
+        self.assertIsNone(battery)
+
+    @patch("wave_reader.wave.asyncio.wait_for")
+    async def test_get_battery_timeout(self, mocked_wait_for):
+        from asyncio import TimeoutError
+
+        mocked_wait_for.side_effect = TimeoutError()
+
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2930123456")
+        mocked_client = MockedBleakClient(device.address)
+        await mocked_client.connect()
+        device._client = mocked_client
+
+        battery = await device.get_battery()
+        self.assertIsNone(battery)
+
+    async def test_get_battery_updates_sensor_readings(self):
+        device = wave.WaveDevice.create("12:34:56:78:90:AB", "2930123456")
+        payload = bytearray(2 + 28)
+        payload[0:2] = b"\x6d\x00"
+        struct.pack_into("<H", payload, 26, 2600)
+
+        mocked_client = MockedBleakClient(device.address, battery_response=payload)
+        await mocked_client.connect()
+        device._client = mocked_client
+
+        device.sensor_readings = wave.DeviceSensors(
+            humidity=wave.Humidity(50),
+            radon_sta=wave.Radon(100),
+            radon_lta=wave.Radon(100),
+            temperature=wave.Temperature(20),
+            pressure=wave.Pressure(1000),
+            co2=wave.CO2(500),
+            voc=wave.VOC(100),
+        )
+
+        battery = await device.get_battery()
+        self.assertIsNotNone(battery)
+        self.assertEqual(device.sensor_readings.battery, battery)

@@ -84,3 +84,40 @@ DEVICE = {
         "DATA_FORMAT": lambda _: _,
     },
 }
+
+
+# Command UUIDs for battery reading (active command/response pattern)
+COMMAND_UUID_WAVE = "b42e50d8-ade7-11e4-89d3-123b93f75cba"
+COMMAND_UUID_WAVE_PLUS = "b42e2d06-ade7-11e4-89d3-123b93f75cba"
+COMMAND_UUID_WAVE_MINI = "b42e3ef4-ade7-11e4-89d3-123b93f75cba"
+
+BATTERY_COMMANDS = {
+    WaveProduct.WAVE: {
+        "UUID": COMMAND_UUID_WAVE,
+        "BUFFER": "<L2BH2B9H",
+        "INDEX": 13,
+        "SCALE": 1000.0,
+        "BATTERY_COUNT": 2,
+    },
+    WaveProduct.WAVE2: {
+        "UUID": COMMAND_UUID_WAVE,
+        "BUFFER": "<L2BH2B9H",
+        "INDEX": 13,
+        "SCALE": 1000.0,
+        "BATTERY_COUNT": 2,
+    },
+    WaveProduct.WAVEPLUS: {
+        "UUID": COMMAND_UUID_WAVE_PLUS,
+        "BUFFER": "<L2BH2B9H",
+        "INDEX": 13,
+        "SCALE": 1000.0,
+        "BATTERY_COUNT": 2,
+    },
+    WaveProduct.WAVEMINI: {
+        "UUID": COMMAND_UUID_WAVE_MINI,
+        "BUFFER": "<2L4B2HL4HL",
+        "INDEX": 11,
+        "SCALE": 1000.0,
+        "BATTERY_COUNT": 3,
+    },
+}

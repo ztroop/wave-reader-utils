@@ -8,7 +8,10 @@ logging.basicConfig(level=logging.INFO)
 
 async def get_readings(device: wave.WaveDevice) -> None:
     sensor_readings = await device.get_sensor_values()
+    battery = await device.get_battery()
     print(sensor_readings)
+    if battery:
+        print(f"Battery: {battery.voltage}V ({battery.percentage}%)")
     await device.disconnect()
 
 

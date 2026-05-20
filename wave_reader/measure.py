@@ -162,3 +162,14 @@ class Humidity(float):
         else:
             _threshold = Threshold.GREEN
         return _threshold
+
+
+class Battery(float):
+    """Battery is measured as voltage (V) and percentage (%)."""
+
+    def __new__(cls, voltage: float, percentage: int):
+        return super(Battery, cls).__new__(cls, voltage)
+
+    def __init__(self, voltage: float, percentage: int) -> None:
+        self.voltage = voltage
+        self.percentage = percentage
