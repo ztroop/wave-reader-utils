@@ -349,7 +349,7 @@ async def discover_devices(
     i: Tuple[BLEDevice, AdvertisementData]
     for i in devices.values():
         serial = WaveDevice.parse_manufacturer_data(
-            i[0].metadata.get("manufacturer_data", {})  # type: ignore[attr-defined]
+            i[1].manufacturer_data
         )
         if serial:
             wave_devices.append(WaveDevice(i[0], serial, adv=i[1]))

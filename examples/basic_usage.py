@@ -9,6 +9,9 @@ async def get_readings(device: wave.WaveDevice) -> None:
     print(device.address, device.serial)
     sensor_readings = await device.get_sensor_values()
     print(sensor_readings)
+    battery = await device.get_battery()
+    if battery:
+        print(f"Battery: {battery.voltage}V ({battery.percentage}%)")
     await device.disconnect()
 
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wave-reader"
-version = "2.0.0"
+version = "2.0.1"
 description = "Unofficial package for Airthings Wave communication."
 authors = ["Zackary Troop"]
 license = "MIT"
