@@ -22,13 +22,12 @@ jobs:
       run: |
         sudo apt-get install libglib2.0-dev bluez -y
         python -m pip install --upgrade pip
-        pip install tox coveralls
+        pip install poetry
+    - name: Install Project
+      run: |
+        poetry install
     - name: Run Tests
       run: |
-        tox
-    - name: Upload Coverage
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
-        verbose: true
+        poetry run flake8 wave_reader/ tests/
+        poetry run mypy wave_reader --ignore-missing-imports
+        poetry run pytest ./tests

@@ -17,14 +17,27 @@ class MockedBLEDevice:
 
 
 class MockedBleakClient(object):
-    def __init__(self, addr):
+    def __init__(self, addr, battery_response=None):
         self.addr = addr
         self.is_connected = False
+        self._battery_response = battery_response
+        self._notify_handlers = {}
 
     async def read_gatt_char(self, _uuid):
         return bytearray(
             b"\x01A\x00\x00\x88\x00\x8f\x00\x0f\x08X\xbf\xb4\x02r\x00\x00\x00\x1c\x06"
         )
+
+    async def start_notify(self, uuid, handler):
+        self._notify_handlers[str(uuid)] = handler
+
+    async def stop_notify(self, uuid):
+        self._notify_handlers.pop(str(uuid), None)
+
+    async def write_gatt_char(self, uuid, data, response=False):
+        handler = self._notify_handlers.get(str(uuid))
+        if handler and self._battery_response is not None:
+            handler(None, self._battery_response)
 
     async def connect(self):
         self.is_connected = True

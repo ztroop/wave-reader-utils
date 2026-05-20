@@ -3,7 +3,7 @@ import logging
 import struct
 from collections import namedtuple
 from dataclasses import dataclass, fields
-from datetime import datetime
+from datetime import datetime, timezone
 from math import log
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -14,12 +14,14 @@ from bleak.backends.scanner import AdvertisementData
 
 from wave_reader.data import (
     AIRTHINGS_ID,
+    BATTERY_COMMANDS,
     DEVICE,
     MANUFACTURER_DATA_FORMAT,
     SENSOR_VER_SUPPORTED,
     WaveProduct,
 )
 from wave_reader.measure import (
+    Battery,
     CO2,
     PM,
     VOC,
@@ -28,7 +30,11 @@ from wave_reader.measure import (
     Radon,
     Temperature,
 )
-from wave_reader.utils import UnsupportedError, requires_client
+from wave_reader.utils import (
+    UnsupportedError,
+    battery_percentage,
+    requires_client,
+)
 
 _logger = logging.getLogger(__name__)
 _logger.addHandler(logging.NullHandler())
@@ -56,6 +62,7 @@ class DeviceSensors:
     co2: Optional[CO2] = None
     voc: Optional[VOC] = None
     pm: Optional[PM] = None
+    battery: Optional[Battery] = None
 
     def __str__(self):
         return f'DeviceSensors ({", ".join(f"{k}: {v}" for k, v in self.as_dict().items())})'
@@ -173,7 +180,7 @@ class WaveDevice:
                 self.address,
             )
         self.sensor_readings = DeviceSensors.from_bytes(data, self.product)
-        self.readings_updated = datetime.utcnow()
+        self.readings_updated = datetime.now(timezone.utc)
         return self.sensor_readings
 
     async def connect(self) -> bool:
@@ -181,7 +188,7 @@ class WaveDevice:
 
         self._client = BleakClient(self.address)  # type: ignore
         _logger.info(f"Device: ({self.address}) connecting BLE client.")
-        return await self._client.connect() if self._client else False
+        return await self._client.connect() if self._client else False  # type: ignore
 
     @requires_client
     async def is_connected(self) -> bool:
@@ -194,7 +201,7 @@ class WaveDevice:
         """Method for closing BLE connection."""
 
         _logger.info(f"Device: ({self.address}) disconnecting BLE client.")
-        return await self._client.disconnect() if self._client else False
+        return await self._client.disconnect() if self._client else False  # type: ignore
 
     @requires_client
     async def read_gatt_descriptor(self, gatt_desc: str) -> Optional[bytearray]:
@@ -237,6 +244,65 @@ class WaveDevice:
         for uuid in DEVICE[self.product]["UUID"]:  # type: ignore
             characteristics += await self.read_gatt_characteristic(uuid)
         return self._map_sensor_values(characteristics)
+
+    @requires_client
+    async def get_battery(self) -> Optional[Battery]:
+        """Get battery voltage and percentage using command/response.
+
+        Sends a command to the device-specific command characteristic and
+        waits for a notification response containing the battery voltage.
+        """
+
+        if self.product not in BATTERY_COMMANDS:
+            return None
+
+        config: Dict[str, Any] = BATTERY_COMMANDS[self.product]
+        uuid: str = config["UUID"]
+        buffer: str = config["BUFFER"]
+        index: int = config["INDEX"]
+        scale: float = config["SCALE"]
+        battery_count: int = config["BATTERY_COUNT"]
+
+        message = bytearray()
+        expected_size = struct.calcsize(buffer)
+        future = asyncio.get_running_loop().create_future()
+
+        def notification_handler(_, data: bytearray) -> None:
+            message.extend(data)
+            if len(message) >= expected_size + 2 and not future.done():
+                future.set_result(True)
+
+        try:
+            await self._client.start_notify(uuid, notification_handler)  # type: ignore
+            await self._client.write_gatt_char(uuid, bytearray(b"\x6d"))  # type: ignore
+            await asyncio.wait_for(future, timeout=5.0)
+        except asyncio.TimeoutError:
+            _logger.warning("Timeout getting battery data.")
+            return None
+        finally:
+            try:
+                await self._client.stop_notify(uuid)  # type: ignore
+            except Exception:
+                pass
+
+        if len(message) < expected_size + 2:
+            return None
+
+        try:
+            val = struct.unpack(buffer, message[2:expected_size + 2])
+        except struct.error as err:
+            _logger.warning("Failed to decode battery data: %s", err)
+            return None
+
+        voltage = val[index] / scale
+        percentage = battery_percentage(voltage, battery_count)
+        battery = Battery(voltage, percentage)
+
+        if self.sensor_readings:
+            self.sensor_readings.battery = battery
+
+        self.readings_updated = datetime.now(timezone.utc)
+        return battery
 
     @staticmethod
     def parse_manufacturer_data(manufacturer_data: Optional[Dict]) -> Optional[str]:
@@ -283,7 +349,7 @@ async def discover_devices(
     i: Tuple[BLEDevice, AdvertisementData]
     for i in devices.values():
         serial = WaveDevice.parse_manufacturer_data(
-            i[0].metadata.get("manufacturer_data", {})
+            i[0].metadata.get("manufacturer_data", {})  # type: ignore[attr-defined]
         )
         if serial:
             wave_devices.append(WaveDevice(i[0], serial, adv=i[1]))
