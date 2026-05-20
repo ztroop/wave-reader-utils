@@ -21,10 +21,10 @@ from wave_reader.data import (
     WaveProduct,
 )
 from wave_reader.measure import (
-    Battery,
     CO2,
     PM,
     VOC,
+    Battery,
     Humidity,
     Pressure,
     Radon,
@@ -289,7 +289,7 @@ class WaveDevice:
             return None
 
         try:
-            val = struct.unpack(buffer, message[2:expected_size + 2])
+            val = struct.unpack(buffer, message[2 : expected_size + 2])
         except struct.error as err:
             _logger.warning("Failed to decode battery data: %s", err)
             return None
@@ -317,7 +317,7 @@ class WaveDevice:
 
         identity, data = list(manufacturer_data.items())[0]
         try:
-            (serial, _) = struct.unpack(MANUFACTURER_DATA_FORMAT, bytes(data))
+            serial, _ = struct.unpack(MANUFACTURER_DATA_FORMAT, bytes(data))
         except (struct.error, TypeError):
             return None
         else:
@@ -348,9 +348,7 @@ async def discover_devices(
     devices = await BleakScanner.discover(timeout=timeout, return_adv=True, **kwargs)
     i: Tuple[BLEDevice, AdvertisementData]
     for i in devices.values():
-        serial = WaveDevice.parse_manufacturer_data(
-            i[1].manufacturer_data
-        )
+        serial = WaveDevice.parse_manufacturer_data(i[1].manufacturer_data)
         if serial:
             wave_devices.append(WaveDevice(i[0], serial, adv=i[1]))
         else:
