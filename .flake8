@@ -1,0 +1,4 @@
+[flake8]
+exclude = build,.git,.venv
+ignore = W601,W503
+max-line-length = 119

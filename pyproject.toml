@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "wave-reader"
+version = "1.1.0"
+description = "Unofficial package for Airthings Wave communication."
+authors = ["Zackary Troop"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/ztroop/wave-reader-utils"
+packages = [{include = "wave_reader"}]
+
+[tool.poetry.dependencies]
+python = ">=3.7.0"
+Authlib = ">=0.15.6"
+bleak = ">=0.19.0"
+httpx = ">=0.18.2"
+attrs = ">=21.3.0"
+python-dateutil = ">=2.8.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+flake8 = "*"
+mypy = "*"
+coverage = "*"
+isort = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+combine_as_imports = true
+default_section = "THIRDPARTY"
+include_trailing_comma = true
+known_first_party = ["wave_reader"]
+line_length = 79
+multi_line_output = 5
+not_skip = "__init__.py"
+
+[tool.coverage.run]
+relative_files = true
+
+[tool.mypy]
+exclude = ["wave_reader/web/"]
+ignore_missing_imports = true

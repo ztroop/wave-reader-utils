@@ -1,5 +1,4 @@
 ![Build Status](https://github.com/ztroop/wave-reader/workflows/Build%20Status/badge.svg)
-[![codecov](https://codecov.io/gh/ztroop/wave-reader-utils/branch/master/graph/badge.svg?token=NG9H8YO1ID)](https://codecov.io/gh/ztroop/wave-reader-utils)
 [![PyPI version](https://badge.fury.io/py/wave-reader.svg)](https://badge.fury.io/py/wave-reader)
 
 **This package is currently in maintenance mode. Please use [airthings-ble](https://github.com/Airthings/airthings-ble) for new projects.**
@@ -73,5 +72,5 @@ If you identify a bug, please open a ticket. Pull requests are always welcome.
 
 ## Testing
 
-You can run the entire test suite by running `tox`. It will run `flake8`, `isort` and `pytest`.
-If you'd like to just run unit tests, running `pytest ./tests` is sufficient.
+You can run the entire test suite by running `make test`. It will run `flake8`, `mypy` and `pytest`.
+If you'd like to just run unit tests, running `poetry run pytest ./tests` is sufficient.
