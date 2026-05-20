@@ -9,8 +9,15 @@
       
       
       
+        <link rel="prev" href="../api/">
+      
+      
+      
+        
+      
+      
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -18,42 +25,36 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.be71726b.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
       
-        
-        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
-        
-      
-    
-    
-    
-      
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
-        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
-      
-    
-    
-    
-    
       
 
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
     
     
   </head>
   
   
-    
-    
-    
-    
-    
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr">
   
-    
-    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -70,16 +71,22 @@
       
     </div>
     
-      <header class="md-header" data-md-component="header">
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="Wave Reader Utils" class="md-header__button md-logo" aria-label="Wave Reader Utils" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -99,48 +106,56 @@
     </div>
     
     
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
-      <label class="md-header__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
-      </label>
+    
+    
       
-<div class="md-search" data-md-component="search" role="dialog">
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
       </nav>
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
           </div>
-          <ol class="md-search-result__list"></ol>
+          <ol class="md-search-result__list" role="presentation"></ol>
         </div>
       </div>
     </div>
   </div>
 </div>
+      
     
     
       <div class="md-header__source">
-        
-<a href="https://github.com/ztroop/wave-reader-utils/" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/ztroop/wave-reader-utils" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -149,11 +164,14 @@
       </div>
     
   </nav>
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
+        
+          
         
       
       <main class="md-main" data-md-component="main">
@@ -167,23 +185,23 @@
                     
 
 
+
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="Wave Reader Utils" class="md-nav__button md-logo" aria-label="Wave Reader Utils" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
     Wave Reader Utils
   </label>
   
     <div class="md-nav__source">
-      
-<a href="https://github.com/ztroop/wave-reader-utils/" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/ztroop/wave-reader-utils" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -195,14 +213,26 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href=".." class="md-nav__link">
-        Introduction
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
       </a>
     </li>
   
@@ -210,14 +240,26 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../api/" class="md-nav__link">
-        API Documentation
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Documentation
+  
+
+    
+  </span>
+  
+  
+
       </a>
     </li>
   
@@ -225,31 +267,57 @@
     
       
       
-      
-
   
   
     
   
   
+  
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
         
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Device Specifications
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Device Specifications
+  
+
+    
+  </span>
+  
+  
+
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Device Specifications
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Device Specifications
+  
+
+    
+  </span>
+  
+  
+
       </a>
       
         
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -265,21 +333,33 @@
       
         <li class="md-nav__item">
   <a href="#models" class="md-nav__link">
-    Models
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#bluetooth-low-energy-ble" class="md-nav__link">
-    Bluetooth Low Energy (BLE)
+    <span class="md-ellipsis">
+      
+        Bluetooth Low Energy (BLE)
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#ble-advertisement" class="md-nav__link">
-    BLE Advertisement
+    <span class="md-ellipsis">
+      
+        BLE Advertisement
+      
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="BLE Advertisement">
@@ -287,14 +367,22 @@
         
           <li class="md-nav__item">
   <a href="#ble-advertisement-name" class="md-nav__link">
-    BLE Advertisement - Name
+    <span class="md-ellipsis">
+      
+        BLE Advertisement - Name
+      
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#ble-advertisement-metadata" class="md-nav__link">
-    BLE Advertisement - Metadata
+    <span class="md-ellipsis">
+      
+        BLE Advertisement - Metadata
+      
+    </span>
   </a>
   
 </li>
@@ -306,14 +394,22 @@
       
         <li class="md-nav__item">
   <a href="#ble-services" class="md-nav__link">
-    BLE Services
+    <span class="md-ellipsis">
+      
+        BLE Services
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#ble-characteristics" class="md-nav__link">
-    BLE Characteristics
+    <span class="md-ellipsis">
+      
+        BLE Characteristics
+      
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="BLE Characteristics">
@@ -321,21 +417,33 @@
         
           <li class="md-nav__item">
   <a href="#device-information-service" class="md-nav__link">
-    Device Information Service
+    <span class="md-ellipsis">
+      
+        Device Information Service
+      
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#airthings-service" class="md-nav__link">
-    Airthings Service
+    <span class="md-ellipsis">
+      
+        Airthings Service
+      
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#ti-over-the-air-download-service" class="md-nav__link">
-    TI Over-the-Air Download Service
+    <span class="md-ellipsis">
+      
+        TI Over-the-Air Download Service
+      
+    </span>
   </a>
   
 </li>
@@ -355,29 +463,26 @@
     
       
       
-      
-
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../web/" class="md-nav__link">
-        Web Client
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
   
   
   
     <li class="md-nav__item">
       <a href="https://github.com/ztroop/wave-reader-utils" class="md-nav__link">
-        Code Repository
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Repository
+  
+
+    
+  </span>
+  
+  
+
       </a>
     </li>
   
@@ -385,14 +490,26 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="https://github.com/ztroop/wave-reader-utils/issues" class="md-nav__link">
-        Issue Tracker
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Issue Tracker
+  
+
+    
+  </span>
+  
+  
+
       </a>
     </li>
   
@@ -410,6 +527,7 @@
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -425,21 +543,33 @@
       
         <li class="md-nav__item">
   <a href="#models" class="md-nav__link">
-    Models
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#bluetooth-low-energy-ble" class="md-nav__link">
-    Bluetooth Low Energy (BLE)
+    <span class="md-ellipsis">
+      
+        Bluetooth Low Energy (BLE)
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#ble-advertisement" class="md-nav__link">
-    BLE Advertisement
+    <span class="md-ellipsis">
+      
+        BLE Advertisement
+      
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="BLE Advertisement">
@@ -447,14 +577,22 @@
         
           <li class="md-nav__item">
   <a href="#ble-advertisement-name" class="md-nav__link">
-    BLE Advertisement - Name
+    <span class="md-ellipsis">
+      
+        BLE Advertisement - Name
+      
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#ble-advertisement-metadata" class="md-nav__link">
-    BLE Advertisement - Metadata
+    <span class="md-ellipsis">
+      
+        BLE Advertisement - Metadata
+      
+    </span>
   </a>
   
 </li>
@@ -466,14 +604,22 @@
       
         <li class="md-nav__item">
   <a href="#ble-services" class="md-nav__link">
-    BLE Services
+    <span class="md-ellipsis">
+      
+        BLE Services
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#ble-characteristics" class="md-nav__link">
-    BLE Characteristics
+    <span class="md-ellipsis">
+      
+        BLE Characteristics
+      
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="BLE Characteristics">
@@ -481,21 +627,33 @@
         
           <li class="md-nav__item">
   <a href="#device-information-service" class="md-nav__link">
-    Device Information Service
+    <span class="md-ellipsis">
+      
+        Device Information Service
+      
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#airthings-service" class="md-nav__link">
-    Airthings Service
+    <span class="md-ellipsis">
+      
+        Airthings Service
+      
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#ti-over-the-air-download-service" class="md-nav__link">
-    TI Over-the-Air Download Service
+    <span class="md-ellipsis">
+      
+        TI Over-the-Air Download Service
+      
+    </span>
   </a>
   
 </li>
@@ -513,16 +671,19 @@
               </div>
             
           
-          <div class="md-content" data-md-component="content">
-            <article class="md-content__inner md-typeset">
+          
+            <div class="md-content" data-md-component="content">
               
+              <article class="md-content__inner md-typeset">
                 
-                  <a href="https://github.com/ztroop/wave-reader-utils/edit/master/docs/specs.md" title="Edit this page" class="md-content__button md-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
-                  </a>
-                
-                
-                <h1 id="device-specifications">Device Specifications</h1>
+                  
+
+
+  
+  
+
+
+<h1 id="device-specifications">Device Specifications</h1>
 <p>While Airthings has been kind enough to provide sample code for interfacing with
 their Wave family of devices, most of the technical details have to be inferred
 from the code or discovered via experimentation. This is an unofficial attempt to
@@ -531,54 +692,54 @@ document those specifications, in hopes that they may be useful to other project
 <table>
 <thead>
 <tr>
-<th align="left">Model</th>
-<th align="left">Product Name</th>
-<th align="left">Serial</th>
-<th align="left">Sensors</th>
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Product Name</th>
+<th style="text-align: left;">Serial</th>
+<th style="text-align: left;">Sensors</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">2900</td>
-<td align="left">Wave</td>
-<td align="left">2900xxxxxx</td>
-<td align="left">radon, temperature, humidity</td>
+<td style="text-align: left;">2900</td>
+<td style="text-align: left;">Wave</td>
+<td style="text-align: left;">2900xxxxxx</td>
+<td style="text-align: left;">radon, temperature, humidity</td>
 </tr>
 <tr>
-<td align="left">2920</td>
-<td align="left">Wave Mini</td>
-<td align="left">2920xxxxxx</td>
-<td align="left">temperature, humidity, TVOCs, CO<sub>2</sub></td>
+<td style="text-align: left;">2920</td>
+<td style="text-align: left;">Wave Mini</td>
+<td style="text-align: left;">2920xxxxxx</td>
+<td style="text-align: left;">temperature, humidity, TVOCs, CO<sub>2</sub></td>
 </tr>
 <tr>
-<td align="left">2930</td>
-<td align="left">Wave Plus</td>
-<td align="left">2930xxxxxx</td>
-<td align="left">radon, temperature, humidity, TVOCs, CO<sub>2</sub></td>
+<td style="text-align: left;">2930</td>
+<td style="text-align: left;">Wave Plus</td>
+<td style="text-align: left;">2930xxxxxx</td>
+<td style="text-align: left;">radon, temperature, humidity, TVOCs, CO<sub>2</sub></td>
 </tr>
 <tr>
-<td align="left">2950</td>
-<td align="left">Wave (2nd gen)</td>
-<td align="left">2950xxxxxx</td>
-<td align="left">radon, temperature, humidity</td>
+<td style="text-align: left;">2950</td>
+<td style="text-align: left;">Wave (2nd gen)</td>
+<td style="text-align: left;">2950xxxxxx</td>
+<td style="text-align: left;">radon, temperature, humidity</td>
 </tr>
 <tr>
-<td align="left">2940</td>
-<td align="left">Wave Mist</td>
-<td align="left">2940xxxxxx</td>
-<td align="left">?</td>
+<td style="text-align: left;">2940</td>
+<td style="text-align: left;">Wave Mist</td>
+<td style="text-align: left;">2940xxxxxx</td>
+<td style="text-align: left;">?</td>
 </tr>
 <tr>
-<td align="left">2810</td>
-<td align="left">Wave Hub</td>
-<td align="left">2810xxxxxx</td>
-<td align="left">?</td>
+<td style="text-align: left;">2810</td>
+<td style="text-align: left;">Wave Hub</td>
+<td style="text-align: left;">2810xxxxxx</td>
+<td style="text-align: left;">?</td>
 </tr>
 <tr>
-<td align="left">2820</td>
-<td align="left">Wave Hub</td>
-<td align="left">2820xxxxxx</td>
-<td align="left">?</td>
+<td style="text-align: left;">2820</td>
+<td style="text-align: left;">Wave Hub</td>
+<td style="text-align: left;">2820xxxxxx</td>
+<td style="text-align: left;">?</td>
 </tr>
 </tbody>
 </table>
@@ -590,30 +751,30 @@ document those specifications, in hopes that they may be useful to other project
 <table>
 <thead>
 <tr>
-<th align="left">Model</th>
-<th align="left">BLE Advertised Name</th>
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">BLE Advertised Name</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">2900</td>
-<td align="left">Airthings Wave (not verified)</td>
+<td style="text-align: left;">2900</td>
+<td style="text-align: left;">Airthings Wave (not verified)</td>
 </tr>
 <tr>
-<td align="left">2920</td>
-<td align="left">Airthings Wave Mini (not verified)</td>
+<td style="text-align: left;">2920</td>
+<td style="text-align: left;">Airthings Wave Mini (not verified)</td>
 </tr>
 <tr>
-<td align="left">2930</td>
-<td align="left">Airthings Wave+</td>
+<td style="text-align: left;">2930</td>
+<td style="text-align: left;">Airthings Wave+</td>
 </tr>
 <tr>
-<td align="left">2940</td>
-<td align="left">Airthings Wave Mist (not verified)</td>
+<td style="text-align: left;">2940</td>
+<td style="text-align: left;">Airthings Wave Mist (not verified)</td>
 </tr>
 <tr>
-<td align="left">2950</td>
-<td align="left">Airthings Wave2</td>
+<td style="text-align: left;">2950</td>
+<td style="text-align: left;">Airthings Wave2</td>
 </tr>
 </tbody>
 </table>
@@ -640,31 +801,31 @@ For Airthings devices, this ID is always:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Service UUID</th>
-<th align="left">Description</th>
-<th align="left">Notes</th>
+<th style="text-align: left;">Service UUID</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">00001801-0000-1000-8000-00805f9b34fb</td>
-<td align="left">Generic Attribute Profile</td>
-<td align="left"></td>
+<td style="text-align: left;">00001801-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">Generic Attribute Profile</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td align="left">0000180a-0000-1000-8000-00805f9b34fb</td>
-<td align="left">Device Information</td>
-<td align="left"></td>
+<td style="text-align: left;">0000180a-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">Device Information</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td align="left">f000ffc0-0451-4000-b000-000000000000</td>
-<td align="left">TI Over-the-Air Download Service</td>
-<td align="left">Likely Firmware Related</td>
+<td style="text-align: left;">f000ffc0-0451-4000-b000-000000000000</td>
+<td style="text-align: left;">TI Over-the-Air Download Service</td>
+<td style="text-align: left;">Likely Firmware Related</td>
 </tr>
 <tr>
-<td align="left">b42e1c08-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">Unknown (Airthings)</td>
-<td align="left">Wave+</td>
+<td style="text-align: left;">b42e1c08-ade7-11e4-89d3-123b93f75cba</td>
+<td style="text-align: left;">Unknown (Airthings)</td>
+<td style="text-align: left;">Wave+</td>
 </tr>
 </tbody>
 </table>
@@ -672,31 +833,31 @@ For Airthings devices, this ID is always:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Service UUID</th>
-<th align="left">Description</th>
-<th align="left">Notes</th>
+<th style="text-align: left;">Service UUID</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">00001801-0000-1000-8000-00805f9b34fb</td>
-<td align="left">Generic Attribute Profile</td>
-<td align="left"></td>
+<td style="text-align: left;">00001801-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">Generic Attribute Profile</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td align="left">0000180a-0000-1000-8000-00805f9b34fb</td>
-<td align="left">Device Information</td>
-<td align="left"></td>
+<td style="text-align: left;">0000180a-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">Device Information</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td align="left">f000ffc0-0451-4000-b000-000000000000</td>
-<td align="left">TI Over-the-Air Download Service</td>
-<td align="left">Likely Firmware Related</td>
+<td style="text-align: left;">f000ffc0-0451-4000-b000-000000000000</td>
+<td style="text-align: left;">TI Over-the-Air Download Service</td>
+<td style="text-align: left;">Likely Firmware Related</td>
 </tr>
 <tr>
-<td align="left">b42e4a8e-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">Airthings</td>
-<td align="left">Wave2</td>
+<td style="text-align: left;">b42e4a8e-ade7-11e4-89d3-123b93f75cba</td>
+<td style="text-align: left;">Airthings</td>
+<td style="text-align: left;">Wave2</td>
 </tr>
 </tbody>
 </table>
@@ -706,48 +867,48 @@ For Airthings devices, this ID is always:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Characteristic UUID</th>
-<th align="left">Actions</th>
-<th align="left">Name</th>
-<th align="left">Value / Example</th>
+<th style="text-align: left;">Characteristic UUID</th>
+<th style="text-align: left;">Actions</th>
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Value / Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">00002a29-0000-1000-8000-00805f9b34fb</td>
-<td align="left">read</td>
-<td align="left">Manufactuer Name String</td>
-<td align="left">"Airthings AS"</td>
+<td style="text-align: left;">00002a29-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">read</td>
+<td style="text-align: left;">Manufactuer Name String</td>
+<td style="text-align: left;">"Airthings AS"</td>
 </tr>
 <tr>
-<td align="left">00002a27-0000-1000-8000-00805f9b34fb</td>
-<td align="left">read</td>
-<td align="left">Harwdare Revision String</td>
-<td align="left">(e.g. "REV A")</td>
+<td style="text-align: left;">00002a27-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">read</td>
+<td style="text-align: left;">Harwdare Revision String</td>
+<td style="text-align: left;">(e.g. "REV A")</td>
 </tr>
 <tr>
-<td align="left">00002a26-0000-1000-8000-00805f9b34fb</td>
-<td align="left">read</td>
-<td align="left">Firmware Revision String</td>
-<td align="left">(e.g. "G-BLE-1.4.5-beta+0")</td>
+<td style="text-align: left;">00002a26-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">read</td>
+<td style="text-align: left;">Firmware Revision String</td>
+<td style="text-align: left;">(e.g. "G-BLE-1.4.5-beta+0")</td>
 </tr>
 <tr>
-<td align="left">00002a25-0000-1000-8000-00805f9b34fb</td>
-<td align="left">read</td>
-<td align="left">Serial Number String</td>
-<td align="left">(e.g. "029677")</td>
+<td style="text-align: left;">00002a25-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">read</td>
+<td style="text-align: left;">Serial Number String</td>
+<td style="text-align: left;">(e.g. "029677")</td>
 </tr>
 <tr>
-<td align="left">00002a24-0000-1000-8000-00805f9b34fb</td>
-<td align="left">read</td>
-<td align="left">Model Number String</td>
-<td align="left">(e.g. "2950")</td>
+<td style="text-align: left;">00002a24-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">read</td>
+<td style="text-align: left;">Model Number String</td>
+<td style="text-align: left;">(e.g. "2950")</td>
 </tr>
 <tr>
-<td align="left">00002a23-0000-1000-8000-00805f9b34fb</td>
-<td align="left">read</td>
-<td align="left">System ID</td>
-<td align="left">(e.g. <code>E4 61 00 00 Ed 04 18</code>)</td>
+<td style="text-align: left;">00002a23-0000-1000-8000-00805f9b34fb</td>
+<td style="text-align: left;">read</td>
+<td style="text-align: left;">System ID</td>
+<td style="text-align: left;">(e.g. <code>E4 61 00 00 Ed 04 18</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -757,26 +918,26 @@ For Airthings devices, this ID is always:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Characteristic UUID</th>
-<th align="left">Actions</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Characteristic UUID</th>
+<th style="text-align: left;">Actions</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">b42e2fc2-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">notify</td>
-<td align="left"></td>
+<td style="text-align: left;">b42e2fc2-ade7-11e4-89d3-123b93f75cba</td>
+<td style="text-align: left;">notify</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td align="left">b42e2d06-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">write-without-reponse, write, indicate</td>
-<td align="left"></td>
+<td style="text-align: left;">b42e2d06-ade7-11e4-89d3-123b93f75cba</td>
+<td style="text-align: left;">write-without-reponse, write, indicate</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td align="left">b42e2a68-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">read</td>
-<td align="left">Wave+ current readings</td>
+<td style="text-align: left;">b42e2a68-ade7-11e4-89d3-123b93f75cba</td>
+<td style="text-align: left;">read</td>
+<td style="text-align: left;">Wave+ current readings</td>
 </tr>
 </tbody>
 </table>
@@ -784,26 +945,26 @@ For Airthings devices, this ID is always:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Characteristic UUID</th>
-<th align="left">Actions</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Characteristic UUID</th>
+<th style="text-align: left;">Actions</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">b42e538a-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">notify</td>
-<td align="left"></td>
+<td style="text-align: left;">b42e538a-ade7-11e4-89d3-123b93f75cba</td>
+<td style="text-align: left;">notify</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td align="left">b42e50d8-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">write, notify</td>
-<td align="left"></td>
+<td style="text-align: left;">b42e50d8-ade7-11e4-89d3-123b93f75cba</td>
+<td style="text-align: left;">write, notify</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td align="left">b42e4dcc-ade7-11e4-89d3-123b93f75cba</td>
-<td align="left">read</td>
-<td align="left">Wave2 current readings</td>
+<td style="text-align: left;">b42e4dcc-ade7-11e4-89d3-123b93f75cba</td>
+<td style="text-align: left;">read</td>
+<td style="text-align: left;">Wave2 current readings</td>
 </tr>
 </tbody>
 </table>
@@ -812,26 +973,26 @@ For Airthings devices, this ID is always:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Characteristic UUID</th>
-<th align="left">Actions</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Characteristic UUID</th>
+<th style="text-align: left;">Actions</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">f000ffc5-0451-4000-b000-000000000000</td>
-<td align="left">write-without-response, notify</td>
-<td align="left">?</td>
+<td style="text-align: left;">f000ffc5-0451-4000-b000-000000000000</td>
+<td style="text-align: left;">write-without-response, notify</td>
+<td style="text-align: left;">?</td>
 </tr>
 <tr>
-<td align="left">f000ffc2-0451-4000-b000-000000000000</td>
-<td align="left">write-without-response, write, notify</td>
-<td align="left">?</td>
+<td style="text-align: left;">f000ffc2-0451-4000-b000-000000000000</td>
+<td style="text-align: left;">write-without-response, write, notify</td>
+<td style="text-align: left;">?</td>
 </tr>
 <tr>
-<td align="left">f000ffc1-0451-4000-b000-000000000000</td>
-<td align="left">write-without-response, write, notify</td>
-<td align="left">?</td>
+<td style="text-align: left;">f000ffc1-0451-4000-b000-000000000000</td>
+<td style="text-align: left;">write-without-response, write, notify</td>
+<td style="text-align: left;">?</td>
 </tr>
 </tbody>
 </table>
@@ -839,26 +1000,26 @@ For Airthings devices, this ID is always:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Characteristic UUID</th>
-<th align="left">Actions</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Characteristic UUID</th>
+<th style="text-align: left;">Actions</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">f000ffc5-0451-4000-b000-000000000000</td>
-<td align="left">write, notify</td>
-<td align="left">?</td>
+<td style="text-align: left;">f000ffc5-0451-4000-b000-000000000000</td>
+<td style="text-align: left;">write, notify</td>
+<td style="text-align: left;">?</td>
 </tr>
 <tr>
-<td align="left">f000ffc2-0451-4000-b000-000000000000</td>
-<td align="left">write, notify</td>
-<td align="left">?</td>
+<td style="text-align: left;">f000ffc2-0451-4000-b000-000000000000</td>
+<td style="text-align: left;">write, notify</td>
+<td style="text-align: left;">?</td>
 </tr>
 <tr>
-<td align="left">f000ffc1-0451-4000-b000-000000000000</td>
-<td align="left">write, notify</td>
-<td align="left">?</td>
+<td style="text-align: left;">f000ffc1-0451-4000-b000-000000000000</td>
+<td style="text-align: left;">write, notify</td>
+<td style="text-align: left;">?</td>
 </tr>
 </tbody>
 </table>
@@ -870,27 +1031,27 @@ For Airthings devices, this ID is always:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Byte</th>
-<th align="left">Name</th>
-<th align="left">Type</th>
-<th align="left">Value / Example</th>
-<th align="left">Notes</th>
+<th style="text-align: left;">Byte</th>
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Value / Example</th>
+<th style="text-align: left;">Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">0-3</td>
-<td align="left">serial</td>
-<td align="left">uint32</td>
-<td align="left">e.g. <code>0x6DE1D5AF</code></td>
-<td align="left">decimal: <code>2950029677</code> --&gt; model 2950 (Wave2)</td>
+<td style="text-align: left;">0-3</td>
+<td style="text-align: left;">serial</td>
+<td style="text-align: left;">uint32</td>
+<td style="text-align: left;">e.g. <code>0x6DE1D5AF</code></td>
+<td style="text-align: left;">decimal: <code>2950029677</code> --&gt; model 2950 (Wave2)</td>
 </tr>
 <tr>
-<td align="left">4-5</td>
-<td align="left">--</td>
-<td align="left">--</td>
-<td align="left"><code>0x0900</code></td>
-<td align="left">unknown, may vary</td>
+<td style="text-align: left;">4-5</td>
+<td style="text-align: left;">--</td>
+<td style="text-align: left;">--</td>
+<td style="text-align: left;"><code>0x0900</code></td>
+<td style="text-align: left;">unknown, may vary</td>
 </tr>
 </tbody>
 </table>
@@ -907,54 +1068,54 @@ For Airthings devices, this ID is always:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Byte</th>
-<th align="left">Name</th>
-<th align="left">Type</th>
-<th align="left">Notes</th>
+<th style="text-align: left;">Byte</th>
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">0</td>
-<td align="left">version</td>
-<td align="left">uint8</td>
-<td align="left">sensor version, always <code>0x01</code></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">version</td>
+<td style="text-align: left;">uint8</td>
+<td style="text-align: left;">sensor version, always <code>0x01</code></td>
 </tr>
 <tr>
-<td align="left">1</td>
-<td align="left">humidity</td>
-<td align="left">uint8</td>
-<td align="left">relative humidty = value/2 (percent)</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">humidity</td>
+<td style="text-align: left;">uint8</td>
+<td style="text-align: left;">relative humidty = value/2 (percent)</td>
 </tr>
 <tr>
-<td align="left">2-3</td>
-<td align="left">--</td>
-<td align="left">--</td>
-<td align="left">unknown, varies</td>
+<td style="text-align: left;">2-3</td>
+<td style="text-align: left;">--</td>
+<td style="text-align: left;">--</td>
+<td style="text-align: left;">unknown, varies</td>
 </tr>
 <tr>
-<td align="left">4-5</td>
-<td align="left">radon_sta</td>
-<td align="left">uint16</td>
-<td align="left">radon short-term average (Bq/m<sup>3</sup>)</td>
+<td style="text-align: left;">4-5</td>
+<td style="text-align: left;">radon_sta</td>
+<td style="text-align: left;">uint16</td>
+<td style="text-align: left;">radon short-term average (Bq/m<sup>3</sup>)</td>
 </tr>
 <tr>
-<td align="left">6-7</td>
-<td align="left">radon_lta</td>
-<td align="left">uint16</td>
-<td align="left">radon long-term average (Bq/m<sup>3</sup>)</td>
+<td style="text-align: left;">6-7</td>
+<td style="text-align: left;">radon_lta</td>
+<td style="text-align: left;">uint16</td>
+<td style="text-align: left;">radon long-term average (Bq/m<sup>3</sup>)</td>
 </tr>
 <tr>
-<td align="left">8-9</td>
-<td align="left">temperature</td>
-<td align="left">uint16</td>
-<td align="left">temp = val/100 (celsius)</td>
+<td style="text-align: left;">8-9</td>
+<td style="text-align: left;">temperature</td>
+<td style="text-align: left;">uint16</td>
+<td style="text-align: left;">temp = val/100 (celsius)</td>
 </tr>
 <tr>
-<td align="left">10-19</td>
-<td align="left">--</td>
-<td align="left">--</td>
-<td align="left">unknown, always <code>0xFFFFFFFFFFFF0000FFFF</code></td>
+<td style="text-align: left;">10-19</td>
+<td style="text-align: left;">--</td>
+<td style="text-align: left;">--</td>
+<td style="text-align: left;">unknown, always <code>0xFFFFFFFFFFFF0000FFFF</code></td>
 </tr>
 </tbody>
 </table>
@@ -963,67 +1124,41 @@ For Airthings devices, this ID is always:</p>
 00000020: 2066 6620 6666 2066 6620 6666 2066 6620   ff ff ff ff ff
 00000030: 3030 2030 3020 6666 2066 660a            00 00 ff ff.
 </code></pre>
-                
-              
-              
-                
 
 
-              
-            </article>
-          </div>
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
       </main>
       
-        
-<footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
-      
-        
-        <a href="../api/" class="md-footer__link md-footer__link--prev" aria-label="Previous: API Documentation" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              API Documentation
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../web/" class="md-footer__link md-footer__link--next" aria-label="Next: Web Client" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Web Client
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
+        <footer class="md-footer">
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
-      <div class="md-footer-copyright">
-        
-        Made with
-        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-          Material for MkDocs
-        </a>
-        
-      </div>
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
       
     </div>
   </div>
@@ -1033,10 +1168,15 @@ For Airthings devices, this ID is always:</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.409db549.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.56a63758.min.js"></script>
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
