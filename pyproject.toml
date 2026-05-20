@@ -22,6 +22,7 @@ flake8 = "*"
 mypy = "*"
 coverage = "*"
 isort = "*"
+black = "*"
 
 [build-system]
 requires = ["poetry-core"]

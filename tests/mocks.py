@@ -1,18 +1,14 @@
+class MockedAdvertisementData:
+    def __init__(self, manufacturer_data=None):
+        self.manufacturer_data = (
+            manufacturer_data if manufacturer_data is not None else {}
+        )
+
+
 class MockedBLEDevice:
     def __init__(self):
         self.name = "Airthings Wave+"
         self.rssi = -69
-        self.metadata = {
-            "uuids": [
-                "00001800-0000-1000-8000-00805f9b34fb"
-                "00001801-0000-1000-8000-00805f9b34fb"
-                "0000180a-0000-1000-8000-00805f9b34fb"
-                "b42e1c08-ade7-11e4-89d3-123b93f75cba"
-                "f000ffc0-0451-4000-b000-000000000000"
-            ],
-            # Represents '2930618893', a valid serial for a model 2930 (Wave+)
-            "manufacturer_data": {820: [13, 178, 173, 174, 9, 0]},
-        }
         self.address = "80:XO:XO:XO:EE:48"
 
 

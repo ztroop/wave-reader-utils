@@ -6,7 +6,12 @@ from unittest.mock import patch
 from wave_reader import data, wave
 from wave_reader.utils import battery_percentage, requires_client
 
-from .mocks import MockedBleakClient, MockedBLEDevice, MockedFailingBleakClient
+from .mocks import (
+    MockedAdvertisementData,
+    MockedBleakClient,
+    MockedBLEDevice,
+    MockedFailingBleakClient,
+)
 
 
 class TestReaderUtils(TestCase):
@@ -41,15 +46,18 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
 
         # A device that should raise an UnknownDevice exception.
         BLEUnknownDevice = deepcopy(self.BLEDevice)
-        BLEUnknownDevice.metadata["manufacturer_data"] = {420: [69]}
+        adv_unknown = MockedAdvertisementData({420: [69]})
         # A device that should be ignored because it lacks manu_data.
         BLEIgnoredDevice = deepcopy(self.BLEDevice)
-        BLEIgnoredDevice.metadata["manufacturer_data"] = {}
+        adv_ignored = MockedAdvertisementData({})
 
         mocked_discover.return_value = {
-            "D7:FB:30:A9:17:F1": (self.BLEDevice, None),
-            "D7:FB:30:A9:17:F2": (BLEUnknownDevice, None),
-            "D7:FB:30:A9:17:F3": (BLEIgnoredDevice, None),
+            "D7:FB:30:A9:17:F1": (
+                self.BLEDevice,
+                MockedAdvertisementData({820: [13, 178, 173, 174, 9, 0]}),
+            ),
+            "D7:FB:30:A9:17:F2": (BLEUnknownDevice, adv_unknown),
+            "D7:FB:30:A9:17:F3": (BLEIgnoredDevice, adv_ignored),
         }
         expected_result = [self.WaveDevice]
         devices = await wave.discover_devices()
@@ -64,12 +72,10 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
 
         BLEUnsupportedDevice = deepcopy(self.BLEDevice)
         # Manufacturer data represents serial '2862618893', indicating invalid model '286'
-        BLEUnsupportedDevice.metadata["manufacturer_data"] = {
-            820: [13, 25, 160, 170, 9, 0]
-        }
+        adv_unsupported = MockedAdvertisementData({820: [13, 25, 160, 170, 9, 0]})
 
         mocked_discover.return_value = {
-            "D7:FB:30:A9:17:F1": (BLEUnsupportedDevice, None)
+            "D7:FB:30:A9:17:F1": (BLEUnsupportedDevice, adv_unsupported)
         }
         devices = await wave.discover_devices()
         self.assertEqual(devices[0].product, data.WaveProduct.UNKNOWN)
@@ -80,8 +86,11 @@ class TestWaveDevice(IsolatedAsyncioTestCase):
         """Test device discovery when the BLE advertisement does not include the model name."""
         BLEUnnamedDevice = deepcopy(self.BLEDevice)
         BLEUnnamedDevice.name = BLEUnnamedDevice.address.replace(":", "-")
+        adv_unnamed = MockedAdvertisementData({820: [13, 178, 173, 174, 9, 0]})
 
-        mocked_discover.return_value = {"D7:FB:30:A9:17:F1": (BLEUnnamedDevice, None)}
+        mocked_discover.return_value = {
+            "D7:FB:30:A9:17:F1": (BLEUnnamedDevice, adv_unnamed)
+        }
         devices = await wave.discover_devices()
         self.assertNotEqual(devices, [])
 
@@ -235,7 +244,8 @@ class TestScan(TestCase):
 
     @patch("wave_reader.wave.BleakScanner.discover")
     def test_scan(self, mocked_discover):
-        mocked_discover.return_value = {"D7:FB:30:A9:17:F1": (self.WaveDevice, None)}
+        adv = MockedAdvertisementData({820: [13, 178, 173, 174, 9, 0]})
+        mocked_discover.return_value = {"D7:FB:30:A9:17:F1": (self.BLEDevice, adv)}
 
         devices = wave.scan()
         self.assertEqual(devices, [self.WaveDevice])
