@@ -9,20 +9,19 @@ homepage = "https://github.com/ztroop/wave-reader-utils"
 packages = [{include = "wave_reader"}]
 
 [tool.poetry.dependencies]
-python = ">=3.7.0"
-Authlib = ">=0.15.6"
-bleak = ">=0.19.0"
-httpx = ">=0.18.2"
-attrs = ">=21.3.0"
-python-dateutil = ">=2.8.2"
+python = "^3.10"
+Authlib = "^1.7.2"
+bleak = "^3.0.2"
+httpx = "^0.28.1"
+attrs = "^26.1.0"
+python-dateutil = "^2.9.0.post0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "*"
-flake8 = "*"
-mypy = "*"
-coverage = "*"
-isort = "*"
-black = "*"
+pytest = "^9.0.3"
+flake8 = "^7.3.0"
+mypy = "^2.1.0"
+isort = "^8.0.1"
+black = "^26.5.1"
 
 [build-system]
 requires = ["poetry-core"]
