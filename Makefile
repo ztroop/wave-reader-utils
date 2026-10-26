@@ -1,7 +1,10 @@
-.PHONY: install test format clean mkdocs pytest
+.PHONY: install update test format clean mkdocs pytest
 
 install:
 	poetry install
+
+update:
+	poetry update
 
 test:
 	poetry run flake8 wave_reader/ tests/
