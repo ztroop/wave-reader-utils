@@ -9,7 +9,7 @@ homepage = "https://github.com/ztroop/wave-reader-utils"
 packages = [{include = "wave_reader"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.14"
 Authlib = "^1.7.2"
 bleak = "^3.0.2"
 httpx = "^0.28.1"
