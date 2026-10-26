@@ -26,6 +26,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
+        sudo apt-get update
         sudo apt-get install libglib2.0-dev bluez -y
         python -m pip install --upgrade pip
         pip install poetry
